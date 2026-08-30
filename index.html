@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reddot Events — Sri Lanka's Turnkey Event & Production Platform</title>
+    <meta name="description" content="Reddot Events is Sri Lanka's premier end-to-end event management and technical production company. From planning to audio, LED visual screens, and execution.">
+    
+    <!-- Google Sans Flex & Syne Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="antigravity-light">
+
+    <!-- Antigravity Light Floating Header Navigation -->
+    <header class="header-nav" id="headerNav">
+        <div class="nav-container">
+            <a href="#home" class="logo-wrapper">
+                <img src="assets/logo.png" alt="Reddot Events Logo" class="brand-logo-img">
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#home" class="nav-item active">Home</a>
+                <a href="#about" class="nav-item">About</a>
+                <a href="#what-we-do" class="nav-item">What We Do</a>
+                <a href="#services" class="nav-item">Capabilities</a>
+                <a href="#estimator" class="nav-item">Scope Tool</a>
+                <a href="#contact" class="nav-item">Contact</a>
+            </nav>
+
+            <div class="nav-cta-group">
+                <a href="https://wa.me/94771234567?text=Hello%20Reddot%20Events!%20I%20want%20to%20plan%20an%20event." target="_blank" class="button button-whatsapp desktop-only">
+                    <i data-lucide="message-square"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="#contact" class="button button-primary desktop-only">
+                    <span>Inquire Now</span>
+                </a>
+                <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Toggle Navigation">
+                    <i data-lucide="menu" id="menuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu Overlay -->
+        <div class="mobile-drawer-menu" id="mobileDrawer">
+            <div class="mobile-drawer-inner">
+                <a href="#home" class="mobile-nav-item active">Home</a>
+                <a href="#about" class="mobile-nav-item">About Us</a>
+                <a href="#what-we-do" class="mobile-nav-item">What We Do</a>
+                <a href="#services" class="mobile-nav-item">Capabilities</a>
+                <a href="#estimator" class="mobile-nav-item">Scope Tool</a>
+                <a href="#contact" class="mobile-nav-item">Contact Us</a>
+                <div class="mobile-drawer-actions margin-top-md">
+                    <a href="https://wa.me/94771234567?text=Hello%20Reddot%20Events!" target="_blank" class="button button-whatsapp w-full">
+                        <i data-lucide="message-square"></i>
+                        <span>WhatsApp Chat</span>
+                    </a>
+                    <a href="#contact" class="button button-primary w-full margin-top-xs">
+                        <span>Inquire Now</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Full Home Section Canvas Particles -->
+    <section id="home" class="hero-section">
+        <div class="motion-canvas-wrapper">
+            <canvas id="motionGraphicsCanvas"></canvas>
+        </div>
+
+        <div class="container hero-content-box">
+            <div class="pill-badge">
+                <span class="pulse-dot"></span>
+                <span>Experience Liftoff With Reddot Events</span>
+            </div>
+
+            <h1 class="hero-title">
+                One team. One event.<br>
+                <span class="hero-gradient-text">From planning to production to execution.</span>
+            </h1>
+
+            <p class="hero-description">
+                Reddot Events connects the dots between creative event management, logistics, and technical production to deliver seamless corporate & private events across Sri Lanka.
+            </p>
+
+            <div class="hero-cta-row">
+                <a href="#estimator" class="button button-primary button-lg">
+                    <i data-lucide="sparkles"></i>
+                    <span>Configure Event Scope</span>
+                </a>
+                <a href="#what-we-do" class="button button-secondary button-lg">
+                    <i data-lucide="grid"></i>
+                    <span>Explore What We Do</span>
+                </a>
+            </div>
+
+            <!-- Antigravity Feature Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">In-House Production</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">Pro AV</div>
+                    <div class="metric-label">Sound & LED Inventory</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">99.9%</div>
+                    <div class="metric-label">Execution Precision</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">Islandwide</div>
+                    <div class="metric-label">Sri Lanka Reach</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Story & Connecting Dots Section -->
+    <section id="about" class="section-container about-section">
+        <div class="container">
+            <div class="section-label">THE REDDOT APPROACH</div>
+            <h2 class="section-heading">Connecting Creative Strategy & Heavy Technical Execution</h2>
+            <p class="section-subtext">
+                Traditional agencies split event planning and technical equipment between multiple vendors. We bring the entire workflow into one unified, execution-focused platform.
+            </p>
+
+            <div class="grid-2-col margin-top-xl">
+                <div class="antigravity-card">
+                    <div class="card-icon-pill">
+                        <i data-lucide="compass"></i>
+                    </div>
+                    <h3>Turnkey Event Management</h3>
+                    <p>
+                        Clients can come to one place and have their entire event handled from concept to execution. We manage spatial layouts, timelines, permits, guest logistics, and VIP protocol.
+                    </p>
+                    <div class="pill-tags">
+                        <span class="tag">Concept Curation</span>
+                        <span class="tag">Logistics</span>
+                        <span class="tag">Stage Management</span>
+                    </div>
+                </div>
+
+                <div class="antigravity-card">
+                    <div class="card-icon-pill">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <h3>Technical Production & AV</h3>
+                    <p>
+                        Direct ownership of line array audio systems, high-pitch P2/P3 LED display walls, moving head lighting rigs, aluminium box trussing, and industrial generator power backups.
+                    </p>
+                    <div class="pill-tags">
+                        <span class="tag">Line Array Sound</span>
+                        <span class="tag">LED Screens</span>
+                        <span class="tag">Pyrotechnics</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leadership Spotlight -->
+            <div class="leadership-wrapper margin-top-2xl">
+                <h3 class="subsection-title">Driven by Event Partners</h3>
+                <div class="grid-2-col margin-top-md">
+                    <div class="partner-box">
+                        <div class="partner-logo-ring">RD</div>
+                        <div>
+                            <h4 class="partner-name">Randesh Daluwatte</h4>
+                            <span class="partner-tag">Partner — Event Operations & Strategic Planning</span>
+                            <p class="partner-desc">Leading event strategy, corporate client relations, vendor orchestration, and seamless execution across Sri Lanka.</p>
+                        </div>
+                    </div>
+
+                    <div class="partner-box">
+                        <div class="partner-logo-ring">SM</div>
+                        <div>
+                            <h4 class="partner-name">Sasindu Methsukha</h4>
+                            <span class="partner-tag">Partner — Technical Production & Audio-Visual Systems</span>
+                            <p class="partner-desc">Head of stage engineering, acoustic tuning, P2/P3 LED wall visual control, and heavy technical production setups.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE DO Visual Showcase Section (4 Photo Cards Per Category) -->
+    <section id="what-we-do" class="section-container what-we-do-section">
+        <div class="container">
+            <div class="section-label">PRODUCTION & CAPABILITIES SHOWCASE</div>
+            <h2 class="section-heading">WHAT WE DO</h2>
+            <p class="section-subtext">Comprehensive end-to-end event execution across 5 core specializations.</p>
+
+            <!-- 1. FULL EVENT EXECUTION -->
+            <div class="what-we-do-category margin-top-xl">
+                <div class="category-title-bar">
+                    <h3>FULL EVENT EXECUTION</h3>
+                    <div class="title-divider"></div>
+                </div>
+                <div class="photo-grid-4 margin-top-md">
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/prod_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/media_1.jpg');"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. EVENT PRODUCTION -->
+            <div class="what-we-do-category margin-top-xl">
+                <div class="category-title-bar">
+                    <h3>EVENT PRODUCTION</h3>
+                    <div class="title-divider"></div>
+                </div>
+                <div class="photo-grid-4 margin-top-md">
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/prod_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. LIVE STREAMING (Using Real Uploaded Live Stream Photos) -->
+            <div class="what-we-do-category margin-top-xl">
+                <div class="category-title-bar">
+                    <h3>LIVE STREAMING</h3>
+                    <div class="title-divider"></div>
+                </div>
+                <div class="photo-grid-4 margin-top-md">
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_2.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_3.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_4.jpg');"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. VIDEO & PHOTOGRAPHY -->
+            <div class="what-we-do-category margin-top-xl">
+                <div class="category-title-bar">
+                    <h3>VIDEO & PHOTOGRAPHY</h3>
+                    <div class="title-divider"></div>
+                </div>
+                <div class="photo-grid-4 margin-top-md">
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/media_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. CREATIVE & DIGITAL -->
+            <div class="what-we-do-category margin-top-xl">
+                <div class="category-title-bar">
+                    <h3>CREATIVE & DIGITAL</h3>
+                    <div class="title-divider"></div>
+                </div>
+                <div class="photo-grid-4 margin-top-md">
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/prod_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
+                    </div>
+                    <div class="photo-card-frame">
+                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Services & Capabilities Explorer -->
+    <section id="services" class="section-container services-section">
+        <div class="container">
+            <div class="section-label">OUR SERVICES</div>
+            <h2 class="section-heading">Full Spectrum Production Capabilities</h2>
+            <p class="section-subtext">Designed to give corporate brands and private hosts absolute reliability on event day.</p>
+
+            <div class="capabilities-grid margin-top-xl">
+                <!-- Service 1 -->
+                <div class="capability-card">
+                    <div class="cap-header">
+                        <i data-lucide="clipboard-check" class="cap-icon"></i>
+                        <span class="cap-num">01</span>
+                    </div>
+                    <h3>Event Planning & Management</h3>
+                    <p>Concept development, spatial mapping, theme curation, budget planning, and local authority permits.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="capability-card">
+                    <div class="cap-header">
+                        <i data-lucide="sliders" class="cap-icon"></i>
+                        <span class="cap-num">02</span>
+                    </div>
+                    <h3>Event Coordination & Execution</h3>
+                    <p>Minute-by-minute run-down precision, stage managers, artiste coordination, and real-time floor direction.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="capability-card">
+                    <div class="cap-header">
+                        <i data-lucide="truck" class="cap-icon"></i>
+                        <span class="cap-num">03</span>
+                    </div>
+                    <h3>Vendor & Logistics Management</h3>
+                    <p>Catering coordination, venue sourcing, transport fleets, VIP protocol, and backstage management.</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="capability-card highlight-card">
+                    <div class="cap-header">
+                        <i data-lucide="volume-2" class="cap-icon"></i>
+                        <span class="cap-badge">In-House</span>
+                    </div>
+                    <h3>Audio Production</h3>
+                    <p>Line array speakers, subwoofer systems, digital mixing consoles (Midas/Yamaha), RF wireless microphones.</p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="capability-card highlight-card">
+                    <div class="cap-header">
+                        <i data-lucide="tv" class="cap-icon"></i>
+                        <span class="cap-badge">In-House</span>
+                    </div>
+                    <h3>Visual Production & LED Walls</h3>
+                    <p>P2 / P3 high-resolution indoor & outdoor LED display screens, moving head beams, wash lights & motion graphics.</p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="capability-card">
+                    <div class="cap-header">
+                        <i data-lucide="camera" class="cap-icon"></i>
+                        <span class="cap-num">06</span>
+                    </div>
+                    <h3>Video Production & Photography</h3>
+                    <p>4K multi-camera live broadcast, aerial drone cinematography, highlight recap aftermovies & photo coverage.</p>
+                </div>
+            </div>
+
+            <!-- Technical Production Feature Banner -->
+            <div class="antigravity-card full-banner margin-top-lg">
+                <div class="banner-inner">
+                    <div class="banner-text">
+                        <span class="pill-badge">Heavy Production</span>
+                        <h2>Event Technical Production & Staging</h2>
+                        <p>Complete structural setups: heavy aluminium box trussing, elevated stage builds, main & backup generator power distribution, cold spark pyrotechnics, and haze fx.</p>
+                    </div>
+                    <a href="#estimator" class="button button-primary">Calculate Staging</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Antigravity-Style Interactive Event Scope Estimator with Custom Options -->
+    <section id="estimator" class="section-container estimator-section">
+        <div class="container">
+            <div class="estimator-container antigravity-card">
+                <div class="section-label">INTERACTIVE TOOL</div>
+                <h2 class="section-heading">Configure Event Requirements</h2>
+                <p class="section-subtext">Select parameters or type custom requirements to construct a direct inquiry scope for instant WhatsApp submission.</p>
+
+                <div class="estimator-flex margin-top-xl">
+                    <div class="controls-column">
+                        
+                        <!-- 1. Event Type with Custom Option -->
+                        <div class="control-block">
+                            <label><i data-lucide="calendar"></i> 1. Event Type</label>
+                            <div class="pill-group" id="eventTypeGroup">
+                                <button class="pill-option active" data-val="Corporate Conference">Corporate Conference</button>
+                                <button class="pill-option" data-val="Product Launch">Product Launch</button>
+                                <button class="pill-option" data-val="Gala Dinner">Gala Dinner</button>
+                                <button class="pill-option" data-val="Live Concert">Live Concert</button>
+                                <button class="pill-option" data-val="Luxury Wedding">Luxury Wedding</button>
+                                <button class="pill-option custom-trigger" data-val="Custom Event Type">Custom / Other...</button>
+                            </div>
+                            <!-- Custom Event Input Field -->
+                            <div class="custom-input-box hidden" id="customEventTypeBox">
+                                <input type="text" id="customEventTypeInput" placeholder="Enter custom event type (e.g., Annual Award Ceremony, Fashion Show...)">
+                            </div>
+                        </div>
+
+                        <!-- 2. Guest Count with Custom Option -->
+                        <div class="control-block">
+                            <label><i data-lucide="users"></i> 2. Estimated Attendance</label>
+                            <div class="pill-group" id="guestCountGroup">
+                                <button class="pill-option" data-val="Under 100 Guests">Under 100</button>
+                                <button class="pill-option active" data-val="100 - 300 Guests">100 - 300</button>
+                                <button class="pill-option" data-val="300 - 800 Guests">300 - 800</button>
+                                <button class="pill-option" data-val="1,000+ Guests">1,000+</button>
+                                <button class="pill-option custom-trigger" data-val="Custom Guest Scale">Custom Count...</button>
+                            </div>
+                            <!-- Custom Guest Input Field -->
+                            <div class="custom-input-box hidden" id="customGuestCountBox">
+                                <input type="text" id="customGuestCountInput" placeholder="Enter custom attendance scale (e.g., 450 Guests, 2500+ Outdoor...)">
+                            </div>
+                        </div>
+
+                        <!-- 3. Production Modules with Custom Item Addition -->
+                        <div class="control-group-block">
+                            <label><i data-lucide="check-square"></i> 3. Required Production Modules</label>
+                            <div class="checkbox-options" id="moduleCheckboxes">
+                                <label class="check-pill">
+                                    <input type="checkbox" value="Full Event Management" checked>
+                                    <span>Event Management</span>
+                                </label>
+                                <label class="check-pill">
+                                    <input type="checkbox" value="Pro Audio & Mics" checked>
+                                    <span>Pro Audio System</span>
+                                </label>
+                                <label class="check-pill">
+                                    <input type="checkbox" value="LED Display Screen Wall" checked>
+                                    <span>LED Display Screen</span>
+                                </label>
+                                <label class="check-pill">
+                                    <input type="checkbox" value="Stage Lighting Rigs">
+                                    <span>Stage Lighting</span>
+                                </label>
+                                <label class="check-pill">
+                                    <input type="checkbox" value="4K Multi-Cam Broadcast">
+                                    <span>4K Multi-Cam Broadcast</span>
+                                </label>
+                                <label class="check-pill">
+                                    <input type="checkbox" value="Stage & Heavy Trussing">
+                                    <span>Stage & Trussing</span>
+                                </label>
+                            </div>
+
+                            <!-- Custom Module / Requirement Addition -->
+                            <div class="custom-module-add-box margin-top-xs">
+                                <label class="sub-label"><i data-lucide="plus-circle"></i> Add Custom Production Request</label>
+                                <div class="input-with-btn">
+                                    <input type="text" id="customModuleInput" placeholder="Type custom gear/request (e.g., 3D Projection Mapping, Pyrotechnics...)">
+                                    <button type="button" id="addCustomModuleBtn" class="button button-secondary button-sm">Add Item</button>
+                                </div>
+                                <div class="custom-items-tags" id="customItemsTags"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scope Summary Panel -->
+                    <div class="summary-column">
+                        <div class="summary-box">
+                            <div class="summary-header">
+                                <i data-lucide="sparkles" class="accent-icon"></i>
+                                <h4>Scope Output Summary</h4>
+                            </div>
+                            <div class="summary-body">
+                                <div class="sum-item">
+                                    <span>Event Category:</span>
+                                    <strong id="scopeType">Corporate Conference</strong>
+                                </div>
+                                <div class="sum-item">
+                                    <span>Attendance:</span>
+                                    <strong id="scopeGuests">100 - 300 Guests</strong>
+                                </div>
+                                <div class="sum-item vertical">
+                                    <span>Selected Modules:</span>
+                                    <ul id="scopeModuleList" class="sum-list"></ul>
+                                </div>
+                            </div>
+                            <div class="summary-cta">
+                                <button id="sendWhatsAppEstimate" class="button button-whatsapp w-full">
+                                    <i data-lucide="message-square"></i>
+                                    <span>Send Scope to WhatsApp</span>
+                                </button>
+                                <button id="sendEmailEstimate" class="button button-secondary w-full margin-top-xs">
+                                    <i data-lucide="mail"></i>
+                                    <span>Email Scope to Company</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section class="section-container faq-section">
+        <div class="container">
+            <div class="section-label">FAQ</div>
+            <h2 class="section-heading">Frequently Asked Questions</h2>
+
+            <div class="faq-list margin-top-lg">
+                <div class="faq-card">
+                    <button class="faq-toggle">
+                        <span>Do you operate outside of Colombo?</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes! Reddot Events operates island-wide across Sri Lanka, including Kandy, Galle, Bentota, Negombo, Hambantota, and Jaffna.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <button class="faq-toggle">
+                        <span>Can we hire Reddot specifically for Sound or LED screen rental?</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p>Absolutely. We provide standalone audio production, LED display screens, and stage lighting rigs alongside our full event management services.</p>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <button class="faq-toggle">
+                        <span>What is your technical backup protocol?</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p>We deploy redundant audio consoles, spare wireless microphone channels, dual video playback laptops, and generator power tie-ins for zero downtime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Direct Hub -->
+    <section id="contact" class="section-container contact-section">
+        <div class="container">
+            <div class="antigravity-card contact-card">
+                <div class="grid-2-col">
+                    <div class="contact-info">
+                        <div class="section-label">GET IN TOUCH</div>
+                        <h2 class="section-heading">Plan Your Next Event</h2>
+                        <p class="section-subtext">Connect with Randesh Daluwatte, Sasindu Methsukha, and the Reddot Events production team.</p>
+
+                        <div class="contact-details margin-top-md">
+                            <div class="detail-line">
+                                <i data-lucide="phone"></i>
+                                <span>+94 77 123 4567 / +94 71 987 6543</span>
+                            </div>
+                            <div class="detail-line">
+                                <i data-lucide="mail"></i>
+                                <a href="mailto:reddotcreative.events@gmail.com" class="email-link">reddotcreative.events@gmail.com</a>
+                            </div>
+                            <div class="detail-line">
+                                <i data-lucide="map-pin"></i>
+                                <span>Colombo, Sri Lanka (Island-wide Operations)</span>
+                            </div>
+                        </div>
+
+                        <div class="wa-direct-banner margin-top-lg">
+                            <i data-lucide="message-square" class="wa-icon"></i>
+                            <div>
+                                <h4>Instant WhatsApp Response</h4>
+                                <p>Chat directly with our event directors for immediate dates and pricing.</p>
+                                <a href="https://wa.me/94771234567?text=Hi%20Reddot%20Events!%20I'd%20like%20to%20discuss%20an%20event." target="_blank" class="button button-whatsapp margin-top-xs">
+                                    <span>Chat on WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Form Dispatch to reddotcreative.events@gmail.com via Formspree/Mailto -->
+                    <form id="contactForm" class="contact-form" action="https://formspree.io/f/reddotcreative.events@gmail.com" method="POST">
+                        <h3>Event Inquiry Form</h3>
+                        <p class="form-sub-note">Submissions send directly to <strong>reddotcreative.events@gmail.com</strong></p>
+                        
+                        <div class="form-group margin-top-sm">
+                            <label for="cName">Your Name *</label>
+                            <input type="text" id="cName" name="Name" required placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="cCompany">Company / Organization</label>
+                            <input type="text" id="cCompany" name="Company" placeholder="e.g. Acme Corp PLC">
+                        </div>
+                        <div class="form-group">
+                            <label for="cPhone">Phone Number *</label>
+                            <input type="tel" id="cPhone" name="Phone" required placeholder="+94 77 XXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="cEmail">Your Email Address *</label>
+                            <input type="email" id="cEmail" name="Email" required placeholder="name@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="cDetails">Event Requirements & Specifications</label>
+                            <textarea id="cDetails" name="InquiryDetails" rows="4" placeholder="Tell us about your event date, location, and required services..."></textarea>
+                        </div>
+                        <button type="submit" class="button button-primary button-lg w-full">
+                            <i data-lucide="send"></i>
+                            <span>Send Direct Inquiry to Email</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-flex">
+            <div class="footer-left">
+                <img src="assets/logo.png" alt="Reddot Events" class="footer-logo">
+                <p>One team. One event. From planning to production to execution.</p>
+                <p class="margin-top-xs"><a href="mailto:reddotcreative.events@gmail.com" class="footer-email">reddotcreative.events@gmail.com</a></p>
+            </div>
+            <div class="footer-right">
+                <p>&copy; <span id="fYear">2026</span> Reddot Events (Pvt) Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <i data-lucide="check-circle"></i>
+        <span id="toastMsg">Inquiry sent successfully!</span>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
