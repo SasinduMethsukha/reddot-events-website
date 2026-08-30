@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Light Antigravity Theme with Premium Logo Sizing
+   Reddot Events - Light Antigravity Theme & Red Line Social Icons
    ========================================================================== */
 
 :root {
@@ -80,6 +80,10 @@ button {
     text-align: center;
 }
 
+.text-right {
+    text-align: right;
+}
+
 .section-container {
     padding: 120px 0;
 }
@@ -137,7 +141,7 @@ h1, h2, h3, h4 {
     margin: 0 auto;
 }
 
-/* Header & Footer Logo Bounds (Strictly Sized) */
+/* Header & Footer Logo Bounds */
 .logo-wrapper {
     display: inline-flex;
     align-items: center;
@@ -161,6 +165,75 @@ h1, h2, h3, h4 {
     display: block;
     object-fit: contain;
     margin-bottom: 12px;
+}
+
+/* Red Line Social Icons */
+.social-nav-link {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-red-light);
+    border: 1px solid var(--border-red);
+    color: var(--primary-red);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-nav-link:hover {
+    background: var(--primary-red);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-red);
+}
+
+.social-icon-link {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--primary-red-light);
+    border: 1px solid var(--border-red);
+    color: var(--primary-red);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-icon-link:hover {
+    background: var(--primary-red);
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-red);
+}
+
+.social-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sub-label-heading {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.footer-social-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.mobile-social-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
 }
 
 /* Antigravity Buttons */
@@ -540,53 +613,7 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border-subtle);
 }
 
-.partner-box {
-    display: flex;
-    gap: 20px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-card);
-    padding: 28px;
-    transition: var(--transition);
-}
-
-.partner-box:hover {
-    background: #FFFFFF;
-    border-color: var(--border-red);
-    box-shadow: var(--shadow-md);
-}
-
-.partner-logo-ring {
-    width: 56px;
-    height: 56px;
-    background: var(--primary-red);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #FFFFFF;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-red);
-}
-
-.partner-tag {
-    font-size: 0.85rem;
-    color: var(--primary-red);
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.partner-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-/* ==========================================================================
-   WHAT WE DO Visual Showcase Section & Category Descriptions
-   ========================================================================== */
+/* WHAT WE DO Section */
 .what-we-do-section {
     background: var(--bg-surface);
 }
@@ -706,22 +733,6 @@ h1, h2, h3, h4 {
     font-size: 0.85rem;
     color: var(--text-muted);
     font-weight: 700;
-}
-
-.full-banner {
-    background: linear-gradient(135deg, #111319 0%, #202430 100%);
-    color: #FFFFFF;
-}
-
-.full-banner .section-heading, .full-banner h2, .full-banner p {
-    color: #FFFFFF;
-}
-
-.full-banner .banner-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
 }
 
 /* FAQ Accordion */
@@ -960,15 +971,6 @@ h1, h2, h3, h4 {
         padding: 24px 20px;
     }
 
-    .full-banner .banner-inner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .full-banner .banner-inner .button {
-        width: 100%;
-    }
-
     .category-title-bar h3 {
         font-size: 1.1rem;
     }
@@ -982,11 +984,6 @@ h1, h2, h3, h4 {
         height: 160px;
     }
 
-    .partner-box {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .wa-direct-banner {
         flex-direction: column;
     }
@@ -995,6 +992,14 @@ h1, h2, h3, h4 {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+    }
+
+    .footer-right {
+        text-align: center !important;
+    }
+
+    .footer-social-row {
+        justify-content: center !important;
     }
 }
 
