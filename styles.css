@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Light Antigravity Theme, Red Dots Canvas & Highlighted Call CTA
+   Reddot Events - Single-Page Light Antigravity Theme & Direct Contact Styling
    ========================================================================== */
 
 :root {
@@ -161,10 +161,10 @@ h1, h2, h3, h4 {
     background: linear-gradient(135deg, rgba(230, 0, 38, 0.08) 0%, rgba(230, 0, 38, 0.03) 100%);
     border: 1px solid var(--border-red);
     border-radius: var(--radius-card);
-    padding: 20px 24px;
+    padding: 22px 26px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     box-shadow: 0 4px 16px rgba(230, 0, 38, 0.06);
     transition: var(--transition);
 }
@@ -175,8 +175,8 @@ h1, h2, h3, h4 {
 }
 
 .phone-card-icon {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: var(--primary-red);
     color: #FFFFFF;
@@ -195,11 +195,23 @@ h1, h2, h3, h4 {
     text-transform: uppercase;
 }
 
-.phone-numbers-row {
+.phone-contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.phone-contact-item {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
+    gap: 12px;
+}
+
+.contact-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 95px;
 }
 
 .highlight-phone-number {
@@ -212,11 +224,6 @@ h1, h2, h3, h4 {
 
 .highlight-phone-number:hover {
     color: var(--primary-red);
-}
-
-.phone-divider {
-    color: var(--text-muted);
-    font-weight: 600;
 }
 
 /* Red Line Social Icons */
@@ -647,7 +654,7 @@ h1, h2, h3, h4 {
     font-weight: 500;
 }
 
-/* Antigravity Cards */
+/* Antigravity Cards Grid */
 .antigravity-card {
     background: #FFFFFF;
     border: 1px solid var(--border-subtle);
@@ -666,6 +673,12 @@ h1, h2, h3, h4 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 28px;
+}
+
+.grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
 }
 
 .card-icon-pill {
@@ -880,22 +893,6 @@ h1, h2, h3, h4 {
     color: var(--primary-red);
 }
 
-.wa-direct-banner {
-    background: rgba(37, 211, 102, 0.08);
-    border: 1px solid rgba(37, 211, 102, 0.25);
-    border-radius: var(--radius-card);
-    padding: 28px;
-    display: flex;
-    gap: 20px;
-}
-
-.wa-icon {
-    color: var(--whatsapp-green);
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-}
-
 .contact-form {
     background: var(--bg-surface);
     padding: 36px;
@@ -1007,7 +1004,7 @@ h1, h2, h3, h4 {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
     }
-    .capabilities-grid {
+    .capabilities-grid, .grid-3-col {
         grid-template-columns: repeat(2, 1fr);
     }
     .metrics-3-grid {
@@ -1061,6 +1058,9 @@ h1, h2, h3, h4 {
     .antigravity-card {
         padding: 24px 20px;
     }
+    .grid-3-col {
+        grid-template-columns: 1fr;
+    }
     .category-title-bar h3 {
         font-size: 1.1rem;
     }
@@ -1071,14 +1071,11 @@ h1, h2, h3, h4 {
     .photo-img-box {
         height: 160px;
     }
-    .wa-direct-banner {
-        flex-direction: column;
-    }
     .phone-highlight-card {
         flex-direction: column;
         text-align: center;
     }
-    .phone-numbers-row {
+    .phone-contact-item {
         justify-content: center;
     }
     .footer-flex {
@@ -1132,6 +1129,13 @@ h1, h2, h3, h4 {
     }
     .contact-form {
         padding: 24px 18px;
+    }
+    .phone-contact-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .contact-name {
+        min-width: auto;
     }
 }
 
