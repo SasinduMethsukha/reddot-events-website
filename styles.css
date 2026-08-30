@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Scoped Hero Graphic, Mobile Particle Fix & Scroll Reveal Animations
+   Reddot Events - Mobile Canvas Removal & Popup-Style Scroll Reveal Animations
    ========================================================================== */
 
 :root {
@@ -95,29 +95,17 @@ button {
     background-color: var(--bg-main);
 }
 
-/* Seamless Scroll-Triggered Reveal Animations */
-.reveal-section {
+/* Popup-Style Spring Scroll Reveal Animations */
+.reveal-section, .reveal-card {
     opacity: 0;
-    transform: translateY(35px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(36px) scale(0.88);
+    transition: opacity 0.65s cubic-bezier(0.34, 1.4, 0.64, 1), transform 0.65s cubic-bezier(0.34, 1.4, 0.64, 1);
     will-change: opacity, transform;
 }
 
-.reveal-section.is-visible {
+.reveal-section.is-visible, .reveal-card.is-visible {
     opacity: 1;
-    transform: translateY(0);
-}
-
-.reveal-card {
-    opacity: 0;
-    transform: translateY(25px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-}
-
-.reveal-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 /* Typography */
@@ -537,7 +525,7 @@ h1, h2, h3, h4 {
     color: var(--primary-red);
 }
 
-/* Hero / Home Section with Scoped Stage Blueprint Graphic Layer */
+/* Hero / Home Section */
 .hero-section {
     position: relative;
     min-height: 100vh;
@@ -1082,6 +1070,11 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
+    /* Hide red dots canvas completely on mobile */
+    #motionGraphicsCanvas, .motion-canvas-wrapper, .desktop-only-canvas {
+        display: none !important;
+    }
+
     .nav-links, .desktop-only {
         display: none !important;
     }

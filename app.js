@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot - Full Hero Canvas Particles, Mobile Interaction Fix & Scroll Reveals
+   Reddot - Full Hero Canvas Particles, Mobile Dots Removal & Popup Reveals
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
-   Seamless IntersectionObserver Scroll Reveal Animations
+   Popup-Style Spring IntersectionObserver Scroll Reveal Animations
    -------------------------------------------------------------------------- */
 function initScrollReveals() {
     const revealElements = document.querySelectorAll('.reveal-section, .reveal-card');
@@ -25,8 +25,8 @@ function initScrollReveals() {
 
     const observerOptions = {
         root: null,
-        rootMargin: '0px 0px -50px 0px',
-        threshold: 0.08
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.06
     };
 
     const observer = new IntersectionObserver((entries, obs) => {
@@ -102,7 +102,7 @@ function initMobileNav() {
 }
 
 /* --------------------------------------------------------------------------
-   Full Hero Section Coverage - Floating Red Dots Canvas Animation
+   Full Hero Section Coverage - Floating Red Dots Canvas Animation (Desktop Only)
    -------------------------------------------------------------------------- */
 function initFullHeroReddots() {
     const canvas = document.getElementById('motionGraphicsCanvas');
@@ -112,26 +112,26 @@ function initFullHeroReddots() {
     const heroSection = document.getElementById('home');
     if (!heroSection) return;
 
+    const isMobile = () => window.innerWidth <= 768;
+
     let width = (canvas.width = heroSection.clientWidth);
     let height = (canvas.height = heroSection.clientHeight);
-
-    const isMobile = () => window.innerWidth <= 768 || ('ontouchstart' in window);
 
     window.addEventListener('resize', () => {
         width = canvas.width = heroSection.clientWidth;
         height = canvas.height = heroSection.clientHeight;
-        initDotsAcrossHero();
+        if (!isMobile()) initDotsAcrossHero();
     });
 
     const reddots = [];
     const dotCount = Math.min(Math.floor((width * height) / 1600), 700);
+    const repulsionRadius = 130;
     const forceFactor = 1.4;
     const returnSpeed = 0.05;
 
     let mouseX = -1000;
     let mouseY = -1000;
 
-    // Desktop Mouse Repulsion (Only active on desktop screens)
     heroSection.addEventListener('mousemove', (e) => {
         if (isMobile()) return;
         const rect = canvas.getBoundingClientRect();
@@ -144,14 +144,9 @@ function initFullHeroReddots() {
         mouseY = -1000;
     });
 
-    // Touch events on mobile do not displace particles
-    heroSection.addEventListener('touchmove', () => {
-        mouseX = -1000;
-        mouseY = -1000;
-    }, { passive: true });
-
     function initDotsAcrossHero() {
         reddots.length = 0;
+        if (isMobile()) return;
 
         for (let i = 0; i < dotCount; i++) {
             const rx = Math.random() * width;
@@ -171,33 +166,34 @@ function initFullHeroReddots() {
         }
     }
 
-    initDotsAcrossHero();
+    if (!isMobile()) initDotsAcrossHero();
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
-        const activeRepulsionRadius = isMobile() ? 0 : 130;
+        if (isMobile()) {
+            requestAnimationFrame(animate);
+            return;
+        }
 
-        if (activeRepulsionRadius > 0) {
-            for (let i = 0; i < reddots.length; i += 6) {
-                const dotA = reddots[i];
-                const dx = mouseX - dotA.x;
-                const dy = mouseY - dotA.y;
-                const dist = Math.hypot(dx, dy);
+        for (let i = 0; i < reddots.length; i += 6) {
+            const dotA = reddots[i];
+            const dx = mouseX - dotA.x;
+            const dy = mouseY - dotA.y;
+            const dist = Math.hypot(dx, dy);
 
-                if (dist < activeRepulsionRadius * 1.3) {
-                    for (let j = i + 1; j < reddots.length; j += 6) {
-                        const dotB = reddots[j];
-                        const dAB = Math.hypot(dotA.x - dotB.x, dotA.y - dotB.y);
+            if (dist < repulsionRadius * 1.3) {
+                for (let j = i + 1; j < reddots.length; j += 6) {
+                    const dotB = reddots[j];
+                    const dAB = Math.hypot(dotA.x - dotB.x, dotA.y - dotB.y);
 
-                        if (dAB < 36) {
-                            ctx.strokeStyle = `rgba(230, 0, 38, ${0.14 * (1 - dist / (activeRepulsionRadius * 1.3))})`;
-                            ctx.lineWidth = 0.8;
-                            ctx.beginPath();
-                            ctx.moveTo(dotA.x, dotA.y);
-                            ctx.lineTo(dotB.x, dotB.y);
-                            ctx.stroke();
-                        }
+                    if (dAB < 36) {
+                        ctx.strokeStyle = `rgba(230, 0, 38, ${0.14 * (1 - dist / (repulsionRadius * 1.3))})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(dotA.x, dotA.y);
+                        ctx.lineTo(dotB.x, dotB.y);
+                        ctx.stroke();
                     }
                 }
             }
@@ -224,9 +220,9 @@ function initFullHeroReddots() {
             const dy = dot.y - mouseY;
             const dist = Math.hypot(dx, dy);
 
-            if (activeRepulsionRadius > 0 && dist < activeRepulsionRadius && dist > 0) {
+            if (dist < repulsionRadius && dist > 0) {
                 const angle = Math.atan2(dy, dx);
-                const force = (activeRepulsionRadius - dist) / activeRepulsionRadius;
+                const force = (repulsionRadius - dist) / repulsionRadius;
                 const pushDist = force * force * 55 * forceFactor;
 
                 const targetX = dot.baseX + Math.cos(angle) * pushDist;
