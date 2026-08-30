@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Single-Page Light Antigravity Theme & Floating WhatsApp Button
+   Reddot Events - Single-Page Light Antigravity Theme & Elevated WhatsApp Floating Button
    ========================================================================== */
 
 :root {
@@ -216,42 +216,43 @@ h1, h2, h3, h4 {
     justify-content: center;
 }
 
-/* Bottom-Right Floating WhatsApp Button */
+/* Elevated Floating WhatsApp Brand Button (Positioned Above Netlify Badge) */
 .floating-wa-btn {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 58px;
-    height: 58px;
-    background: var(--whatsapp-green);
+    bottom: 85px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
     color: #FFFFFF;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.45);
-    z-index: 999;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+    z-index: 9999;
     transition: var(--transition);
     animation: waPulse 2.4s infinite ease-in-out;
 }
 
 .floating-wa-btn:hover {
-    background: var(--whatsapp-hover);
+    background: #20bd5a;
     transform: scale(1.1) translateY(-3px);
-    box-shadow: 0 14px 32px rgba(37, 211, 102, 0.6);
+    box-shadow: 0 16px 36px rgba(37, 211, 102, 0.65);
 }
 
-.floating-wa-btn i, .floating-wa-btn svg {
-    width: 28px;
-    height: 28px;
+.floating-wa-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
 }
 
 @keyframes waPulse {
     0%, 100% {
-        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.45);
+        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
     }
     50% {
-        box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+        box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
     }
 }
 
@@ -1013,14 +1014,14 @@ h1, h2, h3, h4 {
         justify-content: center !important;
     }
     .floating-wa-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 52px;
-        height: 52px;
+        bottom: 75px;
+        right: 18px;
+        width: 54px;
+        height: 54px;
     }
-    .floating-wa-btn i, .floating-wa-btn svg {
-        width: 24px;
-        height: 24px;
+    .floating-wa-btn svg {
+        width: 28px;
+        height: 28px;
     }
 }
 
