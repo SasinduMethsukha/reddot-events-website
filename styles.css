@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Light Antigravity Theme with Premium CSS Color Grading
+   Reddot Events - Light Antigravity Theme with Premium Logo Sizing
    ========================================================================== */
 
 :root {
@@ -137,31 +137,29 @@ h1, h2, h3, h4 {
     margin: 0 auto;
 }
 
-/* Brand Text Logo ("reddot" without "events") */
-.brand-text-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.65rem;
-    color: var(--primary-red);
-    letter-spacing: -0.8px;
+/* Header & Footer Logo Bounds (Strictly Sized) */
+.logo-wrapper {
     display: inline-flex;
     align-items: center;
-    line-height: 1;
+    max-height: 40px;
 }
 
-.brand-text-logo::after {
-    content: '';
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background-color: var(--primary-red);
-    border-radius: 50%;
-    margin-left: 2px;
-    margin-top: 8px;
+.brand-logo-img {
+    height: 32px;
+    max-height: 32px;
+    width: auto;
+    max-width: 140px;
+    display: block;
+    object-fit: contain;
 }
 
-.footer-logo-text {
-    font-size: 1.8rem;
+.footer-logo {
+    height: 34px;
+    max-height: 34px;
+    width: auto;
+    max-width: 140px;
+    display: block;
+    object-fit: contain;
     margin-bottom: 12px;
 }
 
@@ -691,11 +689,6 @@ h1, h2, h3, h4 {
     box-shadow: var(--shadow-md);
 }
 
-.capability-card.highlight-card {
-    background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F6 100%);
-    border-color: rgba(230, 0, 38, 0.3);
-}
-
 .cap-header {
     display: flex;
     justify-content: space-between;
@@ -713,15 +706,6 @@ h1, h2, h3, h4 {
     font-size: 0.85rem;
     color: var(--text-muted);
     font-weight: 700;
-}
-
-.cap-badge {
-    font-size: 0.75rem;
-    background: var(--primary-red);
-    color: #FFFFFF;
-    padding: 4px 12px;
-    border-radius: var(--radius-pill);
-    font-weight: 600;
 }
 
 .full-banner {
