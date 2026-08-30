@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Light Antigravity Theme & Hero Stage Blueprint Background
+   Reddot Events - Dark WHAT WE DO Section, Morph Dividers & Scroll Reveals
    ========================================================================== */
 
 :root {
@@ -86,10 +86,26 @@ button {
 
 .section-container {
     padding: 110px 0;
+    position: relative;
+    z-index: 2;
+    background-color: var(--bg-main);
 }
 
-.padding-top-zero {
-    padding-top: 0 !important;
+.about-section, .services-section, .faq-section, .contact-section {
+    background-color: var(--bg-main);
+}
+
+/* Seamless Scroll-Triggered Reveal Animations */
+.reveal-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Typography */
@@ -375,18 +391,6 @@ h1, h2, h3, h4 {
     transform: translateY(-2px);
 }
 
-.button-whatsapp {
-    background: var(--whatsapp-green);
-    color: #FFFFFF;
-    font-weight: 600;
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
-}
-
-.button-whatsapp:hover {
-    background: var(--whatsapp-hover);
-    transform: translateY(-2px);
-}
-
 .button-lg {
     padding: 16px 36px;
     font-size: 1.05rem;
@@ -407,10 +411,6 @@ h1, h2, h3, h4 {
 .margin-top-lg { margin-top: 40px; }
 .margin-top-xl { margin-top: 56px; }
 .margin-top-2xl { margin-top: 80px; }
-
-.hidden {
-    display: none !important;
-}
 
 /* Light Floating Header Navigation */
 .header-nav {
@@ -525,7 +525,25 @@ h1, h2, h3, h4 {
     color: var(--primary-red);
 }
 
-/* Hero / Home Section with Technical Red Stage Wireframe Graphic */
+/* Zoomed-In & Fixed Parallax Hero Stage Blueprint Background Layer */
+.hero-stage-fixed-bg {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -35%) scale(1.45);
+    width: min(1300px, 100vw);
+    height: 75vh;
+    background-image: url('assets/hero-stage-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.14;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Hero / Home Section */
 .hero-section {
     position: relative;
     min-height: 100vh;
@@ -536,23 +554,7 @@ h1, h2, h3, h4 {
     padding-bottom: 100px;
     background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
     overflow: hidden;
-}
-
-.hero-stage-bg {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(1050px, 92%);
-    height: 65%;
-    background-image: url('assets/hero-stage-bg.jpg');
-    background-repeat: no-repeat;
-    background-position: bottom center;
-    background-size: contain;
-    opacity: 0.16;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .motion-canvas-wrapper {
@@ -710,26 +712,62 @@ h1, h2, h3, h4 {
     margin-bottom: 24px;
 }
 
-.pill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 24px;
+/* Morph Animation SVG Dividers */
+.morph-divider {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    background: transparent;
+    margin-bottom: -1px;
+    margin-top: -1px;
+    position: relative;
+    z-index: 3;
 }
 
-.tag {
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: var(--radius-pill);
-    background: var(--bg-surface);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-subtle);
+.morph-divider svg {
+    display: block;
+    width: 100%;
+    height: 80px;
 }
 
-/* WHAT WE DO Section */
-.what-we-do-section {
-    background: var(--bg-surface);
+/* Dark High-Production WHAT WE DO Section */
+.what-we-do-dark-section {
+    background-color: #0A0B0E;
+    color: #FFFFFF;
+    padding: 90px 0;
+    position: relative;
+    z-index: 2;
+}
+
+.dark-label {
+    color: #E60026 !important;
+}
+
+.dark-heading {
+    color: #FFFFFF !important;
+}
+
+.dark-subtext, .dark-desc {
+    color: #A0A5B5 !important;
+}
+
+.dark-title-bar h3 {
+    color: #FFFFFF !important;
+}
+
+.dark-divider {
+    background: linear-gradient(90deg, #E60026 0%, rgba(230, 0, 38, 0.15) 100%) !important;
+}
+
+.dark-frame {
+    background: #14161D !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-frame:hover {
+    border-color: #E60026 !important;
+    box-shadow: 0 20px 45px rgba(230, 0, 38, 0.4) !important;
 }
 
 .category-title-bar {
@@ -741,14 +779,12 @@ h1, h2, h3, h4 {
 .category-title-bar h3 {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--text-primary);
     letter-spacing: 0.5px;
     white-space: nowrap;
 }
 
 .category-desc {
     font-size: 0.95rem;
-    color: var(--text-secondary);
     margin-top: 8px;
     max-width: 780px;
 }
@@ -756,7 +792,6 @@ h1, h2, h3, h4 {
 .title-divider {
     flex-grow: 1;
     height: 2px;
-    background: linear-gradient(90deg, var(--primary-red) 0%, var(--border-subtle) 100%);
     border-radius: 2px;
 }
 
@@ -768,18 +803,9 @@ h1, h2, h3, h4 {
 
 .photo-card-frame {
     position: relative;
-    background: #0D0E12;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     transition: var(--transition);
-}
-
-.photo-card-frame:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(230, 0, 38, 0.25);
-    border-color: var(--primary-red);
 }
 
 .photo-img-box {
@@ -797,7 +823,7 @@ h1, h2, h3, h4 {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, transparent 40%, rgba(13, 14, 18, 0.45) 100%),
+    background: radial-gradient(circle at center, transparent 40%, rgba(10, 11, 14, 0.45) 100%),
                 linear-gradient(180deg, transparent 60%, rgba(230, 0, 38, 0.15) 100%);
     pointer-events: none;
     transition: var(--transition);
@@ -958,6 +984,8 @@ h1, h2, h3, h4 {
     border-top: 1px solid var(--border-subtle);
     padding: 48px 0;
     background: var(--bg-surface);
+    position: relative;
+    z-index: 2;
 }
 
 .footer-flex {
@@ -1036,9 +1064,9 @@ h1, h2, h3, h4 {
     .photo-img-box {
         height: 200px;
     }
-    .hero-stage-bg {
-        height: 50%;
-        opacity: 0.12;
+    .hero-stage-fixed-bg {
+        transform: translate(-50%, -35%) scale(1.2);
+        opacity: 0.1;
     }
 }
 
@@ -1120,9 +1148,9 @@ h1, h2, h3, h4 {
         width: 28px;
         height: 28px;
     }
-    .hero-stage-bg {
-        height: 40%;
-        opacity: 0.1;
+    .hero-stage-fixed-bg {
+        transform: translate(-50%, -35%) scale(1.0);
+        opacity: 0.08;
     }
 }
 

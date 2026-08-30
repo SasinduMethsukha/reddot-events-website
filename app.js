@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot - Full Hero Canvas Particle Physics & Scroll Spy Active Highlighting
+   Reddot - Full Hero Canvas Particles, Scroll Spy & Intersection Scroll Reveals
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,8 +8,38 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initMobileNav();
     initScrollSpy();
+    initScrollReveals();
     updateYear();
 });
+
+/* --------------------------------------------------------------------------
+   Seamless IntersectionObserver Scroll Reveal Animations
+   -------------------------------------------------------------------------- */
+function initScrollReveals() {
+    const revealElements = document.querySelectorAll('.reveal-section');
+
+    if (!('IntersectionObserver' in window)) {
+        revealElements.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -60px 0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    revealElements.forEach(el => observer.observe(el));
+}
 
 /* --------------------------------------------------------------------------
    Scroll Spy Active Navbar Highlighting
