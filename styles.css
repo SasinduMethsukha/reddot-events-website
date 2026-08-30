@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Light Antigravity Theme & Red Line Social Icons
+   Reddot Events - Single-Page Light Antigravity Theme & Multi-Device Mobile CSS
    ========================================================================== */
 
 :root {
@@ -85,7 +85,7 @@ button {
 }
 
 .section-container {
-    padding: 120px 0;
+    padding: 110px 0;
 }
 
 .padding-top-zero {
@@ -110,35 +110,15 @@ h1, h2, h3, h4 {
 }
 
 .section-heading {
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-size: clamp(1.8rem, 4.5vw, 3.4rem);
     margin-bottom: 16px;
     letter-spacing: -0.5px;
 }
 
 .section-subtext {
-    font-size: 1.15rem;
+    font-size: clamp(1rem, 2vw, 1.15rem);
     color: var(--text-secondary);
     max-width: 720px;
-}
-
-/* Standalone Page Hero */
-.page-hero-section {
-    padding-top: 170px;
-    padding-bottom: 60px;
-    background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
-}
-
-.page-title {
-    font-size: clamp(2.4rem, 5vw, 4rem);
-    margin-bottom: 12px;
-    color: var(--text-primary);
-}
-
-.page-subtext {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 /* Header & Footer Logo Bounds */
@@ -491,7 +471,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+    font-size: clamp(2.3rem, 5.5vw, 4.8rem);
     letter-spacing: -1px;
     margin-bottom: 24px;
     color: var(--text-primary);
@@ -901,118 +881,163 @@ h1, h2, h3, h4 {
     opacity: 1;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* ==========================================================================
+   COMPREHENSIVE MULTI-DEVICE RESPONSIVENESS (All Screen Sizes)
+   ========================================================================== */
+
+/* Laptops & Small Desktops (<= 1200px) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
     .photo-grid-4 {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
     }
-
-    .capabilities-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .metrics-3-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
-
-    .grid-2-col {
-        grid-template-columns: 1fr;
-    }
-
-    .section-container {
-        padding: 90px 0;
+    .photo-img-box {
+        height: 180px;
     }
 }
 
+/* Tablets Landscape & Medium Screens (<= 992px) */
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    .photo-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    .capabilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .metrics-3-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    .grid-2-col {
+        grid-template-columns: 1fr;
+    }
+    .section-container {
+        padding: 85px 0;
+    }
+    .photo-img-box {
+        height: 200px;
+    }
+}
+
+/* Tablets Portrait & Large Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
     .nav-links, .desktop-only {
         display: none !important;
     }
-
     .menu-toggle-btn {
         display: block !important;
     }
-
     .header-nav {
         top: 12px;
         width: calc(100% - 24px);
         padding: 8px 18px;
     }
-
     .hero-section {
-        padding-top: 140px;
+        padding-top: 130px;
         padding-bottom: 60px;
     }
-
     .hero-cta-row {
         flex-direction: column;
         width: 100%;
         gap: 12px;
     }
-
     .hero-cta-row .button {
         width: 100%;
     }
-
     .metrics-3-grid {
         grid-template-columns: 1fr !important;
         gap: 12px;
     }
-
     .metric-card {
         padding: 18px 12px;
     }
-
     .metric-value {
         font-size: 1.7rem;
     }
-
     .antigravity-card {
         padding: 24px 20px;
     }
-
     .category-title-bar h3 {
         font-size: 1.1rem;
     }
-
     .photo-grid-4 {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
-
     .photo-img-box {
         height: 160px;
     }
-
     .wa-direct-banner {
         flex-direction: column;
     }
-
     .footer-flex {
         flex-direction: column;
         gap: 20px;
         text-align: center;
     }
-
     .footer-right {
         text-align: center !important;
     }
-
     .footer-social-row {
         justify-content: center !important;
     }
 }
 
-@media (max-width: 480px) {
+/* Standard Mobile Screens (<= 576px) e.g. iPhone 14/15, Galaxy S24 */
+@media (max-width: 576px) {
     .container {
         padding: 0 16px;
     }
-
+    .section-container {
+        padding: 70px 0;
+    }
     .photo-grid-4 {
         grid-template-columns: 1fr;
     }
-
     .photo-img-box {
-        height: 200px;
+        height: 210px;
+    }
+    .capabilities-grid {
+        grid-template-columns: 1fr;
+    }
+    .faq-toggle {
+        padding: 18px 20px;
+        font-size: 1rem;
+    }
+    .faq-content {
+        padding: 0 20px;
+    }
+    .faq-card.active .faq-content {
+        padding: 0 20px 20px 20px;
+    }
+    .contact-form {
+        padding: 24px 18px;
+    }
+}
+
+/* Small / Compact Mobile Screens (<= 380px) e.g. iPhone SE / Mini */
+@media (max-width: 380px) {
+    .brand-logo-img {
+        height: 26px;
+        max-height: 26px;
+    }
+    .hero-title {
+        font-size: 2rem;
+    }
+    .button-lg {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+    }
+    .metric-value {
+        font-size: 1.5rem;
+    }
+    .photo-img-box {
+        height: 180px;
     }
 }
