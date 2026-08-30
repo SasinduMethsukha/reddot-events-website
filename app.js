@@ -1,15 +1,47 @@
 /* ==========================================================================
-   Reddot Events - Full Hero Section Red Dot Physics, Custom Estimator & Mobile Drawer
+   Reddot - Full Hero Canvas Particle Physics & Scroll Spy Active Highlighting
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     initFullHeroReddots();
-    initEstimator();
     initFAQAccordion();
     initContactForm();
     initMobileNav();
+    initScrollSpy();
     updateYear();
 });
+
+/* --------------------------------------------------------------------------
+   Scroll Spy Active Navbar Highlighting (Fixes THE REDDOT APPROACH highlight)
+   -------------------------------------------------------------------------- */
+function initScrollSpy() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links .nav-item');
+
+    if (sections.length === 0 || navLinks.length === 0) return;
+
+    window.addEventListener('scroll', () => {
+        let currentSectionId = '';
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 160;
+            const sectionHeight = section.offsetHeight;
+
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href && href === `#${currentSectionId}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
 
 /* --------------------------------------------------------------------------
    Mobile Navigation Drawer Toggle
@@ -26,14 +58,12 @@ function initMobileNav() {
         drawer.classList.toggle('open');
     });
 
-    // Close mobile drawer when clicking a navigation link
     mobileNavItems.forEach(item => {
         item.addEventListener('click', () => {
             drawer.classList.remove('open');
         });
     });
 
-    // Close when tapping outside
     document.addEventListener('click', (e) => {
         if (!drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
             drawer.classList.remove('open');
@@ -42,7 +72,7 @@ function initMobileNav() {
 }
 
 /* --------------------------------------------------------------------------
-   1. Full Hero Section Coverage - Small Red Dots Floating Slowly with Repulsion
+   Full Hero Section Coverage - Small Red Dots Floating Slowly with Repulsion
    -------------------------------------------------------------------------- */
 function initFullHeroReddots() {
     const canvas = document.getElementById('motionGraphicsCanvas');
@@ -189,189 +219,7 @@ function initFullHeroReddots() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Scope Estimator & Custom Options Logic
-   -------------------------------------------------------------------------- */
-function initEstimator() {
-    const typeBtns = document.querySelectorAll('#eventTypeGroup .pill-option');
-    const customEventTypeBox = document.getElementById('customEventTypeBox');
-    const customEventTypeInput = document.getElementById('customEventTypeInput');
-
-    const guestBtns = document.querySelectorAll('#guestCountGroup .pill-option');
-    const customGuestCountBox = document.getElementById('customGuestCountBox');
-    const customGuestCountInput = document.getElementById('customGuestCountInput');
-
-    const moduleBoxes = document.querySelectorAll('#moduleCheckboxes input[type="checkbox"]');
-    
-    const customModuleInput = document.getElementById('customModuleInput');
-    const addCustomModuleBtn = document.getElementById('addCustomModuleBtn');
-    const customItemsTags = document.getElementById('customItemsTags');
-
-    const scopeType = document.getElementById('scopeType');
-    const scopeGuests = document.getElementById('scopeGuests');
-    const scopeModuleList = document.getElementById('scopeModuleList');
-    const sendWhatsAppBtn = document.getElementById('sendWhatsAppEstimate');
-    const sendEmailEstimateBtn = document.getElementById('sendEmailEstimate');
-
-    let currentType = 'Corporate Conference';
-    let currentGuests = '100 - 300 Guests';
-    const customModulesList = [];
-
-    // 1. Event Type Selection & Custom Input
-    typeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            typeBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (btn.classList.contains('custom-trigger')) {
-                customEventTypeBox.classList.remove('hidden');
-                customEventTypeInput.focus();
-                currentType = customEventTypeInput.value.trim() || 'Custom Event Type';
-            } else {
-                customEventTypeBox.classList.add('hidden');
-                currentType = btn.dataset.val;
-            }
-            updateScope();
-        });
-    });
-
-    if (customEventTypeInput) {
-        customEventTypeInput.addEventListener('input', () => {
-            currentType = customEventTypeInput.value.trim() || 'Custom Event Type';
-            updateScope();
-        });
-    }
-
-    // 2. Guest Count Selection & Custom Input
-    guestBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            guestBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (btn.classList.contains('custom-trigger')) {
-                customGuestCountBox.classList.remove('hidden');
-                customGuestCountInput.focus();
-                currentGuests = customGuestCountInput.value.trim() || 'Custom Guest Scale';
-            } else {
-                customGuestCountBox.classList.add('hidden');
-                currentGuests = btn.dataset.val;
-            }
-            updateScope();
-        });
-    });
-
-    if (customGuestCountInput) {
-        customGuestCountInput.addEventListener('input', () => {
-            currentGuests = customGuestCountInput.value.trim() || 'Custom Guest Scale';
-            updateScope();
-        });
-    }
-
-    // 3. Module Selection & Custom Item Addition
-    moduleBoxes.forEach(box => {
-        box.addEventListener('change', updateScope);
-    });
-
-    if (addCustomModuleBtn && customModuleInput) {
-        const addModule = () => {
-            const val = customModuleInput.value.trim();
-            if (val && !customModulesList.includes(val)) {
-                customModulesList.push(val);
-                customModuleInput.value = '';
-                renderCustomTags();
-                updateScope();
-            }
-        };
-
-        addCustomModuleBtn.addEventListener('click', addModule);
-        customModuleInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addModule();
-            }
-        });
-    }
-
-    function renderCustomTags() {
-        if (!customItemsTags) return;
-        customItemsTags.innerHTML = customModulesList
-            .map((item, idx) => `
-                <span class="custom-tag-item">
-                    ${item}
-                    <button type="button" onclick="removeCustomModule(${idx})">&times;</button>
-                </span>
-            `).join('');
-    }
-
-    window.removeCustomModule = (index) => {
-        customModulesList.splice(index, 1);
-        renderCustomTags();
-        updateScope();
-    };
-
-    function updateScope() {
-        if (scopeType) scopeType.textContent = currentType;
-        if (scopeGuests) scopeGuests.textContent = currentGuests;
-
-        const selectedModules = [];
-        moduleBoxes.forEach(box => {
-            if (box.checked) selectedModules.push(box.value);
-        });
-
-        // Append custom user added modules
-        const allModules = [...selectedModules, ...customModulesList];
-
-        if (scopeModuleList) {
-            if (allModules.length === 0) {
-                scopeModuleList.innerHTML = '<li>No modules selected</li>';
-            } else {
-                scopeModuleList.innerHTML = allModules
-                    .map(m => `<li><i data-lucide="check"></i> ${m}</li>`)
-                    .join('');
-            }
-            if (window.lucide) lucide.createIcons();
-        }
-
-        // WhatsApp trigger
-        if (sendWhatsAppBtn) {
-            const text = `Hello Reddot Events! I configured my custom event requirements on your website:
-📌 Event Category: ${currentType}
-👥 Attendance Scale: ${currentGuests}
-🛠️ Required Production Modules: ${allModules.join(', ')}
-
-Please check date availability and send a custom proposal.`;
-
-            sendWhatsAppBtn.onclick = () => {
-                window.open(`https://wa.me/94771234567?text=${encodeURIComponent(text)}`, '_blank');
-            };
-        }
-
-        // Email trigger directly to reddotcreative.events@gmail.com
-        if (sendEmailEstimateBtn) {
-            const emailSubject = `New Event Inquiry: ${currentType} (${currentGuests})`;
-            const emailBody = `Hello Reddot Events Team,
-
-I configured the following event requirements on your website:
-
-- Event Category: ${currentType}
-- Expected Attendance: ${currentGuests}
-- Required Modules & Gear:
-  * ${allModules.join('\n  * ')}
-
-Please get back to me with pricing and availability.
-
-Best regards,`;
-
-            sendEmailEstimateBtn.onclick = () => {
-                window.location.href = `mailto:reddotcreative.events@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-            };
-        }
-    }
-
-    updateScope();
-}
-
-/* --------------------------------------------------------------------------
-   3. FAQ Accordion
+   FAQ Accordion
    -------------------------------------------------------------------------- */
 function initFAQAccordion() {
     const items = document.querySelectorAll('.faq-card');
@@ -380,12 +228,15 @@ function initFAQAccordion() {
         const toggle = item.querySelector('.faq-toggle');
         const content = item.querySelector('.faq-content');
 
+        if (!toggle || !content) return;
+
         toggle.addEventListener('click', () => {
             const isOpen = item.classList.contains('active');
 
             items.forEach(i => {
                 i.classList.remove('active');
-                i.querySelector('.faq-content').style.maxHeight = null;
+                const c = i.querySelector('.faq-content');
+                if (c) c.style.maxHeight = null;
             });
 
             if (!isOpen) {
@@ -397,7 +248,7 @@ function initFAQAccordion() {
 }
 
 /* --------------------------------------------------------------------------
-   4. Direct Email Contact Form Dispatch
+   Direct Email Contact Form Dispatch
    -------------------------------------------------------------------------- */
 function initContactForm() {
     const form = document.getElementById('contactForm');
@@ -415,7 +266,6 @@ function initContactForm() {
         const email = document.getElementById('cEmail')?.value || 'N/A';
         const details = document.getElementById('cDetails')?.value || 'N/A';
 
-        // Direct Email Mailto Dispatch to reddotcreative.events@gmail.com
         const subject = `New Website Event Inquiry - ${name} (${company})`;
         const body = `New Event Inquiry Received via Website:
 
@@ -438,7 +288,7 @@ ${details}
                 method: 'POST',
                 body: formData,
                 headers: { 'Accept': 'application/json' }
-            }).catch(err => console.log('Formspree dispatch fallback executed'));
+            }).catch(err => console.log('Formspree dispatch executed'));
         }
 
         if (toastMsg) toastMsg.textContent = `Thank you, ${name}! Your inquiry is opening in your email app for reddotcreative.events@gmail.com.`;

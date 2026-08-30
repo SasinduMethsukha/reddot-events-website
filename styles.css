@@ -76,8 +76,16 @@ button {
     padding: 0 24px;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .section-container {
     padding: 120px 0;
+}
+
+.padding-top-zero {
+    padding-top: 0 !important;
 }
 
 /* Typography */
@@ -106,7 +114,55 @@ h1, h2, h3, h4 {
 .section-subtext {
     font-size: 1.15rem;
     color: var(--text-secondary);
-    max-width: 650px;
+    max-width: 720px;
+}
+
+/* Standalone Page Hero */
+.page-hero-section {
+    padding-top: 170px;
+    padding-bottom: 60px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
+}
+
+.page-title {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.page-subtext {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Brand Text Logo ("reddot" without "events") */
+.brand-text-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.65rem;
+    color: var(--primary-red);
+    letter-spacing: -0.8px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.brand-text-logo::after {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background-color: var(--primary-red);
+    border-radius: 50%;
+    margin-left: 2px;
+    margin-top: 8px;
+}
+
+.footer-logo-text {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
 }
 
 /* Antigravity Buttons */
@@ -208,13 +264,6 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.brand-logo-img {
-    height: 40px;
-    width: auto;
-    display: block;
-    object-fit: contain;
 }
 
 .nav-links {
@@ -319,7 +368,6 @@ h1, h2, h3, h4 {
     overflow: hidden;
 }
 
-/* Canvas is placed UNDER EVERYTHING in the hero section */
 .motion-canvas-wrapper {
     position: absolute;
     top: 0;
@@ -336,7 +384,6 @@ h1, h2, h3, h4 {
     display: block;
 }
 
-/* Content sits strictly ABOVE the canvas layer */
 .hero-content-box {
     position: relative;
     z-index: 10;
@@ -540,7 +587,7 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   WHAT WE DO Visual Showcase Section & PREMIUM COLOR GRADING ENGINE
+   WHAT WE DO Visual Showcase Section & Category Descriptions
    ========================================================================== */
 .what-we-do-section {
     background: var(--bg-surface);
@@ -558,6 +605,13 @@ h1, h2, h3, h4 {
     color: var(--text-primary);
     letter-spacing: 0.5px;
     white-space: nowrap;
+}
+
+.category-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    max-width: 780px;
 }
 
 .title-divider {
@@ -589,7 +643,6 @@ h1, h2, h3, h4 {
     border-color: var(--primary-red);
 }
 
-/* Premium Color Grading Engine for User Original Photos */
 .photo-img-box {
     position: relative;
     height: 220px;
@@ -601,7 +654,6 @@ h1, h2, h3, h4 {
     transition: var(--transition);
 }
 
-/* Cinematic Dark Vignette & Red Tint Overlay */
 .photo-card-frame::after {
     content: '';
     position: absolute;
@@ -686,221 +738,6 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-}
-
-/* Scope Estimator Tool with Custom Options */
-.estimator-section {
-    background: var(--bg-surface);
-}
-
-.estimator-flex {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 40px;
-}
-
-.control-block {
-    margin-bottom: 28px;
-}
-
-.control-block label, .control-group-block label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    margin-bottom: 14px;
-    color: var(--text-primary);
-}
-
-.pill-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.pill-option {
-    padding: 10px 20px;
-    border-radius: var(--radius-pill);
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.pill-option:hover {
-    border-color: var(--text-primary);
-    color: var(--text-primary);
-}
-
-.pill-option.active {
-    background: var(--primary-red);
-    border-color: var(--primary-red);
-    color: #FFFFFF;
-    font-weight: 600;
-    box-shadow: var(--shadow-red);
-}
-
-.pill-option.custom-trigger {
-    border-style: dashed;
-}
-
-.custom-input-box {
-    margin-top: 12px;
-}
-
-.custom-input-box input {
-    width: 100%;
-    padding: 12px 18px;
-    border-radius: var(--radius-sm);
-    background: #FFFFFF;
-    border: 1px solid var(--primary-red);
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 0.95rem;
-    box-shadow: 0 0 10px rgba(230, 0, 38, 0.1);
-}
-
-.checkbox-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.check-pill input {
-    display: none;
-}
-
-.check-pill span {
-    display: block;
-    padding: 12px 18px;
-    border-radius: var(--radius-sm);
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.check-pill input:checked + span {
-    background: var(--primary-red-light);
-    border-color: var(--primary-red);
-    color: var(--primary-red);
-    font-weight: 600;
-}
-
-.custom-module-add-box {
-    margin-top: 16px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid var(--border-subtle);
-    padding: 18px;
-    border-radius: var(--radius-sm);
-}
-
-.sub-label {
-    font-size: 0.9rem !important;
-    color: var(--text-secondary) !important;
-    margin-bottom: 8px !important;
-}
-
-.input-with-btn {
-    display: flex;
-    gap: 10px;
-}
-
-.input-with-btn input {
-    flex-grow: 1;
-    padding: 10px 16px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--border-subtle);
-    font-family: inherit;
-    font-size: 0.9rem;
-    background: #FFFFFF;
-}
-
-.custom-items-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.custom-tag-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--primary-red-light);
-    border: 1px solid var(--border-red);
-    color: var(--primary-red);
-    padding: 4px 12px;
-    border-radius: var(--radius-pill);
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.custom-tag-item button {
-    color: var(--primary-red);
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.summary-box {
-    background: #FFFFFF;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-card);
-    padding: 32px;
-    box-shadow: var(--shadow-md);
-}
-
-.summary-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.accent-icon {
-    color: var(--primary-red);
-}
-
-.sum-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    margin-bottom: 14px;
-}
-
-.sum-item.vertical {
-    flex-direction: column;
-    gap: 8px;
-}
-
-.sum-list {
-    background: var(--bg-surface);
-    padding: 14px;
-    border-radius: var(--radius-sm);
-    list-style: none;
-}
-
-.sum-list li {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.sum-list li i {
-    color: var(--primary-red);
-    width: 16px;
 }
 
 /* FAQ Accordion */
@@ -1036,11 +873,6 @@ h1, h2, h3, h4 {
     align-items: center;
 }
 
-.footer-logo {
-    height: 36px;
-    margin-bottom: 10px;
-}
-
 .footer-left p, .footer-right p {
     font-size: 0.9rem;
     color: var(--text-secondary);
@@ -1088,7 +920,7 @@ h1, h2, h3, h4 {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 
-    .grid-2-col, .estimator-flex {
+    .grid-2-col {
         grid-template-columns: 1fr;
     }
 
@@ -1166,10 +998,6 @@ h1, h2, h3, h4 {
         height: 160px;
     }
 
-    .checkbox-options {
-        grid-template-columns: 1fr;
-    }
-
     .partner-box {
         flex-direction: column;
         align-items: flex-start;
@@ -1197,22 +1025,5 @@ h1, h2, h3, h4 {
 
     .photo-img-box {
         height: 200px;
-    }
-
-    .pill-group {
-        flex-direction: column;
-    }
-
-    .pill-option {
-        width: 100%;
-        text-align: center;
-    }
-
-    .input-with-btn {
-        flex-direction: column;
-    }
-
-    .input-with-btn button {
-        width: 100%;
     }
 }
