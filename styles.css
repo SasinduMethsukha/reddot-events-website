@@ -386,10 +386,11 @@ h1, h2, h3, h4 {
 }
 
 .hero-description {
-    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--text-secondary);
-    max-width: 740px;
+    max-width: 820px;
     margin: 0 auto 40px auto;
+    line-height: 1.7;
 }
 
 .hero-cta-row {
@@ -400,13 +401,18 @@ h1, h2, h3, h4 {
     margin-bottom: 72px;
 }
 
-/* Floating Metrics */
+/* Floating Metrics (3-Card Layout) */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     max-width: 980px;
     margin: 0 auto;
+}
+
+.metrics-3-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    max-width: 840px;
 }
 
 .metric-card {
@@ -591,8 +597,6 @@ h1, h2, h3, h4 {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    
-    /* High-contrast, vivid saturation, deep shadow tones & warmth balance */
     filter: contrast(1.22) brightness(1.04) saturate(1.35) sepia(0.08) hue-rotate(-4deg);
     transition: var(--transition);
 }
@@ -1076,8 +1080,12 @@ h1, h2, h3, h4 {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .capabilities-grid, .metrics-grid {
+    .capabilities-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .metrics-3-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 
     .grid-2-col, .estimator-flex {
@@ -1119,8 +1127,8 @@ h1, h2, h3, h4 {
         width: 100%;
     }
 
-    .metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .metrics-3-grid {
+        grid-template-columns: 1fr !important;
         gap: 12px;
     }
 
@@ -1189,10 +1197,6 @@ h1, h2, h3, h4 {
 
     .photo-img-box {
         height: 200px;
-    }
-
-    .metrics-grid {
-        grid-template-columns: 1fr;
     }
 
     .pill-group {
