@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Single-Page Light Antigravity Theme & Direct Contact Styling
+   Reddot Events - Light Antigravity Theme & Hero Stage Blueprint Background
    ========================================================================== */
 
 :root {
@@ -138,19 +138,19 @@ h1, h2, h3, h4 {
 }
 
 .footer-logo {
-    height: 44px;
-    max-height: 48px;
+    height: 64px;
+    max-height: 68px;
     width: auto;
-    max-width: 160px;
+    max-width: 200px;
     display: block;
     object-fit: contain;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .footer-tagline {
     font-family: var(--font-heading);
     font-style: italic;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--primary-red);
     margin-top: 4px;
@@ -525,7 +525,7 @@ h1, h2, h3, h4 {
     color: var(--primary-red);
 }
 
-/* Scoped Exclusively to Hero / Home Section */
+/* Hero / Home Section with Technical Red Stage Wireframe Graphic */
 .hero-section {
     position: relative;
     min-height: 100vh;
@@ -536,6 +536,23 @@ h1, h2, h3, h4 {
     padding-bottom: 100px;
     background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
     overflow: hidden;
+}
+
+.hero-stage-bg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1050px, 92%);
+    height: 65%;
+    background-image: url('assets/hero-stage-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: contain;
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .motion-canvas-wrapper {
@@ -1019,6 +1036,10 @@ h1, h2, h3, h4 {
     .photo-img-box {
         height: 200px;
     }
+    .hero-stage-bg {
+        height: 50%;
+        opacity: 0.12;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1099,6 +1120,10 @@ h1, h2, h3, h4 {
         width: 28px;
         height: 28px;
     }
+    .hero-stage-bg {
+        height: 40%;
+        opacity: 0.1;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1143,6 +1168,10 @@ h1, h2, h3, h4 {
     .brand-logo-img {
         height: 32px;
         max-height: 34px;
+    }
+    .footer-logo {
+        height: 52px;
+        max-height: 56px;
     }
     .hero-title {
         font-size: 2rem;

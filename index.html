@@ -6,6 +6,10 @@
     <title>Reddot Events — Turnkey Event & Production Platform</title>
     <meta name="description" content="Reddot brings event management, logistics, creative direction, and technical production together under one team, creating a smoother path from concept to execution.">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-nav.png">
+    <link rel="apple-touch-icon" href="assets/logo-nav.png">
+
     <!-- Google Sans Flex & Syne Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,11 +73,14 @@
         </div>
     </header>
 
-    <!-- Hero Section with Full Home Section Canvas Particles -->
+    <!-- Hero Section with Full Home Section Canvas Particles & Stage Wireframe Graphic -->
     <section id="home" class="hero-section">
         <div class="motion-canvas-wrapper">
             <canvas id="motionGraphicsCanvas"></canvas>
         </div>
+
+        <!-- Technical Red Stage Blueprint Background Layer -->
+        <div class="hero-stage-bg"></div>
 
         <div class="container hero-content-box">
             <div class="pill-badge">
@@ -358,33 +365,47 @@
             <h2 class="section-heading">Frequently Asked Questions</h2>
 
             <div class="faq-list margin-top-lg">
+                <!-- FAQ 1 -->
                 <div class="faq-card">
                     <button class="faq-toggle">
-                        <span>Do you operate outside of Colombo?</span>
+                        <span>What types of events does Reddot handle?</span>
                         <i data-lucide="chevron-down"></i>
                     </button>
                     <div class="faq-content">
-                        <p>Yes! Reddot operates island-wide across Sri Lanka, including Kandy, Galle, Bentota, Negombo, Hambantota, and Jaffna.</p>
+                        <p>Reddot manages corporate conferences, brand activations, product launches, live concerts, gala dinners, weddings, and high-profile public events island-wide.</p>
                     </div>
                 </div>
 
+                <!-- FAQ 2 -->
                 <div class="faq-card">
                     <button class="faq-toggle">
-                        <span>Can we hire Reddot specifically for Sound or LED screen rental?</span>
+                        <span>Do you provide both event management and technical production?</span>
                         <i data-lucide="chevron-down"></i>
                     </button>
                     <div class="faq-content">
-                        <p>Absolutely. We provide standalone audio production, LED display screens, and stage lighting rigs alongside our full event management services.</p>
+                        <p>Yes! We bring turnkey event management, spatial planning, and logistics together with in-house technical production (line array sound, LED walls, lighting, and power distribution) under one team.</p>
                     </div>
                 </div>
 
+                <!-- FAQ 3 -->
                 <div class="faq-card">
                     <button class="faq-toggle">
-                        <span>What is your technical backup protocol?</span>
+                        <span>Does Reddot provide live streaming services?</span>
                         <i data-lucide="chevron-down"></i>
                     </button>
                     <div class="faq-content">
-                        <p>We deploy redundant audio consoles, spare wireless microphone channels, dual video playback laptops, and generator power tie-ins for zero downtime.</p>
+                        <p>Absolutely. We offer multi-camera 4K live broadcasting, SDI video switching, real-time custom graphics overlays, and hybrid remote event streaming.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-card">
+                    <button class="faq-toggle">
+                        <span>Do you provide drone coverage for events?</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes, we provide licensed aerial drone cinematography along with high-definition event photography and cinematic 4K recap videos.</p>
                     </div>
                 </div>
             </div>
@@ -498,12 +519,12 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
                 </div>
-                <p>&copy; <span id="fYear">2026</span> Reddot Events (Pvt) Ltd. All rights reserved.</p>
+                <p>&copy; <span id="fYear">2026</span> Reddot Events. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Brand Button (Configured to Sasindu M. +94 75 287 8875) -->
+    <!-- Floating WhatsApp Brand Button (Sasindu M. +94 75 287 8875) -->
     <a href="https://wa.me/94752878875?text=Hello%20Reddot!%20I%20want%20to%20plan%20an%20event." target="_blank" class="floating-wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp (Sasindu M.)">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"/>
