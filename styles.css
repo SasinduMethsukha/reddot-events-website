@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot Events - Single-Page Light Antigravity Theme & Elevated WhatsApp Floating Button
+   Reddot Events - Light Antigravity Theme, Red Dots Canvas & Highlighted Call CTA
    ========================================================================== */
 
 :root {
@@ -125,26 +125,98 @@ h1, h2, h3, h4 {
 .logo-wrapper {
     display: inline-flex;
     align-items: center;
-    max-height: 40px;
+    max-height: 44px;
 }
 
 .brand-logo-img {
-    height: 32px;
-    max-height: 32px;
+    height: 38px;
+    max-height: 42px;
     width: auto;
-    max-width: 140px;
+    max-width: 150px;
     display: block;
     object-fit: contain;
 }
 
 .footer-logo {
-    height: 34px;
-    max-height: 34px;
+    height: 44px;
+    max-height: 48px;
     width: auto;
-    max-width: 140px;
+    max-width: 160px;
     display: block;
     object-fit: contain;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+}
+
+.footer-tagline {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-red);
+    margin-top: 4px;
+}
+
+/* Highlighted Phone Numbers CTA Card */
+.phone-highlight-card {
+    background: linear-gradient(135deg, rgba(230, 0, 38, 0.08) 0%, rgba(230, 0, 38, 0.03) 100%);
+    border: 1px solid var(--border-red);
+    border-radius: var(--radius-card);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 16px rgba(230, 0, 38, 0.06);
+    transition: var(--transition);
+}
+
+.phone-highlight-card:hover {
+    border-color: var(--primary-red);
+    box-shadow: 0 8px 24px rgba(230, 0, 38, 0.12);
+}
+
+.phone-card-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--primary-red);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-red);
+}
+
+.phone-card-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--primary-red);
+    text-transform: uppercase;
+}
+
+.phone-numbers-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.highlight-phone-number {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+.highlight-phone-number:hover {
+    color: var(--primary-red);
+}
+
+.phone-divider {
+    color: var(--text-muted);
+    font-weight: 600;
 }
 
 /* Red Line Social Icons */
@@ -216,7 +288,7 @@ h1, h2, h3, h4 {
     justify-content: center;
 }
 
-/* Elevated Floating WhatsApp Brand Button (Positioned Above Netlify Badge) */
+/* Elevated Floating WhatsApp Brand Button */
 .floating-wa-btn {
     position: fixed;
     bottom: 85px;
@@ -1002,6 +1074,13 @@ h1, h2, h3, h4 {
     .wa-direct-banner {
         flex-direction: column;
     }
+    .phone-highlight-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .phone-numbers-row {
+        justify-content: center;
+    }
     .footer-flex {
         flex-direction: column;
         gap: 20px;
@@ -1058,8 +1137,8 @@ h1, h2, h3, h4 {
 
 @media (max-width: 380px) {
     .brand-logo-img {
-        height: 26px;
-        max-height: 26px;
+        height: 32px;
+        max-height: 34px;
     }
     .hero-title {
         font-size: 2rem;
@@ -1073,5 +1152,8 @@ h1, h2, h3, h4 {
     }
     .photo-img-box {
         height: 180px;
+    }
+    .highlight-phone-number {
+        font-size: 1rem;
     }
 }

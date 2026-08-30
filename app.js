@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Reddot - Full Hero Canvas Icon Particles & Scroll Spy Active Highlighting
+   Reddot - Full Hero Canvas Particle Physics & Scroll Spy Active Highlighting
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -72,7 +72,7 @@ function initMobileNav() {
 }
 
 /* --------------------------------------------------------------------------
-   Full Hero Coverage — 48 Reddot Transparent PNG Icons Floating with Physics
+   Full Hero Section Coverage - Floating Red Dots Canvas Animation
    -------------------------------------------------------------------------- */
 function initFullHeroReddots() {
     const canvas = document.getElementById('motionGraphicsCanvas');
@@ -85,17 +85,6 @@ function initFullHeroReddots() {
     let width = (canvas.width = heroSection.clientWidth);
     let height = (canvas.height = heroSection.clientHeight);
 
-    // Pre-load 48 Reddot transparent PNG icons from assets folder
-    const iconImages = [];
-    const totalIcons = 48;
-
-    for (let i = 1; i <= totalIcons; i++) {
-        const numStr = i < 10 ? `0${i}` : `${i}`;
-        const img = new Image();
-        img.src = `assets/Reddot_48_Transparent_PNG_Icons/reddot_icon_${numStr}.png`;
-        iconImages.push(img);
-    }
-
     window.addEventListener('resize', () => {
         width = canvas.width = heroSection.clientWidth;
         height = canvas.height = heroSection.clientHeight;
@@ -103,8 +92,9 @@ function initFullHeroReddots() {
     });
 
     const reddots = [];
-    const repulsionRadius = 140;
-    const forceFactor = 1.5;
+    const dotCount = Math.min(Math.floor((width * height) / 1600), 700);
+    const repulsionRadius = 130;
+    const forceFactor = 1.4;
     const returnSpeed = 0.05;
 
     let mouseX = -1000;
@@ -131,23 +121,20 @@ function initFullHeroReddots() {
 
     function initDotsAcrossHero() {
         reddots.length = 0;
-        const iconCount = Math.min(Math.floor((width * height) / 9000), 110);
 
-        for (let i = 0; i < iconCount; i++) {
+        for (let i = 0; i < dotCount; i++) {
             const rx = Math.random() * width;
             const ry = Math.random() * height;
-            const randomImg = iconImages[i % iconImages.length];
 
             reddots.push({
                 baseX: rx,
                 baseY: ry,
                 x: rx,
                 y: ry,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                size: Math.random() * 10 + 14, // Small red dot icon size (14px - 24px)
-                alpha: Math.random() * 0.35 + 0.5,
-                img: randomImg,
+                vx: (Math.random() - 0.5) * 0.25,
+                vy: (Math.random() - 0.5) * 0.25,
+                size: Math.random() * 1.2 + 1.2,
+                alpha: Math.random() * 0.4 + 0.3,
                 wanderTimer: Math.random() * 100
             });
         }
@@ -158,20 +145,19 @@ function initFullHeroReddots() {
     function animate() {
         ctx.clearRect(0, 0, width, height);
 
-        // Constellation connection lines when mouse hovers nearby
-        for (let i = 0; i < reddots.length; i += 4) {
+        for (let i = 0; i < reddots.length; i += 6) {
             const dotA = reddots[i];
             const dx = mouseX - dotA.x;
             const dy = mouseY - dotA.y;
             const dist = Math.hypot(dx, dy);
 
             if (dist < repulsionRadius * 1.3) {
-                for (let j = i + 1; j < reddots.length; j += 4) {
+                for (let j = i + 1; j < reddots.length; j += 6) {
                     const dotB = reddots[j];
                     const dAB = Math.hypot(dotA.x - dotB.x, dotA.y - dotB.y);
 
-                    if (dAB < 48) {
-                        ctx.strokeStyle = `rgba(230, 0, 38, ${0.18 * (1 - dist / (repulsionRadius * 1.3))})`;
+                    if (dAB < 36) {
+                        ctx.strokeStyle = `rgba(230, 0, 38, ${0.14 * (1 - dist / (repulsionRadius * 1.3))})`;
                         ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(dotA.x, dotA.y);
@@ -182,7 +168,6 @@ function initFullHeroReddots() {
             }
         }
 
-        // Move and render transparent PNG icons
         reddots.forEach(dot => {
             dot.wanderTimer += 0.008;
             dot.vx += Math.sin(dot.wanderTimer) * 0.015;
@@ -195,10 +180,10 @@ function initFullHeroReddots() {
             dot.baseX += dot.vx;
             dot.baseY += dot.vy;
 
-            if (dot.baseX < -30) dot.baseX = width + 30;
-            if (dot.baseX > width + 30) dot.baseX = -30;
-            if (dot.baseY < -30) dot.baseY = height + 30;
-            if (dot.baseY > height + 30) dot.baseY = -30;
+            if (dot.baseX < -20) dot.baseX = width + 20;
+            if (dot.baseX > width + 20) dot.baseX = -20;
+            if (dot.baseY < -20) dot.baseY = height + 20;
+            if (dot.baseY > height + 20) dot.baseY = -20;
 
             const dx = dot.x - mouseX;
             const dy = dot.y - mouseY;
@@ -207,7 +192,7 @@ function initFullHeroReddots() {
             if (dist < repulsionRadius && dist > 0) {
                 const angle = Math.atan2(dy, dx);
                 const force = (repulsionRadius - dist) / repulsionRadius;
-                const pushDist = force * force * 60 * forceFactor;
+                const pushDist = force * force * 55 * forceFactor;
 
                 const targetX = dot.baseX + Math.cos(angle) * pushDist;
                 const targetY = dot.baseY + Math.sin(angle) * pushDist;
@@ -219,24 +204,11 @@ function initFullHeroReddots() {
                 dot.y += (dot.baseY - dot.y) * returnSpeed;
             }
 
-            // Draw preloaded PNG icon
-            if (dot.img && dot.img.complete && dot.img.naturalWidth !== 0) {
-                ctx.globalAlpha = dot.alpha;
-                ctx.drawImage(
-                    dot.img,
-                    dot.x - dot.size / 2,
-                    dot.y - dot.size / 2,
-                    dot.size,
-                    dot.size
-                );
-            } else {
-                // Temporary red circle fallback until PNG loads
-                ctx.fillStyle = '#E60026';
-                ctx.globalAlpha = dot.alpha;
-                ctx.beginPath();
-                ctx.arc(dot.x, dot.y, dot.size / 4, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            ctx.fillStyle = '#E60026';
+            ctx.globalAlpha = dot.alpha;
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+            ctx.fill();
         });
 
         ctx.globalAlpha = 1.0;
