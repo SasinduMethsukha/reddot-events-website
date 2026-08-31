@@ -20,6 +20,11 @@
 
     <!-- Three.js CDN for 3D Red Wireframe Mesh -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP, ScrollTrigger & Lenis Smooth Scroll CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
@@ -76,7 +81,7 @@
         </div>
     </header>
 
-    <!-- Hero Section Scoped with Stage Wireframe Graphic Background & Three.js 3D Red Mesh -->
+    <!-- Hero Section Scoped with Stage Wireframe Graphic Background & Three.js 3D Red Mesh (UNTOUCHED) -->
     <section id="home" class="hero-section">
         <!-- Stage Wireframe Graphic Background (Scoped exclusively within Hero) -->
         <div class="hero-stage-contained-bg"></div>
@@ -126,47 +131,62 @@
         </div>
     </section>
 
+    <!-- Vertical Red Scroll Connection Progress Line -->
+    <div class="vertical-scroll-progress-track" aria-hidden="true">
+        <div class="vertical-scroll-progress-bar" id="scrollProgressBar"></div>
+    </div>
+
     <!-- Brand Story & Connecting Dots Section -->
     <section id="about" class="section-container about-section">
         <div class="container">
             <div class="section-label reveal-card">THE REDDOT APPROACH</div>
-            <h2 class="section-heading reveal-card">Connecting Creative Strategy & Heavy Technical Execution</h2>
+            <h2 class="section-heading masked-heading" id="aboutHeading">Connecting Creative Strategy & Heavy Technical Execution</h2>
             <p class="section-subtext reveal-card">
                 Reddot brings event management, logistics, creative direction, and technical production together under one team, creating a smoother path from concept to execution.
             </p>
 
-            <div class="grid-3-col margin-top-xl">
-                <!-- Card 1: ONE TEAM -->
-                <div class="antigravity-card reveal-card">
-                    <div class="card-icon-pill">
-                        <i data-lucide="users"></i>
-                    </div>
-                    <h3>ONE TEAM</h3>
-                    <p>Creative, planning and production working together.</p>
-                </div>
+            <!-- Connecting Dots Animated Line & Cards Grid -->
+            <div class="connecting-dots-wrapper margin-top-xl" id="dotsWrapper">
+                <svg class="connecting-line-svg" viewBox="0 0 1000 40" fill="none" preserveAspectRatio="none">
+                    <path class="connecting-line-path" id="connectingLinePath" d="M 160 20 L 500 20 L 840 20" stroke="#E60026" stroke-width="2" stroke-dasharray="1000" stroke-dashoffset="1000" />
+                </svg>
 
-                <!-- Card 2: ONE FLOW -->
-                <div class="antigravity-card reveal-card">
-                    <div class="card-icon-pill">
-                        <i data-lucide="workflow"></i>
+                <div class="grid-3-col">
+                    <!-- Card 1: ONE TEAM -->
+                    <div class="antigravity-card reveal-card red-border-draw-wrapper" id="cardOneTeam">
+                        <div class="card-dot-marker" id="dotMarker1"></div>
+                        <div class="card-icon-pill">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>ONE TEAM</h3>
+                        <p>Creative, planning and production working together.</p>
                     </div>
-                    <h3>ONE FLOW</h3>
-                    <p>From concept to execution without unnecessary handovers.</p>
-                </div>
 
-                <!-- Card 3: ONE STANDARD -->
-                <div class="antigravity-card reveal-card">
-                    <div class="card-icon-pill">
-                        <i data-lucide="award"></i>
+                    <!-- Card 2: ONE FLOW -->
+                    <div class="antigravity-card reveal-card red-border-draw-wrapper" id="cardOneFlow">
+                        <div class="card-dot-marker" id="dotMarker2"></div>
+                        <div class="card-icon-pill">
+                            <i data-lucide="workflow"></i>
+                        </div>
+                        <h3>ONE FLOW</h3>
+                        <p>From concept to execution without unnecessary handovers.</p>
                     </div>
-                    <h3>ONE STANDARD</h3>
-                    <p>Every detail managed with the same focus on quality and execution</p>
+
+                    <!-- Card 3: ONE STANDARD -->
+                    <div class="antigravity-card reveal-card red-border-draw-wrapper" id="cardOneStandard">
+                        <div class="card-dot-marker" id="dotMarker3"></div>
+                        <div class="card-icon-pill">
+                            <i data-lucide="award"></i>
+                        </div>
+                        <h3>ONE STANDARD</h3>
+                        <p>Every detail managed with the same focus on quality and execution</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- WHAT WE DO Visual Showcase Section (Seamless Dark High-Production Theme) -->
+    <!-- WHAT WE DO Visual Showcase Section (Seamless Dark Theme with Sticky Desktop Pinning) -->
     <section id="what-we-do" class="what-we-do-dark-section">
         <!-- Integrated Seamless Top Morph Wave Curve -->
         <div class="dark-curve-wrapper dark-curve-top">
@@ -175,126 +195,127 @@
             </svg>
         </div>
 
-        <div class="container section-container-inner">
+        <div class="container section-container-inner" id="whatWeDoPinnedContainer">
             <div class="section-label dark-label reveal-card">PRODUCTION & CAPABILITIES SHOWCASE</div>
-            <h2 class="section-heading dark-heading reveal-card">WHAT WE DO</h2>
+            <h2 class="section-heading dark-heading masked-heading" id="whatWeDoHeading">WHAT WE DO</h2>
             <p class="section-subtext dark-subtext reveal-card">Comprehensive end-to-end event execution across 5 core specializations.</p>
 
-            <!-- 1. END-TO-END EVENT EXECUTION -->
-            <div class="what-we-do-category margin-top-xl">
-                <div class="category-title-bar dark-title-bar reveal-card">
-                    <h3>END-TO-END EVENT EXECUTION</h3>
-                    <div class="title-divider dark-divider"></div>
+            <div class="sticky-what-we-do-stage" id="stickyStage">
+                <!-- 1. END-TO-END EVENT EXECUTION -->
+                <div class="what-we-do-category capability-story-slide margin-top-xl" id="capSlide1">
+                    <div class="category-title-bar dark-title-bar">
+                        <h3>END-TO-END EVENT EXECUTION</h3>
+                        <div class="title-divider dark-divider"></div>
+                    </div>
+                    <p class="category-desc dark-desc">Complete turnkey management, spatial planning, stage coordination, and end-to-end execution for major corporate and public events.</p>
+                    <div class="photo-grid-4 margin-top-md">
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_new_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_new_2.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_new_3.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_new_4.jpg');"></div>
+                        </div>
+                    </div>
                 </div>
-                <p class="category-desc dark-desc reveal-card">Complete turnkey management, spatial planning, stage coordination, and end-to-end execution for major corporate and public events.</p>
-                <div class="photo-grid-4 margin-top-md">
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_new_1.jpg');"></div>
+
+                <!-- 2. EVENT PRODUCTION -->
+                <div class="what-we-do-category capability-story-slide margin-top-2xl" id="capSlide2">
+                    <div class="category-title-bar dark-title-bar">
+                        <h3>EVENT PRODUCTION</h3>
+                        <div class="title-divider dark-divider"></div>
                     </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_new_2.jpg');"></div>
+                    <p class="category-desc dark-desc">Heavy audio-visual staging, box trussing, line array sound, high-pitch LED screens, and generator power distribution.</p>
+                    <div class="photo-grid-4 margin-top-md">
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/prod_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/digital_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_1.jpg');"></div>
+                        </div>
                     </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_new_3.jpg');"></div>
+                </div>
+
+                <!-- 3. LIVE STREAMING -->
+                <div class="what-we-do-category capability-story-slide margin-top-2xl" id="capSlide3">
+                    <div class="category-title-bar dark-title-bar">
+                        <h3>LIVE STREAMING</h3>
+                        <div class="title-divider dark-divider"></div>
                     </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_new_4.jpg');"></div>
+                    <p class="category-desc dark-desc">Multi-camera 4K live broadcast, SDI video switching, real-time graphics overlays, and hybrid remote event streaming.</p>
+                    <div class="photo-grid-4 margin-top-md">
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_2.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_3.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_4.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. VIDEO & PHOTOGRAPHY -->
+                <div class="what-we-do-category capability-story-slide margin-top-2xl" id="capSlide4">
+                    <div class="category-title-bar dark-title-bar">
+                        <h3>VIDEO & PHOTOGRAPHY</h3>
+                        <div class="title-divider dark-divider"></div>
+                    </div>
+                    <p class="category-desc dark-desc">High-definition event photo coverage, cinematic 4K highlight recap videos, and aerial drone cinematography.</p>
+                    <div class="photo-grid-4 margin-top-md">
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/media_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/digital_1.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. CREATIVE & DIGITAL -->
+                <div class="what-we-do-category capability-story-slide margin-top-2xl" id="capSlide5">
+                    <div class="category-title-bar dark-title-bar">
+                        <h3>CREATIVE & DIGITAL</h3>
+                        <div class="title-divider dark-divider"></div>
+                    </div>
+                    <p class="category-desc dark-desc">3D stage render designs, motion graphics visuals, digital branding assets, and custom lighting pre-visualization.</p>
+                    <div class="photo-grid-4 margin-top-md">
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/digital_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/prod_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/exec_1.jpg');"></div>
+                        </div>
+                        <div class="photo-card-frame dark-frame parallax-img-container">
+                            <div class="photo-img-box parallax-img" style="background-image: url('assets/stream_1.jpg');"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 2. EVENT PRODUCTION -->
-            <div class="what-we-do-category margin-top-2xl">
-                <div class="category-title-bar dark-title-bar reveal-card">
-                    <h3>EVENT PRODUCTION</h3>
-                    <div class="title-divider dark-divider"></div>
-                </div>
-                <p class="category-desc dark-desc reveal-card">Heavy audio-visual staging, box trussing, line array sound, high-pitch LED screens, and generator power distribution.</p>
-                <div class="photo-grid-4 margin-top-md">
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/prod_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. LIVE STREAMING -->
-            <div class="what-we-do-category margin-top-2xl">
-                <div class="category-title-bar dark-title-bar reveal-card">
-                    <h3>LIVE STREAMING</h3>
-                    <div class="title-divider dark-divider"></div>
-                </div>
-                <p class="category-desc dark-desc reveal-card">Multi-camera 4K live broadcast, SDI video switching, real-time graphics overlays, and hybrid remote event streaming.</p>
-                <div class="photo-grid-4 margin-top-md">
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_2.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_3.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_4.jpg');"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. VIDEO & PHOTOGRAPHY -->
-            <div class="what-we-do-category margin-top-2xl">
-                <div class="category-title-bar dark-title-bar reveal-card">
-                    <h3>VIDEO & PHOTOGRAPHY</h3>
-                    <div class="title-divider dark-divider"></div>
-                </div>
-                <p class="category-desc dark-desc reveal-card">High-definition event photo coverage, cinematic 4K highlight recap videos, and aerial drone cinematography.</p>
-                <div class="photo-grid-4 margin-top-md">
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/media_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. CREATIVE & DIGITAL -->
-            <div class="what-we-do-category margin-top-2xl">
-                <div class="category-title-bar dark-title-bar reveal-card">
-                    <h3>CREATIVE & DIGITAL</h3>
-                    <div class="title-divider dark-divider"></div>
-                </div>
-                <p class="category-desc dark-desc reveal-card">3D stage render designs, motion graphics visuals, digital branding assets, and custom lighting pre-visualization.</p>
-                <div class="photo-grid-4 margin-top-md">
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/digital_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/prod_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/exec_1.jpg');"></div>
-                    </div>
-                    <div class="photo-card-frame dark-frame reveal-card">
-                        <div class="photo-img-box" style="background-image: url('assets/stream_1.jpg');"></div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Integrated Seamless Bottom Morph Wave Curve -->
@@ -309,65 +330,71 @@
     <section id="services" class="section-container services-section">
         <div class="container">
             <div class="section-label reveal-card">OUR SERVICES</div>
-            <h2 class="section-heading reveal-card">Full Spectrum Production Capabilities</h2>
+            <h2 class="section-heading masked-heading" id="servicesHeading">Full Spectrum Production Capabilities</h2>
             <p class="section-subtext reveal-card">From planning and coordination to technical production and content, Reddot brings together the capabilities needed to deliver seamless events from start to finish.</p>
 
-            <div class="capabilities-grid margin-top-xl">
-                <!-- Service 1 -->
-                <div class="capability-card reveal-card">
+            <div class="capabilities-grid margin-top-xl" id="servicesGrid">
+                <!-- Service 1 (Odd: x -40) -->
+                <div class="capability-card service-anim-item service-odd-item red-border-draw-wrapper">
+                    <span class="bg-service-num">01</span>
                     <div class="cap-header">
                         <i data-lucide="clipboard-check" class="cap-icon"></i>
-                        <span class="cap-num">01</span>
+                        <span class="cap-num service-num-highlight">01</span>
                     </div>
                     <h3>Event Planning & Management</h3>
                     <p>From concept development and theme curation to budgeting, spatial planning, and permits, we build the foundation for a successful event.</p>
                 </div>
 
-                <!-- Service 2 -->
-                <div class="capability-card reveal-card">
+                <!-- Service 2 (Even: x 40) -->
+                <div class="capability-card service-anim-item service-even-item red-border-draw-wrapper">
+                    <span class="bg-service-num">02</span>
                     <div class="cap-header">
                         <i data-lucide="sliders" class="cap-icon"></i>
-                        <span class="cap-num">02</span>
+                        <span class="cap-num service-num-highlight">02</span>
                     </div>
                     <h3>Event Coordination & Execution</h3>
                     <p>We manage every detail on event day, from run-downs and stage management to artist coordination and real-time floor direction.</p>
                 </div>
 
-                <!-- Service 3 -->
-                <div class="capability-card reveal-card">
+                <!-- Service 3 (Odd: x -40) -->
+                <div class="capability-card service-anim-item service-odd-item red-border-draw-wrapper">
+                    <span class="bg-service-num">03</span>
                     <div class="cap-header">
                         <i data-lucide="truck" class="cap-icon"></i>
-                        <span class="cap-num">03</span>
+                        <span class="cap-num service-num-highlight">03</span>
                     </div>
                     <h3>Vendor & Logistics Management</h3>
                     <p>We coordinate vendors, catering, venues, transportation, VIP protocols, and backstage logistics to keep every moving part on track.</p>
                 </div>
 
-                <!-- Service 4 -->
-                <div class="capability-card reveal-card">
+                <!-- Service 4 (Even: x 40) -->
+                <div class="capability-card service-anim-item service-even-item red-border-draw-wrapper">
+                    <span class="bg-service-num">04</span>
                     <div class="cap-header">
                         <i data-lucide="volume-2" class="cap-icon"></i>
-                        <span class="cap-num">04</span>
+                        <span class="cap-num service-num-highlight">04</span>
                     </div>
                     <h3>Audio Production</h3>
                     <p>Line array speakers, subwoofer systems, digital mixing consoles (Midas/Yamaha), RF wireless microphones.</p>
                 </div>
 
-                <!-- Service 5 -->
-                <div class="capability-card reveal-card">
+                <!-- Service 5 (Odd: x -40) -->
+                <div class="capability-card service-anim-item service-odd-item red-border-draw-wrapper">
+                    <span class="bg-service-num">05</span>
                     <div class="cap-header">
                         <i data-lucide="tv" class="cap-icon"></i>
-                        <span class="cap-num">05</span>
+                        <span class="cap-num service-num-highlight">05</span>
                     </div>
                     <h3>Visual Production & LED Walls</h3>
                     <p>P2 / P3 high-resolution indoor & outdoor LED display screens, moving head beams, wash lights & motion graphics.</p>
                 </div>
 
-                <!-- Service 6 -->
-                <div class="capability-card reveal-card">
+                <!-- Service 6 (Even: x 40) -->
+                <div class="capability-card service-anim-item service-even-item red-border-draw-wrapper">
+                    <span class="bg-service-num">06</span>
                     <div class="cap-header">
                         <i data-lucide="camera" class="cap-icon"></i>
-                        <span class="cap-num">06</span>
+                        <span class="cap-num service-num-highlight">06</span>
                     </div>
                     <h3>Video Production & Photography</h3>
                     <p>4K multi-camera live broadcast, aerial drone cinematography, highlight recap aftermovies & photo coverage.</p>
@@ -376,18 +403,18 @@
         </div>
     </section>
 
-    <!-- FAQ Accordion -->
-    <section class="section-container faq-section">
+    <!-- FAQ Accordion Section -->
+    <section class="section-container faq-section" id="faqSection">
         <div class="container">
             <div class="section-label reveal-card">FAQ</div>
-            <h2 class="section-heading reveal-card">Frequently Asked Questions</h2>
+            <h2 class="section-heading masked-heading" id="faqHeading">Frequently Asked Questions</h2>
 
-            <div class="faq-list margin-top-lg">
+            <div class="faq-list margin-top-lg" id="faqList">
                 <!-- FAQ 1 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>What types of events does Reddot handle?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">What types of events does Reddot handle?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>Reddot manages corporate conferences, brand activations, product launches, live concerts, gala dinners, weddings, and high-profile public events island-wide.</p>
@@ -395,10 +422,10 @@
                 </div>
 
                 <!-- FAQ 2 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>Do you provide both event management and technical production?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">Do you provide both event management and technical production?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>Yes! We bring turnkey event management, spatial planning, and logistics together with in-house technical production (line array sound, LED walls, lighting, and power distribution) under one team.</p>
@@ -406,10 +433,10 @@
                 </div>
 
                 <!-- FAQ 3 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>Does Reddot provide live streaming services?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">Does Reddot provide live streaming services?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>Absolutely. We offer multi-camera 4K live broadcasting, SDI video switching, real-time custom graphics overlays, and hybrid remote event streaming.</p>
@@ -417,10 +444,10 @@
                 </div>
 
                 <!-- FAQ 4 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>Do you provide drone coverage for events?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">Do you provide drone coverage for events?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>Yes, we provide licensed aerial drone cinematography along with high-definition event photography and cinematic 4K recap videos.</p>
@@ -428,10 +455,10 @@
                 </div>
 
                 <!-- FAQ 5 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>What audio equipment and sound systems do you deploy?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">What audio equipment and sound systems do you deploy?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>We deploy professional line array speaker arrays, high-power subwoofer rigs, digital audio mixing consoles (Yamaha/Midas), and multi-channel RF wireless microphone systems.</p>
@@ -439,10 +466,10 @@
                 </div>
 
                 <!-- FAQ 6 -->
-                <div class="faq-card reveal-card">
-                    <button class="faq-toggle">
-                        <span>How early should we book Reddot for an event?</span>
-                        <i data-lucide="chevron-down"></i>
+                <div class="faq-card faq-anim-row">
+                    <button class="faq-toggle" aria-expanded="false">
+                        <span class="faq-question-text">How early should we book Reddot for an event?</span>
+                        <i data-lucide="chevron-down" class="faq-icon-svg"></i>
                     </button>
                     <div class="faq-content">
                         <p>We recommend booking 2 to 4 weeks in advance for corporate and private events, and 1 to 3 months in advance for major concerts, festivals, or multi-day productions.</p>
@@ -452,14 +479,17 @@
         </div>
     </section>
 
-    <!-- Contact & Direct Hub -->
+    <!-- Contact & Direct Hub Section -->
     <section id="contact" class="section-container contact-section">
+        <!-- Ambient Blurred Red Orb Background -->
+        <div class="ambient-red-orb" id="ambientRedOrb" aria-hidden="true"></div>
+
         <div class="container">
-            <div class="antigravity-card contact-card reveal-card">
+            <div class="antigravity-card contact-card reveal-card" id="contactCard">
                 <div class="grid-2-col">
-                    <div class="contact-info">
+                    <div class="contact-info" id="contactInfoBlock">
                         <div class="section-label">GET IN TOUCH</div>
-                        <h2 class="section-heading">Plan Your Next Event</h2>
+                        <h2 class="section-heading masked-heading" id="contactHeading">Plan Your Next Event</h2>
                         <p class="section-subtext">Connect with the Reddot Events production team.</p>
 
                         <!-- Highlighted Direct Call Card with Names & Numbers -->
@@ -512,27 +542,27 @@
                         <h3>Event Inquiry Form</h3>
                         <p class="form-sub-note">Submissions send directly to <strong>reddotcreative.events@gmail.com</strong></p>
                         
-                        <div class="form-group margin-top-sm">
+                        <div class="form-group margin-top-sm form-field-anim">
                             <label for="cName">Your Name *</label>
                             <input type="text" id="cName" name="Name" required placeholder="Your full name">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-field-anim">
                             <label for="cCompany">Company / Organization</label>
                             <input type="text" id="cCompany" name="Company" placeholder="e.g. Acme Corp PLC">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-field-anim">
                             <label for="cPhone">Phone Number *</label>
                             <input type="tel" id="cPhone" name="Phone" required placeholder="+94 77 XXX XXXX">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-field-anim">
                             <label for="cEmail">Your Email Address *</label>
                             <input type="email" id="cEmail" name="Email" required placeholder="name@domain.com">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-field-anim">
                             <label for="cDetails">Event Requirements & Specifications</label>
                             <textarea id="cDetails" name="InquiryDetails" rows="4" placeholder="Tell us about your event date, location, and required services..."></textarea>
                         </div>
-                        <button type="submit" class="button button-primary button-lg w-full">
+                        <button type="submit" class="button button-primary button-lg w-full form-field-anim">
                             <i data-lucide="send"></i>
                             <span>Send Direct Inquiry to Email</span>
                         </button>
@@ -542,15 +572,15 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Footer Section -->
+    <footer class="footer" id="footerSection">
         <div class="container footer-flex">
-            <div class="footer-left">
-                <img src="assets/logo-events.png" alt="Reddot Events Logo" class="footer-logo">
+            <div class="footer-left" id="footerLeftBlock">
+                <img src="assets/logo-events.png" alt="Reddot Events Logo" class="footer-logo" id="footerLogo">
                 <p class="footer-tagline">“Where creativity connects the dots”</p>
                 <p class="margin-top-xs"><a href="mailto:reddotcreative.events@gmail.com" class="footer-email">reddotcreative.events@gmail.com</a></p>
             </div>
-            <div class="footer-right text-right">
+            <div class="footer-right text-right" id="footerRightBlock">
                 <div class="footer-social-row margin-bottom-xs">
                     <a href="https://www.instagram.com/events.reddot?utm_source=qr" target="_blank" class="social-icon-link" aria-label="Instagram" title="Instagram">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
