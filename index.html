@@ -73,13 +73,17 @@
         </div>
     </header>
 
-    <!-- Hero Section Scoped with Stage Wireframe Graphic Background -->
+    <!-- Hero Section Scoped with Stage Wireframe Graphic Background & Red Aurora Ribbons -->
     <section id="home" class="hero-section">
         <!-- Stage Wireframe Graphic Background (Scoped exclusively within Hero) -->
         <div class="hero-stage-contained-bg"></div>
 
-        <div class="motion-canvas-wrapper desktop-only-canvas">
-            <canvas id="motionGraphicsCanvas"></canvas>
+        <!-- Red Aurora Ribbons Background Motion -->
+        <div class="aurora-wrapper" id="auroraHero">
+            <div class="haze"></div>
+            <canvas id="ribbons" aria-hidden="true"></canvas>
+            <div class="dots"></div>
+            <div class="fade"></div>
         </div>
 
         <div class="container hero-content-box">
