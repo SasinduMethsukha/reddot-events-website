@@ -1,9 +1,9 @@
 /* ==========================================================================
-   Reddot - Red Aurora Ribbons Background Motion, Scroll Reveals & Mobile Fixes
+   Reddot - Full Hero Canvas Particles, Mobile Dots Removal & Popup Reveals
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    initRedAuroraRibbons();
+    initFullHeroReddots();
     initFAQAccordion();
     initContactForm();
     initMobileNav();
@@ -11,94 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveals();
     updateYear();
 });
-
-/* --------------------------------------------------------------------------
-   Red Aurora Ribbons - Flowing Motion Graphics Background
-   -------------------------------------------------------------------------- */
-function initRedAuroraRibbons() {
-    const canvas = document.getElementById('ribbons');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let width = 0, height = 0, frame = 0, time = 0, last = 0;
-
-    function resize() {
-        const heroSection = document.getElementById('home');
-        width = (heroSection ? heroSection.clientWidth : window.innerWidth) * 1.1;
-        height = (heroSection ? heroSection.clientHeight : window.innerHeight) * 1.1;
-        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-        canvas.width = Math.round(width * dpr);
-        canvas.height = Math.round(height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        draw(time);
-    }
-
-    function draw(t) {
-        ctx.clearRect(0, 0, width, height);
-        ctx.lineCap = 'round';
-
-        // Each side is a bundle of independently flowing ribbons.
-        for (let side = 0; side < 2; side++) {
-            ctx.save();
-            if (side) {
-                ctx.translate(width, 0);
-                ctx.scale(-1, 1);
-            }
-            for (let band = 0; band < 6; band++) {
-                const phase = t * 0.48 + band * 0.42 + side * 1.75;
-                const offset = (band - 2.5) * height * 0.024;
-                const start = height * (0.31 + 0.08 * Math.sin(phase * 0.8)) + offset;
-                const end = height * (0.73 + 0.055 * Math.cos(phase * 0.9)) + offset;
-
-                const gradient = ctx.createLinearGradient(0, start, width * 0.79, end);
-                gradient.addColorStop(0, 'rgba(227, 12, 43, 0.46)');
-                gradient.addColorStop(0.30, 'rgba(255, 40, 67, 0.42)');
-                gradient.addColorStop(0.58, 'rgba(255, 100, 113, 0.33)');
-                gradient.addColorStop(0.80, 'rgba(243, 91, 140, 0.19)');
-                gradient.addColorStop(1, 'rgba(255, 180, 171, 0)');
-
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = height * (0.060 + 0.012 * Math.sin(phase));
-                ctx.beginPath();
-                ctx.moveTo(-width * 0.12, start - height * 0.16);
-                ctx.bezierCurveTo(
-                    width * (0.14 + 0.04 * Math.sin(phase)), start + height * 0.06,
-                    width * 0.20, height * (0.76 + 0.08 * Math.cos(phase)),
-                    width * 0.48, end
-                );
-                ctx.bezierCurveTo(
-                    width * 0.61, end - height * 0.035,
-                    width * 0.72, end - height * (0.1 + 0.05 * Math.sin(phase)),
-                    width * 0.88, end - height * 0.04
-                );
-                ctx.stroke();
-            }
-            ctx.restore();
-        }
-    }
-
-    function animate(now) {
-        if (last) time += Math.min((now - last) / 1000, 0.05);
-        last = now;
-        draw(time);
-        frame = requestAnimationFrame(animate);
-    }
-
-    function sync() {
-        cancelAnimationFrame(frame);
-        last = 0;
-        if (!document.hidden && !reduce.matches) frame = requestAnimationFrame(animate);
-        else draw(time);
-    }
-
-    window.addEventListener('resize', resize, { passive: true });
-    reduce.addEventListener('change', sync);
-    document.addEventListener('visibilitychange', sync);
-    resize();
-    sync();
-}
 
 /* --------------------------------------------------------------------------
    Popup-Style Spring IntersectionObserver Scroll Reveal Animations
@@ -187,6 +99,154 @@ function initMobileNav() {
             drawer.classList.remove('open');
         }
     });
+}
+
+/* --------------------------------------------------------------------------
+   Full Hero Section Coverage - Floating Red Dots Canvas Animation (Desktop Only)
+   -------------------------------------------------------------------------- */
+function initFullHeroReddots() {
+    const canvas = document.getElementById('motionGraphicsCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const heroSection = document.getElementById('home');
+    if (!heroSection) return;
+
+    const isMobile = () => window.innerWidth <= 768;
+
+    let width = (canvas.width = heroSection.clientWidth);
+    let height = (canvas.height = heroSection.clientHeight);
+
+    window.addEventListener('resize', () => {
+        width = canvas.width = heroSection.clientWidth;
+        height = canvas.height = heroSection.clientHeight;
+        if (!isMobile()) initDotsAcrossHero();
+    });
+
+    const reddots = [];
+    const dotCount = Math.min(Math.floor((width * height) / 1600), 700);
+    const repulsionRadius = 130;
+    const forceFactor = 1.4;
+    const returnSpeed = 0.05;
+
+    let mouseX = -1000;
+    let mouseY = -1000;
+
+    heroSection.addEventListener('mousemove', (e) => {
+        if (isMobile()) return;
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+        mouseX = -1000;
+        mouseY = -1000;
+    });
+
+    function initDotsAcrossHero() {
+        reddots.length = 0;
+        if (isMobile()) return;
+
+        for (let i = 0; i < dotCount; i++) {
+            const rx = Math.random() * width;
+            const ry = Math.random() * height;
+
+            reddots.push({
+                baseX: rx,
+                baseY: ry,
+                x: rx,
+                y: ry,
+                vx: (Math.random() - 0.5) * 0.25,
+                vy: (Math.random() - 0.5) * 0.25,
+                size: Math.random() * 1.2 + 1.2,
+                alpha: Math.random() * 0.4 + 0.3,
+                wanderTimer: Math.random() * 100
+            });
+        }
+    }
+
+    if (!isMobile()) initDotsAcrossHero();
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        if (isMobile()) {
+            requestAnimationFrame(animate);
+            return;
+        }
+
+        for (let i = 0; i < reddots.length; i += 6) {
+            const dotA = reddots[i];
+            const dx = mouseX - dotA.x;
+            const dy = mouseY - dotA.y;
+            const dist = Math.hypot(dx, dy);
+
+            if (dist < repulsionRadius * 1.3) {
+                for (let j = i + 1; j < reddots.length; j += 6) {
+                    const dotB = reddots[j];
+                    const dAB = Math.hypot(dotA.x - dotB.x, dotA.y - dotB.y);
+
+                    if (dAB < 36) {
+                        ctx.strokeStyle = `rgba(230, 0, 38, ${0.14 * (1 - dist / (repulsionRadius * 1.3))})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(dotA.x, dotA.y);
+                        ctx.lineTo(dotB.x, dotB.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        reddots.forEach(dot => {
+            dot.wanderTimer += 0.008;
+            dot.vx += Math.sin(dot.wanderTimer) * 0.015;
+            dot.vy += Math.cos(dot.wanderTimer * 1.2) * 0.015;
+
+            const maxV = 0.35;
+            dot.vx = Math.max(-maxV, Math.min(maxV, dot.vx));
+            dot.vy = Math.max(-maxV, Math.min(maxV, dot.vy));
+
+            dot.baseX += dot.vx;
+            dot.baseY += dot.vy;
+
+            if (dot.baseX < -20) dot.baseX = width + 20;
+            if (dot.baseX > width + 20) dot.baseX = -20;
+            if (dot.baseY < -20) dot.baseY = height + 20;
+            if (dot.baseY > height + 20) dot.baseY = -20;
+
+            const dx = dot.x - mouseX;
+            const dy = dot.y - mouseY;
+            const dist = Math.hypot(dx, dy);
+
+            if (dist < repulsionRadius && dist > 0) {
+                const angle = Math.atan2(dy, dx);
+                const force = (repulsionRadius - dist) / repulsionRadius;
+                const pushDist = force * force * 55 * forceFactor;
+
+                const targetX = dot.baseX + Math.cos(angle) * pushDist;
+                const targetY = dot.baseY + Math.sin(angle) * pushDist;
+
+                dot.x += (targetX - dot.x) * 0.22;
+                dot.y += (targetY - dot.y) * 0.22;
+            } else {
+                dot.x += (dot.baseX - dot.x) * returnSpeed;
+                dot.y += (dot.baseY - dot.y) * returnSpeed;
+            }
+
+            ctx.fillStyle = '#E60026';
+            ctx.globalAlpha = dot.alpha;
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        ctx.globalAlpha = 1.0;
+        requestAnimationFrame(animate);
+    }
+
+    animate();
 }
 
 /* --------------------------------------------------------------------------
