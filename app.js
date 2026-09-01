@@ -9,86 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollSpy();
     initScrollReveals();
-    initHeroMeshExtension();
     updateYear();
 });
-
-/* --------------------------------------------------------------------------
-   Hero Red Geometric Mesh Extension Parallax Scroll (GSAP ScrollTrigger)
-   -------------------------------------------------------------------------- */
-function initHeroMeshExtension() {
-    const container = document.getElementById('heroMeshExtensionContainer');
-    const clusterA = document.getElementById('meshClusterA');
-    const clusterB = document.getElementById('meshClusterB');
-    const clusterC = document.getElementById('meshClusterC');
-
-    if (!container || !clusterA || !clusterB) return;
-
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        console.warn('GSAP or ScrollTrigger not loaded, retrying...');
-        setTimeout(initHeroMeshExtension, 200);
-        return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-        container.style.display = 'none';
-        return;
-    }
-
-    // Cluster A Parallax Scroll (#about section)
-    gsap.to(clusterA, {
-        y: 300,
-        x: -25,
-        rotation: 2.5,
-        scaleY: 1.12,
-        opacity: 0.35,
-        ease: 'none',
-        scrollTrigger: {
-            trigger: '#about',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.6
-        }
-    });
-
-    // Cluster B Parallax Scroll (#what-we-do section)
-    gsap.to(clusterB, {
-        y: 400,
-        x: 30,
-        rotation: -2,
-        scaleY: 1.1,
-        opacity: 0.22,
-        ease: 'none',
-        scrollTrigger: {
-            trigger: '#what-we-do',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.6
-        }
-    });
-
-    // Cluster C Parallax Scroll (#services & #contact section)
-    if (clusterC) {
-        gsap.to(clusterC, {
-            y: 480,
-            x: -15,
-            rotation: 1.8,
-            scaleY: 1.08,
-            opacity: 0.12,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '#services',
-                start: 'top bottom',
-                endTrigger: '#contact',
-                end: 'bottom top',
-                scrub: 0.6
-            }
-        });
-    }
-}
 
 /* --------------------------------------------------------------------------
    Signature Three.js 3D Red Wireframe Mesh Object (Hero Section)

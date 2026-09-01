@@ -91,92 +91,11 @@ button {
     padding: 110px 0;
     position: relative;
     z-index: 2;
-    background-color: transparent;
+    background-color: var(--bg-main);
 }
 
 .about-section, .services-section, .faq-section, .contact-section {
-    background-color: transparent;
-}
-
-/* ==========================================================================
-   HERO RED GEOMETRIC WIREFRAME MESH EXTENSION (GSAP Parallax Scrub Driven)
-   ========================================================================== */
-.hero-mesh-extension-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.mesh-cluster {
-    position: absolute;
-    pointer-events: none;
-    will-change: transform, opacity;
-}
-
-.mesh-cluster-a {
-    top: 850px;
-    left: 4%;
-    width: 420px;
-    height: auto;
-    opacity: 0.65;
-}
-
-.mesh-cluster-b {
-    top: 1750px;
-    right: 3%;
-    width: 460px;
-    height: auto;
-    opacity: 0.45;
-}
-
-.mesh-cluster-c {
-    top: 3100px;
-    left: 10%;
-    width: 380px;
-    height: auto;
-    opacity: 0.25;
-}
-
-@media (max-width: 992px) {
-    .mesh-cluster-a {
-        width: 320px;
-        left: 2%;
-    }
-    .mesh-cluster-b {
-        width: 340px;
-        right: 2%;
-    }
-    .mesh-cluster-c {
-        width: 280px;
-        left: 5%;
-    }
-}
-
-@media (max-width: 768px) {
-    .mesh-cluster-a {
-        width: 220px;
-        left: -15px;
-        opacity: 0.4;
-    }
-    .mesh-cluster-b {
-        width: 240px;
-        right: -15px;
-        opacity: 0.3;
-    }
-    .mesh-cluster-c {
-        display: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .hero-mesh-extension-container {
-        display: none !important;
-    }
+    background-color: var(--bg-main);
 }
 
 /* Popup-Style Spring Scroll Reveal Animations */
