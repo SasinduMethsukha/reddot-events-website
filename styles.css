@@ -75,6 +75,8 @@ button {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 24px;
+    position: relative;
+    z-index: 10;
 }
 
 .text-center {
@@ -89,11 +91,11 @@ button {
     padding: 110px 0;
     position: relative;
     z-index: 2;
-    background-color: var(--bg-main);
+    background-color: transparent;
 }
 
 .about-section, .services-section, .faq-section, .contact-section {
-    background-color: var(--bg-main);
+    background-color: transparent;
 }
 
 /* ==========================================================================
@@ -106,7 +108,7 @@ button {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 5;
     overflow: hidden;
 }
 
@@ -120,8 +122,8 @@ button {
 }
 
 .base-scroll-path {
-    stroke: rgba(230, 0, 38, 0.15);
-    stroke-width: 1.5px;
+    stroke: rgba(230, 0, 38, 0.22);
+    stroke-width: 2.5px;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -129,7 +131,7 @@ button {
 
 .active-scroll-path {
     stroke: #E60026;
-    stroke-width: 2px;
+    stroke-width: 3px;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -137,7 +139,7 @@ button {
 
 .active-connecting-dot {
     fill: #E60026;
-    filter: drop-shadow(0 0 4px rgba(230, 0, 38, 0.5));
+    filter: drop-shadow(0 0 6px rgba(230, 0, 38, 0.8));
     transition: opacity 0.2s ease;
 }
 
@@ -148,17 +150,11 @@ button {
 }
 
 .node-dot-ring {
-    stroke: rgba(230, 0, 38, 0.35);
-    stroke-width: 1px;
+    stroke: rgba(230, 0, 38, 0.45);
+    stroke-width: 1.5px;
     fill: none;
     transform-origin: center;
     transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-}
-
-@media (max-width: 768px) {
-    .connecting-line-container {
-        display: none !important;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -752,6 +748,8 @@ h1, h2, h3, h4 {
     padding: 44px;
     box-shadow: var(--shadow-md);
     transition: var(--transition);
+    position: relative;
+    z-index: 10;
 }
 
 .antigravity-card:hover {
@@ -795,6 +793,8 @@ h1, h2, h3, h4 {
 
 .section-container-inner {
     padding: 40px 0 60px 0;
+    position: relative;
+    z-index: 10;
 }
 
 .dark-curve-wrapper {
@@ -929,6 +929,8 @@ h1, h2, h3, h4 {
     padding: 36px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
+    position: relative;
+    z-index: 10;
 }
 
 .capability-card:hover {
@@ -969,6 +971,8 @@ h1, h2, h3, h4 {
     border-radius: var(--radius-card);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 10;
 }
 
 .faq-toggle {

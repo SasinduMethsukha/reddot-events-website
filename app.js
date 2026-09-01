@@ -27,7 +27,8 @@ function initConnectingScrollLine() {
     if (!container || !svg || !basePath || !activePath || !activeDot || !nodeGroup) return;
 
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        console.warn('GSAP or ScrollTrigger not loaded.');
+        console.warn('GSAP or ScrollTrigger not loaded, retrying...');
+        setTimeout(initConnectingScrollLine, 200);
         return;
     }
 
@@ -40,14 +41,6 @@ function initConnectingScrollLine() {
     }
 
     function buildPath() {
-        const isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-            container.style.display = 'none';
-            return [];
-        } else {
-            container.style.display = 'block';
-        }
-
         const bodyHeight = document.body.scrollHeight;
         svg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${bodyHeight}`);
         svg.setAttribute('width', window.innerWidth);
@@ -62,7 +55,7 @@ function initConnectingScrollLine() {
         if (!aboutSec || !whatWeDoSec || !servicesSec || !contactSec) return [];
 
         const midX = window.innerWidth / 2;
-        const connectorLength = Math.min(window.innerWidth * 0.16, 150);
+        const connectorLength = Math.min(window.innerWidth * 0.18, 160);
 
         const y1 = aboutSec.offsetTop + 60;
         const y2 = aboutSec.offsetTop + aboutSec.offsetHeight / 2;
@@ -123,13 +116,13 @@ function initConnectingScrollLine() {
             const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             ring.setAttribute('cx', p.x);
             ring.setAttribute('cy', p.y);
-            ring.setAttribute('r', 12);
+            ring.setAttribute('r', 14);
             ring.setAttribute('class', 'node-dot-ring');
 
             const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             dot.setAttribute('cx', p.x);
             dot.setAttribute('cy', p.y);
-            dot.setAttribute('r', 5);
+            dot.setAttribute('r', 6);
             dot.setAttribute('class', 'node-dot-circle');
             dot.style.transform = 'scale(0)';
 
@@ -183,10 +176,10 @@ function initConnectingScrollLine() {
         ease: 'none',
         scrollTrigger: {
             trigger: aboutSec,
-            start: 'top 85%',
+            start: 'top 95%',
             endTrigger: contactSec,
-            end: 'bottom 80%',
-            scrub: 0.5,
+            end: 'bottom 85%',
+            scrub: 0.4,
             onUpdate: (self) => {
                 const currentLength = pathLength * self.progress;
                 
@@ -202,7 +195,7 @@ function initConnectingScrollLine() {
                 nodes.forEach(node => {
                     if (currentLength >= node.distance - 15 && !node.activated) {
                         node.activated = true;
-                        gsap.to(node.dotElement, { scale: 1.25, duration: 0.25, ease: 'back.out(2)' });
+                        gsap.to(node.dotElement, { scale: 1.3, duration: 0.25, ease: 'back.out(2)' });
                         gsap.to(node.dotElement, { scale: 1, duration: 0.2, delay: 0.25 });
                         gsap.fromTo(node.ringElement,
                             { scale: 0.5, opacity: 0.6 },
