@@ -9,8 +9,215 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollSpy();
     initScrollReveals();
+    initConnectingScrollLine();
     updateYear();
 });
+
+/* --------------------------------------------------------------------------
+   Connecting-The-Dots Scroll Line Animation (GSAP ScrollTrigger Driven)
+   -------------------------------------------------------------------------- */
+function initConnectingScrollLine() {
+    const container = document.getElementById('connectingLineContainer');
+    const svg = document.getElementById('scrollConnectingSvg');
+    const basePath = document.getElementById('baseScrollPath');
+    const activePath = document.getElementById('activeScrollPath');
+    const activeDot = document.getElementById('activeConnectingDot');
+    const nodeGroup = document.getElementById('nodeDotsGroup');
+
+    if (!container || !svg || !basePath || !activePath || !activeDot || !nodeGroup) return;
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        console.warn('GSAP or ScrollTrigger not loaded.');
+        return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+        container.style.display = 'none';
+        return;
+    }
+
+    function buildPath() {
+        const isMobile = window.innerWidth <= 768;
+        const bodyHeight = document.body.scrollHeight;
+        svg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${bodyHeight}`);
+        svg.setAttribute('width', window.innerWidth);
+        svg.setAttribute('height', bodyHeight);
+
+        const aboutSec = document.getElementById('about');
+        const whatWeDoSec = document.getElementById('what-we-do');
+        const servicesSec = document.getElementById('services');
+        const contactSec = document.getElementById('contact');
+
+        if (!aboutSec || !whatWeDoSec || !servicesSec || !contactSec) return [];
+
+        const getY = (el) => el.offsetTop + 40;
+        const getCenterY = (el) => el.offsetTop + el.offsetHeight / 2;
+
+        let points = [];
+        let nodes = [];
+
+        if (isMobile) {
+            // Simple clean vertical line on mobile along left margin (x = 24px)
+            const marginX = 24;
+            const startY = getY(aboutSec);
+            const y1 = getCenterY(aboutSec);
+            const y2 = getY(whatWeDoSec);
+            const y3 = getY(servicesSec);
+            const y4 = getY(contactSec);
+            const endY = contactSec.offsetTop + contactSec.offsetHeight - 80;
+
+            points = [
+                { x: marginX, y: startY },
+                { x: marginX, y: y1 },
+                { x: marginX, y: y2 },
+                { x: marginX, y: y3 },
+                { x: marginX, y: y4 },
+                { x: marginX, y: endY }
+            ];
+        } else {
+            // Elegant editorial path on desktop
+            const leftX = Math.max((window.innerWidth - 1200) / 2 + 40, 60);
+            const rightX = Math.min(window.innerWidth - ((window.innerWidth - 1200) / 2 + 40), window.innerWidth - 60);
+            const midX = window.innerWidth / 2;
+
+            const startY = getY(aboutSec);
+            const aboutCardY = aboutSec.offsetTop + 260;
+            const whatWeDoY = whatWeDoSec.offsetTop + 80;
+            const servicesY = servicesSec.offsetTop + 100;
+            const contactY = contactSec.offsetTop + 120;
+            const endY = contactSec.offsetTop + contactSec.offsetHeight - 140;
+
+            points = [
+                { x: leftX, y: startY },
+                { x: leftX, y: aboutCardY },
+                { x: midX, y: aboutCardY + 40 },
+                { x: rightX, y: whatWeDoY },
+                { x: rightX, y: servicesY },
+                { x: leftX, y: servicesY + 300 },
+                { x: leftX, y: contactY },
+                { x: midX, y: endY }
+            ];
+        }
+
+        // Construct SVG path string
+        let d = `M ${points[0].x} ${points[0].y}`;
+        for (let i = 1; i < points.length; i++) {
+            d += ` L ${points[i].x} ${points[i].y}`;
+        }
+
+        basePath.setAttribute('d', d);
+        activePath.setAttribute('d', d);
+
+        // Build Fixed Node Dots
+        nodeGroup.innerHTML = '';
+        nodes = points.map((p, idx) => {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            
+            const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            ring.setAttribute('cx', p.x);
+            ring.setAttribute('cy', p.y);
+            ring.setAttribute('r', 12);
+            ring.setAttribute('class', 'node-dot-ring');
+
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('cx', p.x);
+            dot.setAttribute('cy', p.y);
+            dot.setAttribute('r', 5);
+            dot.setAttribute('class', 'node-dot-circle');
+            dot.style.transform = 'scale(0)';
+
+            g.appendChild(ring);
+            g.appendChild(dot);
+            nodeGroup.appendChild(g);
+
+            return {
+                x: p.x,
+                y: p.y,
+                dotElement: dot,
+                ringElement: ring,
+                distance: 0,
+                activated: false
+            };
+        });
+
+        return nodes;
+    }
+
+    let nodes = buildPath();
+    if (!nodes || nodes.length === 0) return;
+
+    const pathLength = activePath.getTotalLength();
+    activePath.style.strokeDasharray = pathLength;
+    activePath.style.strokeDashoffset = pathLength;
+
+    // Calculate node distances along SVG path
+    nodes.forEach(node => {
+        let minDiff = Infinity;
+        let bestLen = 0;
+        const steps = 100;
+        for (let i = 0; i <= steps; i++) {
+            const len = (i / steps) * pathLength;
+            const pt = activePath.getPointAtLength(len);
+            const dist = Math.hypot(pt.x - node.x, pt.y - node.y);
+            if (dist < minDiff) {
+                minDiff = dist;
+                bestLen = len;
+            }
+        }
+        node.distance = bestLen;
+    });
+
+    // GSAP ScrollTrigger Scrub
+    const aboutSec = document.getElementById('about');
+    const contactSec = document.getElementById('contact');
+
+    gsap.to(activePath, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: aboutSec,
+            start: 'top 85%',
+            endTrigger: contactSec,
+            end: 'bottom 80%',
+            scrub: 0.4,
+            onUpdate: (self) => {
+                const currentLength = pathLength * self.progress;
+                
+                if (currentLength > 0.5) {
+                    const point = activePath.getPointAtLength(Math.min(currentLength, pathLength - 0.1));
+                    activeDot.setAttribute('cx', point.x);
+                    activeDot.setAttribute('cy', point.y);
+                    activeDot.style.opacity = '1';
+                } else {
+                    activeDot.style.opacity = '0';
+                }
+
+                nodes.forEach(node => {
+                    if (currentLength >= node.distance - 15 && !node.activated) {
+                        node.activated = true;
+                        gsap.to(node.dotElement, { scale: 1.2, duration: 0.25, ease: 'back.out(2)' });
+                        gsap.to(node.dotElement, { scale: 1, duration: 0.2, delay: 0.25 });
+                        gsap.fromTo(node.ringElement,
+                            { scale: 0.5, opacity: 0.6 },
+                            { scale: 2.2, opacity: 0, duration: 0.6, ease: 'power2.out' }
+                        );
+                    } else if (currentLength < node.distance - 15 && node.activated) {
+                        node.activated = false;
+                        gsap.to(node.dotElement, { scale: 0, duration: 0.2 });
+                    }
+                });
+            }
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        nodes = buildPath();
+        ScrollTrigger.refresh();
+    });
+}
 
 /* --------------------------------------------------------------------------
    Signature Three.js 3D Red Wireframe Mesh Object (Hero Section)
