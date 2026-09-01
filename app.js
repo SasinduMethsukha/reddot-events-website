@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
-   Connecting-The-Dots Straight Center Scroll Animation (Background Layer)
+   Connecting-The-Dots Center Scroll Animation (Text Gap Skipping)
    -------------------------------------------------------------------------- */
 function initConnectingScrollLine() {
     const container = document.getElementById('connectingLineContainer');
@@ -47,35 +47,82 @@ function initConnectingScrollLine() {
         svg.setAttribute('height', bodyHeight);
 
         const aboutSec = document.getElementById('about');
-        const whatWeDoSec = document.getElementById('what-we-do');
-        const servicesSec = document.getElementById('services');
-        const faqSec = document.querySelector('.faq-section');
         const contactSec = document.getElementById('contact');
-
-        if (!aboutSec || !whatWeDoSec || !servicesSec || !contactSec) return [];
+        if (!aboutSec || !contactSec) return [];
 
         const midX = window.innerWidth / 2;
-        const startY = aboutSec.offsetTop + 40;
+        const startY = aboutSec.offsetTop + 30;
         const endY = contactSec.offsetTop + contactSec.offsetHeight - 120;
 
-        // SINGLE STRAIGHT VERTICAL LINE (Strictly down x = midX, zero sideways movements)
-        const d = `M ${midX} ${startY} L ${midX} ${endY}`;
+        // Query all text elements and cards crossing midX
+        const textSelectors = [
+            '.section-label', '.section-heading', '.section-subtext',
+            '.category-title-bar', '.antigravity-card', '.capability-card',
+            '.faq-card', '.phone-highlight-card', '.contact-form', '.dark-curve-wrapper'
+        ];
+
+        const rawGaps = [];
+        const elements = document.querySelectorAll(textSelectors.join(','));
+
+        elements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const absoluteTop = rect.top + window.scrollY;
+            const absoluteBottom = rect.bottom + window.scrollY;
+            const absoluteLeft = rect.left + window.scrollX;
+            const absoluteRight = rect.right + window.scrollX;
+
+            // Check if element crosses horizontal center midX
+            if (absoluteLeft <= midX + 15 && absoluteRight >= midX - 15) {
+                if (absoluteBottom > startY && absoluteTop < endY) {
+                    // Open a clean 16px gap above and below text/cards
+                    rawGaps.push({
+                        top: Math.max(startY, absoluteTop - 16),
+                        bottom: Math.min(endY, absoluteBottom + 16)
+                    });
+                }
+            }
+        });
+
+        // Sort and merge overlapping gaps
+        rawGaps.sort((a, b) => a.top - b.top);
+        const mergedGaps = [];
+        rawGaps.forEach(gap => {
+            if (mergedGaps.length === 0) {
+                mergedGaps.push(gap);
+            } else {
+                const last = mergedGaps[mergedGaps.length - 1];
+                if (gap.top <= last.bottom) {
+                    last.bottom = Math.max(last.bottom, gap.bottom);
+                } else {
+                    mergedGaps.push(gap);
+                }
+            }
+        });
+
+        // Build SVG line segments in negative whitespace between text blocks
+        let d = '';
+        let currY = startY;
+        const nodePoints = [];
+
+        mergedGaps.forEach(gap => {
+            if (gap.top > currY + 12) {
+                d += `M ${midX} ${currY} L ${midX} ${gap.top} `;
+                nodePoints.push({ x: midX, y: currY });
+                nodePoints.push({ x: midX, y: gap.top });
+            }
+            currY = gap.bottom;
+        });
+
+        if (currY < endY - 12) {
+            d += `M ${midX} ${currY} L ${midX} ${endY}`;
+            nodePoints.push({ x: midX, y: currY });
+            nodePoints.push({ x: midX, y: endY });
+        }
 
         basePath.setAttribute('d', d);
         activePath.setAttribute('d', d);
 
-        // Connection Node Points strictly along the center line x = midX
-        const nodePoints = [
-            { x: midX, y: aboutSec.offsetTop + 60 },
-            { x: midX, y: aboutSec.offsetTop + aboutSec.offsetHeight / 2 },
-            { x: midX, y: whatWeDoSec.offsetTop + 80 },
-            { x: midX, y: whatWeDoSec.offsetTop + whatWeDoSec.offsetHeight / 2 },
-            { x: midX, y: servicesSec.offsetTop + 70 },
-            { x: midX, y: faqSec ? faqSec.offsetTop + 60 : servicesSec.offsetTop + servicesSec.offsetHeight + 60 },
-            { x: midX, y: contactSec.offsetTop + 80 },
-            { x: midX, y: endY }
-        ];
-
+        // Build fixed connection node dots at line segment endpoints
         nodeGroup.innerHTML = '';
         const nodes = nodePoints.map((p) => {
             const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -83,13 +130,13 @@ function initConnectingScrollLine() {
             const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             ring.setAttribute('cx', p.x);
             ring.setAttribute('cy', p.y);
-            ring.setAttribute('r', 14);
+            ring.setAttribute('r', 12);
             ring.setAttribute('class', 'node-dot-ring');
 
             const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             dot.setAttribute('cx', p.x);
             dot.setAttribute('cy', p.y);
-            dot.setAttribute('r', 6);
+            dot.setAttribute('r', 5);
             dot.setAttribute('class', 'node-dot-circle');
             dot.style.transform = 'scale(0)';
 
