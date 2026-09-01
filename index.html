@@ -21,7 +21,7 @@
     <!-- Three.js CDN for 3D Red Wireframe Mesh -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <!-- GSAP & ScrollTrigger CDN for Connecting-The-Dots Scroll Animation -->
+    <!-- GSAP & ScrollTrigger CDN for Hero Mesh Parallax Continuation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     
@@ -130,13 +130,64 @@
         </div>
     </section>
 
-    <!-- Connecting-The-Dots Scroll Line Overlay (Starts immediately after Hero) -->
-    <div id="connectingLineContainer" class="connecting-line-container" aria-hidden="true">
-        <svg id="scrollConnectingSvg" class="scroll-connecting-svg">
-            <path id="baseScrollPath" class="base-scroll-path" d="" />
-            <path id="activeScrollPath" class="active-scroll-path" d="" />
-            <circle id="activeConnectingDot" class="active-connecting-dot" r="5" cx="-100" cy="-100" />
-            <g id="nodeDotsGroup"></g>
+    <!-- Hero Red Geometric Wireframe Mesh Extension Container -->
+    <div id="heroMeshExtensionContainer" class="hero-mesh-extension-container" aria-hidden="true">
+        <!-- Cluster A (Left / About Section: Medium Density Triangular Wireframe Mesh) -->
+        <svg id="meshClusterA" class="mesh-cluster mesh-cluster-a" viewBox="0 0 450 600">
+            <g class="mesh-group">
+                <polygon points="50,40 180,90 120,240 40,160" fill="rgba(230,0,38,0.03)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="180,90 320,50 290,190 120,240" fill="rgba(230,0,38,0.02)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="120,240 290,190 220,380 90,340" fill="rgba(230,0,38,0.03)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="290,190 410,260 360,420 220,380" fill="rgba(230,0,38,0.02)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="90,340 220,380 160,520 40,460" fill="rgba(230,0,38,0.03)" stroke="#E60026" stroke-width="1.2" />
+                <line x1="50" y1="40" x2="290" y2="190" stroke="#E60026" stroke-width="1" stroke-dasharray="4 4" />
+                <line x1="180" y1="90" x2="220" y2="380" stroke="#E60026" stroke-width="1" />
+                <line x1="120" y1="240" x2="360" y2="420" stroke="#E60026" stroke-width="1" stroke-dasharray="3 3" />
+                <!-- Node Dots -->
+                <circle cx="50" cy="40" r="3.5" fill="#E60026" />
+                <circle cx="180" cy="90" r="3.5" fill="#E60026" />
+                <circle cx="120" cy="240" r="3.5" fill="#E60026" />
+                <circle cx="290" cy="190" r="3.5" fill="#E60026" />
+                <circle cx="220" cy="380" r="3.5" fill="#E60026" />
+                <circle cx="360" cy="420" r="3.5" fill="#E60026" />
+                <circle cx="160" cy="520" r="3.5" fill="#E60026" />
+            </g>
+        </svg>
+
+        <!-- Cluster B (Right / What We Do Section: Medium/Light Triangular Wireframe Mesh) -->
+        <svg id="meshClusterB" class="mesh-cluster mesh-cluster-b" viewBox="0 0 500 700">
+            <g class="mesh-group">
+                <polygon points="100,50 260,30 380,160 210,210" fill="rgba(230,0,38,0.02)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="210,210 380,160 440,320 290,390" fill="rgba(230,0,38,0.03)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="100,280 210,210 290,390 140,430" fill="rgba(230,0,38,0.02)" stroke="#E60026" stroke-width="1.2" />
+                <polygon points="290,390 440,320 390,560 210,590" fill="rgba(230,0,38,0.03)" stroke="#E60026" stroke-width="1.2" />
+                <line x1="260" y1="30" x2="290" y2="390" stroke="#E60026" stroke-width="1" />
+                <line x1="380" y1="160" x2="140" y2="430" stroke="#E60026" stroke-width="1" stroke-dasharray="4 4" />
+                <line x1="210" y1="210" x2="390" y2="560" stroke="#E60026" stroke-width="1" />
+                <!-- Node Dots -->
+                <circle cx="260" cy="30" r="3" fill="#E60026" />
+                <circle cx="380" cy="160" r="3" fill="#E60026" />
+                <circle cx="210" cy="210" r="3" fill="#E60026" />
+                <circle cx="290" cy="390" r="3" fill="#E60026" />
+                <circle cx="440" cy="320" r="3" fill="#E60026" />
+                <circle cx="210" cy="590" r="3" fill="#E60026" />
+            </g>
+        </svg>
+
+        <!-- Cluster C (Center-Left / Services & Contact Section: Light Sparse Geometric Network) -->
+        <svg id="meshClusterC" class="mesh-cluster mesh-cluster-c" viewBox="0 0 400 650">
+            <g class="mesh-group">
+                <polygon points="80,60 220,120 170,280 40,210" fill="rgba(230,0,38,0.015)" stroke="#E60026" stroke-width="1.1" />
+                <polygon points="170,280 310,220 280,410 120,450" fill="rgba(230,0,38,0.02)" stroke="#E60026" stroke-width="1.1" />
+                <line x1="80" y1="60" x2="280" y2="410" stroke="#E60026" stroke-width="0.9" stroke-dasharray="5 5" />
+                <line x1="220" y1="120" x2="120" y2="450" stroke="#E60026" stroke-width="0.9" />
+                <!-- Node Dots -->
+                <circle cx="80" cy="60" r="3" fill="#E60026" />
+                <circle cx="220" cy="120" r="3" fill="#E60026" />
+                <circle cx="170" cy="280" r="3" fill="#E60026" />
+                <circle cx="310" cy="220" r="3" fill="#E60026" />
+                <circle cx="120" cy="450" r="3" fill="#E60026" />
+            </g>
         </svg>
     </div>
 

@@ -9,26 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollSpy();
     initScrollReveals();
-    initConnectingScrollLine();
+    initHeroMeshExtension();
     updateYear();
 });
 
 /* --------------------------------------------------------------------------
-   Connecting-The-Dots Center Scroll Animation (Text Gap Skipping)
+   Hero Red Geometric Mesh Extension Parallax Scroll (GSAP ScrollTrigger)
    -------------------------------------------------------------------------- */
-function initConnectingScrollLine() {
-    const container = document.getElementById('connectingLineContainer');
-    const svg = document.getElementById('scrollConnectingSvg');
-    const basePath = document.getElementById('baseScrollPath');
-    const activePath = document.getElementById('activeScrollPath');
-    const activeDot = document.getElementById('activeConnectingDot');
-    const nodeGroup = document.getElementById('nodeDotsGroup');
+function initHeroMeshExtension() {
+    const container = document.getElementById('heroMeshExtensionContainer');
+    const clusterA = document.getElementById('meshClusterA');
+    const clusterB = document.getElementById('meshClusterB');
+    const clusterC = document.getElementById('meshClusterC');
 
-    if (!container || !svg || !basePath || !activePath || !activeDot || !nodeGroup) return;
+    if (!container || !clusterA || !clusterB) return;
 
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
         console.warn('GSAP or ScrollTrigger not loaded, retrying...');
-        setTimeout(initConnectingScrollLine, 200);
+        setTimeout(initHeroMeshExtension, 200);
         return;
     }
 
@@ -40,194 +38,56 @@ function initConnectingScrollLine() {
         return;
     }
 
-    function buildPath() {
-        const bodyHeight = document.body.scrollHeight;
-        svg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${bodyHeight}`);
-        svg.setAttribute('width', window.innerWidth);
-        svg.setAttribute('height', bodyHeight);
-
-        const aboutSec = document.getElementById('about');
-        const contactSec = document.getElementById('contact');
-        if (!aboutSec || !contactSec) return [];
-
-        const midX = window.innerWidth / 2;
-        const startY = aboutSec.offsetTop + 30;
-        const endY = contactSec.offsetTop + contactSec.offsetHeight - 120;
-
-        // Query all text elements and cards crossing midX
-        const textSelectors = [
-            '.section-label', '.section-heading', '.section-subtext',
-            '.category-title-bar', '.antigravity-card', '.capability-card',
-            '.faq-card', '.phone-highlight-card', '.contact-form', '.dark-curve-wrapper'
-        ];
-
-        const rawGaps = [];
-        const elements = document.querySelectorAll(textSelectors.join(','));
-
-        elements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const absoluteTop = rect.top + window.scrollY;
-            const absoluteBottom = rect.bottom + window.scrollY;
-            const absoluteLeft = rect.left + window.scrollX;
-            const absoluteRight = rect.right + window.scrollX;
-
-            // Check if element crosses horizontal center midX
-            if (absoluteLeft <= midX + 15 && absoluteRight >= midX - 15) {
-                if (absoluteBottom > startY && absoluteTop < endY) {
-                    // Open a clean 16px gap above and below text/cards
-                    rawGaps.push({
-                        top: Math.max(startY, absoluteTop - 16),
-                        bottom: Math.min(endY, absoluteBottom + 16)
-                    });
-                }
-            }
-        });
-
-        // Sort and merge overlapping gaps
-        rawGaps.sort((a, b) => a.top - b.top);
-        const mergedGaps = [];
-        rawGaps.forEach(gap => {
-            if (mergedGaps.length === 0) {
-                mergedGaps.push(gap);
-            } else {
-                const last = mergedGaps[mergedGaps.length - 1];
-                if (gap.top <= last.bottom) {
-                    last.bottom = Math.max(last.bottom, gap.bottom);
-                } else {
-                    mergedGaps.push(gap);
-                }
-            }
-        });
-
-        // Build SVG line segments in negative whitespace between text blocks
-        let d = '';
-        let currY = startY;
-        const nodePoints = [];
-
-        mergedGaps.forEach(gap => {
-            if (gap.top > currY + 12) {
-                d += `M ${midX} ${currY} L ${midX} ${gap.top} `;
-                nodePoints.push({ x: midX, y: currY });
-                nodePoints.push({ x: midX, y: gap.top });
-            }
-            currY = gap.bottom;
-        });
-
-        if (currY < endY - 12) {
-            d += `M ${midX} ${currY} L ${midX} ${endY}`;
-            nodePoints.push({ x: midX, y: currY });
-            nodePoints.push({ x: midX, y: endY });
-        }
-
-        basePath.setAttribute('d', d);
-        activePath.setAttribute('d', d);
-
-        // Build fixed connection node dots at line segment endpoints
-        nodeGroup.innerHTML = '';
-        const nodes = nodePoints.map((p) => {
-            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            
-            const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            ring.setAttribute('cx', p.x);
-            ring.setAttribute('cy', p.y);
-            ring.setAttribute('r', 12);
-            ring.setAttribute('class', 'node-dot-ring');
-
-            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            dot.setAttribute('cx', p.x);
-            dot.setAttribute('cy', p.y);
-            dot.setAttribute('r', 5);
-            dot.setAttribute('class', 'node-dot-circle');
-            dot.style.transform = 'scale(0)';
-
-            g.appendChild(ring);
-            g.appendChild(dot);
-            nodeGroup.appendChild(g);
-
-            return {
-                x: p.x,
-                y: p.y,
-                dotElement: dot,
-                ringElement: ring,
-                distance: 0,
-                activated: false
-            };
-        });
-
-        return nodes;
-    }
-
-    let nodes = buildPath();
-    if (!nodes || nodes.length === 0) return;
-
-    const pathLength = activePath.getTotalLength();
-    activePath.style.strokeDasharray = pathLength;
-    activePath.style.strokeDashoffset = pathLength;
-
-    // Calculate node distances along SVG path
-    nodes.forEach(node => {
-        let minDiff = Infinity;
-        let bestLen = 0;
-        const steps = 100;
-        for (let i = 0; i <= steps; i++) {
-            const len = (i / steps) * pathLength;
-            const pt = activePath.getPointAtLength(len);
-            const dist = Math.hypot(pt.x - node.x, pt.y - node.y);
-            if (dist < minDiff) {
-                minDiff = dist;
-                bestLen = len;
-            }
-        }
-        node.distance = bestLen;
-    });
-
-    // GSAP ScrollTrigger Scrub
-    const aboutSec = document.getElementById('about');
-    const contactSec = document.getElementById('contact');
-
-    gsap.to(activePath, {
-        strokeDashoffset: 0,
+    // Cluster A Parallax Scroll (#about section)
+    gsap.to(clusterA, {
+        y: 300,
+        x: -25,
+        rotation: 2.5,
+        scaleY: 1.12,
+        opacity: 0.35,
         ease: 'none',
         scrollTrigger: {
-            trigger: aboutSec,
-            start: 'top 90%',
-            endTrigger: contactSec,
-            end: 'bottom 85%',
-            scrub: 0.4,
-            onUpdate: (self) => {
-                const currentLength = pathLength * self.progress;
-                
-                if (currentLength > 0.5) {
-                    const point = activePath.getPointAtLength(Math.min(currentLength, pathLength - 0.1));
-                    activeDot.setAttribute('cx', point.x);
-                    activeDot.setAttribute('cy', point.y);
-                    activeDot.style.opacity = '1';
-                } else {
-                    activeDot.style.opacity = '0';
-                }
-
-                nodes.forEach(node => {
-                    if (currentLength >= node.distance - 15 && !node.activated) {
-                        node.activated = true;
-                        gsap.to(node.dotElement, { scale: 1.3, duration: 0.25, ease: 'back.out(2)' });
-                        gsap.to(node.dotElement, { scale: 1, duration: 0.2, delay: 0.25 });
-                        gsap.fromTo(node.ringElement,
-                            { scale: 0.5, opacity: 0.6 },
-                            { scale: 2.2, opacity: 0, duration: 0.6, ease: 'power2.out' }
-                        );
-                    } else if (currentLength < node.distance - 15 && node.activated) {
-                        node.activated = false;
-                        gsap.to(node.dotElement, { scale: 0, duration: 0.2 });
-                    }
-                });
-            }
+            trigger: '#about',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.6
         }
     });
 
-    window.addEventListener('resize', () => {
-        nodes = buildPath();
-        ScrollTrigger.refresh();
+    // Cluster B Parallax Scroll (#what-we-do section)
+    gsap.to(clusterB, {
+        y: 400,
+        x: 30,
+        rotation: -2,
+        scaleY: 1.1,
+        opacity: 0.22,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '#what-we-do',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.6
+        }
     });
+
+    // Cluster C Parallax Scroll (#services & #contact section)
+    if (clusterC) {
+        gsap.to(clusterC, {
+            y: 480,
+            x: -15,
+            rotation: 1.8,
+            scaleY: 1.08,
+            opacity: 0.12,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '#services',
+                start: 'top bottom',
+                endTrigger: '#contact',
+                end: 'bottom top',
+                scrub: 0.6
+            }
+        });
+    }
 }
 
 /* --------------------------------------------------------------------------
