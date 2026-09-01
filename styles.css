@@ -599,6 +599,8 @@ h1, h2, h3, h4 {
 .hero-section {
     position: relative;
     min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -624,6 +626,7 @@ h1, h2, h3, h4 {
     mix-blend-mode: multiply;
     pointer-events: none;
     z-index: 1;
+    overflow: hidden;
 }
 
 /* Three.js 3D Red Wireframe Mesh Canvas Container */
@@ -634,6 +637,7 @@ h1, h2, h3, h4 {
     height: 100%;
     z-index: 0;
     pointer-events: none;
+    overflow: hidden;
 }
 
 #redMeshCanvas {
@@ -646,6 +650,7 @@ h1, h2, h3, h4 {
     position: relative;
     z-index: 10;
     text-align: center;
+    overflow: visible;
 }
 
 .pill-badge {
@@ -1175,26 +1180,55 @@ h1, h2, h3, h4 {
         padding: 8px 18px;
     }
     .hero-section {
-        padding-top: 130px;
-        padding-bottom: 60px;
+        min-height: 100vh;
+        min-height: 100svh;
+        min-height: 100dvh;
+        height: auto;
+        padding-top: 120px;
+        padding-bottom: 48px;
+        overflow: visible;
+    }
+    .hero-content-box {
+        overflow: visible;
+        width: 100%;
+    }
+    .pill-badge {
+        margin-bottom: 24px;
+    }
+    .hero-title {
+        font-size: clamp(2.2rem, 8.5vw, 3.2rem);
+        margin-bottom: 28px;
+        line-height: 1.2;
     }
     .hero-cta-row {
         flex-direction: column;
         width: 100%;
-        gap: 12px;
+        gap: 14px;
+        margin-bottom: 32px;
     }
     .hero-cta-row .button {
         width: 100%;
+        padding: 14px 24px;
+        font-size: 1rem;
     }
-    .metrics-3-grid {
+    .metrics-grid, .metrics-3-grid {
         grid-template-columns: 1fr !important;
-        gap: 12px;
+        gap: 14px;
+        width: calc(100% - 32px);
+        max-width: 480px;
+        margin: 0 auto;
     }
     .metric-card {
-        padding: 18px 12px;
+        padding: 22px 18px;
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
     }
     .metric-value {
-        font-size: 1.7rem;
+        font-size: 1.8rem;
+    }
+    .metric-label {
+        font-size: 0.85rem;
     }
     .antigravity-card {
         padding: 24px 20px;
@@ -1267,6 +1301,13 @@ h1, h2, h3, h4 {
     .section-container {
         padding: 70px 0;
     }
+    .hero-section {
+        padding-top: 110px;
+        padding-bottom: 44px;
+    }
+    .metrics-grid, .metrics-3-grid {
+        width: 100%;
+    }
     .photo-grid-4 {
         grid-template-columns: 1fr;
     }
@@ -1308,7 +1349,7 @@ h1, h2, h3, h4 {
         max-height: 56px;
     }
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.95rem;
     }
     .button-lg {
         padding: 14px 24px;
