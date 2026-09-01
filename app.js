@@ -57,21 +57,20 @@ function initArchitecturalMeshMotion() {
 
         const aboutSec = document.getElementById('about');
         const servicesSec = document.getElementById('services');
-        const contactSec = document.getElementById('contact');
+        const faqSec = document.querySelector('.faq-section');
 
-        if (!aboutSec || !servicesSec || !contactSec) return;
+        if (!aboutSec || !servicesSec) return;
 
         const aboutY = aboutSec.offsetTop;
         const servicesY = servicesSec.offsetTop;
-        const contactY = contactSec.offsetTop;
+        const faqY = faqSec ? faqSec.offsetTop : servicesY + 800;
 
         const nodes = [];
         const lines = [];
         const polygons = [];
-        const scrollStrands = [];
 
         // Helper to register node
-        function addNode(id, origX, origY, isImportant = false, isMaster = false) {
+        function addNode(id, origX, origY, isImportant = false) {
             const n = {
                 id,
                 x: origX,
@@ -81,15 +80,14 @@ function initArchitecturalMeshMotion() {
                 offX: 0,
                 offY: 0,
                 isImportant,
-                isMaster,
                 element: null
             };
 
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle.setAttribute('cx', origX);
             circle.setAttribute('cy', origY);
-            circle.setAttribute('r', isMaster ? 7 : (isImportant ? 4.5 : 2.5));
-            circle.setAttribute('class', isMaster ? 'convergence-master-node' : (isImportant ? 'mesh-node-important' : 'mesh-node-dot'));
+            circle.setAttribute('r', isImportant ? (isMobile ? 4 : 4.5) : (isMobile ? 2.5 : 2.5));
+            circle.setAttribute('class', isImportant ? 'mesh-node-important' : 'mesh-node-dot');
 
             nodesGroup.appendChild(circle);
             n.element = circle;
@@ -121,16 +119,17 @@ function initArchitecturalMeshMotion() {
         }
 
         /* ------------------------------------------------------------------
-           ZONE 1 — UPPER PAGE (#about Right Margin Whitespace)
+           ZONE 1 — UPPER PAGE (#about Margin Whitespace)
            ------------------------------------------------------------------ */
-        const z1BaseX = isMobile ? width * 0.82 : width * 0.85;
         const z1Nodes = [];
         const z1Points = isMobile ? [
-            [z1BaseX, aboutY + 80],
-            [z1BaseX + 40, aboutY + 160],
-            [z1BaseX - 30, aboutY + 240],
-            [z1BaseX + 20, aboutY + 340],
-            [z1BaseX - 40, aboutY + 420]
+            [width * 0.90, aboutY + 40],
+            [width * 0.82, aboutY + 140],
+            [width * 0.94, aboutY + 260],
+            [width * 0.88, aboutY + 380],
+            [width * 0.10, aboutY + 80],
+            [width * 0.18, aboutY + 220],
+            [width * 0.06, aboutY + 340]
         ] : [
             [width * 0.82, aboutY + 60],
             [width * 0.92, aboutY + 120],
@@ -150,23 +149,26 @@ function initArchitecturalMeshMotion() {
             addLine(z1Nodes[i], z1Nodes[i + 1], i % 2 === 0);
             if (i + 2 < z1Nodes.length) {
                 addLine(z1Nodes[i], z1Nodes[i + 2], i % 3 === 0);
-                if (!isMobile && i % 2 === 0) {
+                if (i % 2 === 0) {
                     addPolygon(z1Nodes[i], z1Nodes[i + 1], z1Nodes[i + 2], i % 4 === 0);
                 }
             }
         }
 
         /* ------------------------------------------------------------------
-           ZONE 2 — MAIN LARGE MESH (#what-we-do to #services Transition)
+           ZONE 2 — MAIN MESH (#what-we-do to #services Transition)
            ------------------------------------------------------------------ */
-        const z2Y = servicesY - 140;
+        const z2Y = servicesY - 120;
         const z2Nodes = [];
         const z2Points = isMobile ? [
-            [width * 0.1, z2Y],
-            [width * 0.2, z2Y + 100],
-            [width * 0.05, z2Y + 220],
-            [width * 0.85, z2Y + 40],
-            [width * 0.92, z2Y + 180]
+            [width * 0.08, z2Y - 40],
+            [width * 0.20, z2Y + 80],
+            [width * 0.05, z2Y + 200],
+            [width * 0.16, z2Y + 320],
+            [width * 0.92, z2Y - 20],
+            [width * 0.82, z2Y + 100],
+            [width * 0.95, z2Y + 240],
+            [width * 0.86, z2Y + 360]
         ] : [
             [width * 0.08, z2Y - 60],
             [width * 0.18, z2Y + 40],
@@ -188,7 +190,7 @@ function initArchitecturalMeshMotion() {
             addLine(z2Nodes[i], z2Nodes[i + 1], i % 2 === 1);
             if (i + 2 < z2Nodes.length) {
                 addLine(z2Nodes[i], z2Nodes[i + 2], false);
-                if (!isMobile && i % 3 === 0) {
+                if (i % 3 === 0) {
                     addPolygon(z2Nodes[i], z2Nodes[i + 1], z2Nodes[i + 2], true);
                 }
             }
@@ -199,56 +201,44 @@ function initArchitecturalMeshMotion() {
            ------------------------------------------------------------------ */
         const z3Nodes = [];
         const z3Points = isMobile ? [
-            [width * 0.08, servicesY + 300],
-            [width * 0.15, servicesY + 450],
-            [width * 0.90, servicesY + 350]
+            [width * 0.06, servicesY + 180],
+            [width * 0.18, servicesY + 320],
+            [width * 0.08, servicesY + 460],
+            [width * 0.94, servicesY + 140],
+            [width * 0.82, servicesY + 280],
+            [width * 0.92, servicesY + 440],
+            [width * 0.10, faqY + 120],
+            [width * 0.90, faqY + 200]
         ] : [
             [width * 0.05, servicesY + 200],
             [width * 0.16, servicesY + 320],
             [width * 0.07, servicesY + 480],
             [width * 0.92, servicesY + 250],
             [width * 0.84, servicesY + 400],
-            [width * 0.95, servicesY + 560]
+            [width * 0.95, servicesY + 560],
+            [width * 0.08, faqY + 140],
+            [width * 0.92, faqY + 240]
         ];
 
         z3Points.forEach((pt, i) => {
             z3Nodes.push(addNode(`z3_${i}`, pt[0], pt[1], i % 2 === 1));
         });
 
-        for (let i = 0; i < z3Nodes.length - 1; i += 2) {
-            if (i + 1 < z3Nodes.length) {
-                addLine(z3Nodes[i], z3Nodes[i + 1], true);
+        for (let i = 0; i < z3Nodes.length - 1; i++) {
+            addLine(z3Nodes[i], z3Nodes[i + 1], i % 2 === 0);
+            if (i + 2 < z3Nodes.length) {
+                addLine(z3Nodes[i], z3Nodes[i + 2], true);
             }
         }
-
-        /* ------------------------------------------------------------------
-           ZONE 4 — BOTTOM CONVERGENCE (#contact Master Node Convergence)
-           ------------------------------------------------------------------ */
-        const masterX = isMobile ? width * 0.5 : width * 0.85;
-        const masterY = contactY + 380;
-        const masterNode = addNode('master_node', masterX, masterY, true, true);
-
-        const convSources = isMobile ? [
-            [width * 0.15, contactY + 120],
-            [width * 0.85, contactY + 160],
-            [width * 0.30, contactY + 260]
-        ] : [
-            [width * 0.70, contactY + 120],
-            [width * 0.94, contactY + 180],
-            [width * 0.65, contactY + 280],
-            [width * 0.90, contactY + 300]
-        ];
-
-        convSources.forEach((pt, i) => {
-            const srcNode = addNode(`conv_${i}`, pt[0], pt[1], i === 0);
-            addLine(srcNode, masterNode, true);
-        });
 
         /* ------------------------------------------------------------------
            SCROLL CONNECTION STRANDS (GSAP ScrollTrigger Linked Path Drawing)
            ------------------------------------------------------------------ */
         if (z1Nodes.length > 0 && z2Nodes.length > 0 && z3Nodes.length > 0) {
-            const strandPaths = [
+            const strandPaths = isMobile ? [
+                `M ${z1Nodes[0].x} ${z1Nodes[0].y} Q ${width * 0.92} ${aboutY + 300} ${z2Nodes[4].x} ${z2Nodes[4].y}`,
+                `M ${z2Nodes[0].x} ${z2Nodes[0].y} Q ${width * 0.04} ${z2Y + 300} ${z3Nodes[0].x} ${z3Nodes[0].y}`
+            ] : [
                 `M ${z1Nodes[0].x} ${z1Nodes[0].y} Q ${width * 0.88} ${aboutY + 400} ${z2Nodes[z2Nodes.length - 1].x} ${z2Nodes[z2Nodes.length - 1].y}`,
                 `M ${z2Nodes[0].x} ${z2Nodes[0].y} C ${width * 0.02} ${z2Y + 500} ${width * 0.08} ${servicesY + 100} ${z3Nodes[0].x} ${z3Nodes[0].y}`
             ];
@@ -280,10 +270,8 @@ function initArchitecturalMeshMotion() {
            GSAP Floating Node Motion & Dynamic Line Updates
            ------------------------------------------------------------------ */
         nodes.forEach((n, idx) => {
-            if (n.isMaster) return;
-
-            const moveX = (idx % 2 === 0 ? 1 : -1) * (8 + (idx % 7));
-            const moveY = (idx % 3 === 0 ? -1 : 1) * (10 + (idx % 5));
+            const moveX = (idx % 2 === 0 ? 1 : -1) * (isMobile ? 5 : 8 + (idx % 7));
+            const moveY = (idx % 3 === 0 ? -1 : 1) * (isMobile ? 6 : 10 + (idx % 5));
             const dur = 6 + (idx % 6);
 
             gsap.to(n, {
