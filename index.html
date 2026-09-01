@@ -21,7 +21,7 @@
     <!-- Three.js CDN for 3D Red Wireframe Mesh -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <!-- GSAP & ScrollTrigger CDN -->
+    <!-- GSAP & ScrollTrigger CDN for Mesh Motion Graphics -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     
@@ -129,6 +129,16 @@
             </div>
         </div>
     </section>
+
+    <!-- Reddot Architectural Mesh Motion Graphics Overlay (Positioned in Background Whitespace) -->
+    <div id="meshOverlayContainer" class="mesh-overlay-container" aria-hidden="true">
+        <svg id="architecturalMeshSvg" class="architectural-mesh-svg">
+            <g id="backMeshLayer" class="mesh-layer back-layer"></g>
+            <g id="frontMeshLayer" class="mesh-layer front-layer"></g>
+            <g id="scrollStrandsLayer" class="mesh-layer strands-layer"></g>
+            <g id="meshNodesGroup" class="mesh-nodes-group"></g>
+        </svg>
+    </div>
 
     <!-- Brand Story & Connecting Dots Section -->
     <section id="about" class="section-container about-section">

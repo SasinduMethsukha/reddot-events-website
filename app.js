@@ -9,8 +9,350 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initScrollSpy();
     initScrollReveals();
+    initArchitecturalMeshMotion();
     updateYear();
 });
+
+/* --------------------------------------------------------------------------
+   Subtle Architectural Mesh Motion Graphics Overlay ("Connecting the Dots")
+   -------------------------------------------------------------------------- */
+function initArchitecturalMeshMotion() {
+    const container = document.getElementById('meshOverlayContainer');
+    const svg = document.getElementById('architecturalMeshSvg');
+    const backLayer = document.getElementById('backMeshLayer');
+    const frontLayer = document.getElementById('frontMeshLayer');
+    const strandsLayer = document.getElementById('scrollStrandsLayer');
+    const nodesGroup = document.getElementById('meshNodesGroup');
+
+    if (!container || !svg || !backLayer || !frontLayer || !strandsLayer || !nodesGroup) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+        container.style.display = 'none';
+        return;
+    }
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        console.warn('GSAP/ScrollTrigger not loaded, retrying mesh motion...');
+        setTimeout(initArchitecturalMeshMotion, 200);
+        return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isMobile = window.innerWidth <= 768;
+
+    function generateMesh() {
+        const bodyHeight = document.body.scrollHeight;
+        const width = window.innerWidth;
+        
+        svg.setAttribute('viewBox', `0 0 ${width} ${bodyHeight}`);
+        svg.setAttribute('width', width);
+        svg.setAttribute('height', bodyHeight);
+
+        backLayer.innerHTML = '';
+        frontLayer.innerHTML = '';
+        strandsLayer.innerHTML = '';
+        nodesGroup.innerHTML = '';
+
+        const aboutSec = document.getElementById('about');
+        const servicesSec = document.getElementById('services');
+        const contactSec = document.getElementById('contact');
+
+        if (!aboutSec || !servicesSec || !contactSec) return;
+
+        const aboutY = aboutSec.offsetTop;
+        const servicesY = servicesSec.offsetTop;
+        const contactY = contactSec.offsetTop;
+
+        const nodes = [];
+        const lines = [];
+        const polygons = [];
+        const scrollStrands = [];
+
+        // Helper to register node
+        function addNode(id, origX, origY, isImportant = false, isMaster = false) {
+            const n = {
+                id,
+                x: origX,
+                y: origY,
+                origX,
+                origY,
+                offX: 0,
+                offY: 0,
+                isImportant,
+                isMaster,
+                element: null
+            };
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', origX);
+            circle.setAttribute('cy', origY);
+            circle.setAttribute('r', isMaster ? 7 : (isImportant ? 4.5 : 2.5));
+            circle.setAttribute('class', isMaster ? 'convergence-master-node' : (isImportant ? 'mesh-node-important' : 'mesh-node-dot'));
+
+            nodesGroup.appendChild(circle);
+            n.element = circle;
+            nodes.push(n);
+            return n;
+        }
+
+        // Helper to connect line
+        function addLine(n1, n2, isFront = true) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', n1.x);
+            line.setAttribute('y1', n1.y);
+            line.setAttribute('x2', n2.x);
+            line.setAttribute('y2', n2.y);
+            line.setAttribute('class', isFront ? 'mesh-line-front' : 'mesh-line-back');
+
+            (isFront ? frontLayer : backLayer).appendChild(line);
+            lines.push({ n1, n2, element: line });
+        }
+
+        // Helper to connect polygon triangle
+        function addPolygon(n1, n2, n3, isFront = true) {
+            const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            poly.setAttribute('points', `${n1.x},${n1.y} ${n2.x},${n2.y} ${n3.x},${n3.y}`);
+            poly.setAttribute('class', isFront ? 'mesh-polygon-front' : 'mesh-polygon-back');
+
+            (isFront ? frontLayer : backLayer).appendChild(poly);
+            polygons.push({ n1, n2, n3, element: poly });
+        }
+
+        /* ------------------------------------------------------------------
+           ZONE 1 — UPPER PAGE (#about Right Margin Whitespace)
+           ------------------------------------------------------------------ */
+        const z1BaseX = isMobile ? width * 0.82 : width * 0.85;
+        const z1Nodes = [];
+        const z1Points = isMobile ? [
+            [z1BaseX, aboutY + 80],
+            [z1BaseX + 40, aboutY + 160],
+            [z1BaseX - 30, aboutY + 240],
+            [z1BaseX + 20, aboutY + 340],
+            [z1BaseX - 40, aboutY + 420]
+        ] : [
+            [width * 0.82, aboutY + 60],
+            [width * 0.92, aboutY + 120],
+            [width * 0.78, aboutY + 220],
+            [width * 0.88, aboutY + 280],
+            [width * 0.95, aboutY + 380],
+            [width * 0.84, aboutY + 460],
+            [width * 0.76, aboutY + 540],
+            [width * 0.90, aboutY + 600]
+        ];
+
+        z1Points.forEach((pt, i) => {
+            z1Nodes.push(addNode(`z1_${i}`, pt[0], pt[1], i % 3 === 0));
+        });
+
+        for (let i = 0; i < z1Nodes.length - 1; i++) {
+            addLine(z1Nodes[i], z1Nodes[i + 1], i % 2 === 0);
+            if (i + 2 < z1Nodes.length) {
+                addLine(z1Nodes[i], z1Nodes[i + 2], i % 3 === 0);
+                if (!isMobile && i % 2 === 0) {
+                    addPolygon(z1Nodes[i], z1Nodes[i + 1], z1Nodes[i + 2], i % 4 === 0);
+                }
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           ZONE 2 — MAIN LARGE MESH (#what-we-do to #services Transition)
+           ------------------------------------------------------------------ */
+        const z2Y = servicesY - 140;
+        const z2Nodes = [];
+        const z2Points = isMobile ? [
+            [width * 0.1, z2Y],
+            [width * 0.2, z2Y + 100],
+            [width * 0.05, z2Y + 220],
+            [width * 0.85, z2Y + 40],
+            [width * 0.92, z2Y + 180]
+        ] : [
+            [width * 0.08, z2Y - 60],
+            [width * 0.18, z2Y + 40],
+            [width * 0.04, z2Y + 160],
+            [width * 0.22, z2Y + 260],
+            [width * 0.12, z2Y + 380],
+            [width * 0.82, z2Y - 40],
+            [width * 0.94, z2Y + 80],
+            [width * 0.76, z2Y + 200],
+            [width * 0.88, z2Y + 320],
+            [width * 0.96, z2Y + 440]
+        ];
+
+        z2Points.forEach((pt, i) => {
+            z2Nodes.push(addNode(`z2_${i}`, pt[0], pt[1], i % 2 === 0));
+        });
+
+        for (let i = 0; i < z2Nodes.length - 1; i++) {
+            addLine(z2Nodes[i], z2Nodes[i + 1], i % 2 === 1);
+            if (i + 2 < z2Nodes.length) {
+                addLine(z2Nodes[i], z2Nodes[i + 2], false);
+                if (!isMobile && i % 3 === 0) {
+                    addPolygon(z2Nodes[i], z2Nodes[i + 1], z2Nodes[i + 2], true);
+                }
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           ZONE 3 — SIDE MESH FRAGMENTS (#services & #faq Margins)
+           ------------------------------------------------------------------ */
+        const z3Nodes = [];
+        const z3Points = isMobile ? [
+            [width * 0.08, servicesY + 300],
+            [width * 0.15, servicesY + 450],
+            [width * 0.90, servicesY + 350]
+        ] : [
+            [width * 0.05, servicesY + 200],
+            [width * 0.16, servicesY + 320],
+            [width * 0.07, servicesY + 480],
+            [width * 0.92, servicesY + 250],
+            [width * 0.84, servicesY + 400],
+            [width * 0.95, servicesY + 560]
+        ];
+
+        z3Points.forEach((pt, i) => {
+            z3Nodes.push(addNode(`z3_${i}`, pt[0], pt[1], i % 2 === 1));
+        });
+
+        for (let i = 0; i < z3Nodes.length - 1; i += 2) {
+            if (i + 1 < z3Nodes.length) {
+                addLine(z3Nodes[i], z3Nodes[i + 1], true);
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           ZONE 4 — BOTTOM CONVERGENCE (#contact Master Node Convergence)
+           ------------------------------------------------------------------ */
+        const masterX = isMobile ? width * 0.5 : width * 0.85;
+        const masterY = contactY + 380;
+        const masterNode = addNode('master_node', masterX, masterY, true, true);
+
+        const convSources = isMobile ? [
+            [width * 0.15, contactY + 120],
+            [width * 0.85, contactY + 160],
+            [width * 0.30, contactY + 260]
+        ] : [
+            [width * 0.70, contactY + 120],
+            [width * 0.94, contactY + 180],
+            [width * 0.65, contactY + 280],
+            [width * 0.90, contactY + 300]
+        ];
+
+        convSources.forEach((pt, i) => {
+            const srcNode = addNode(`conv_${i}`, pt[0], pt[1], i === 0);
+            addLine(srcNode, masterNode, true);
+        });
+
+        /* ------------------------------------------------------------------
+           SCROLL CONNECTION STRANDS (GSAP ScrollTrigger Linked Path Drawing)
+           ------------------------------------------------------------------ */
+        if (z1Nodes.length > 0 && z2Nodes.length > 0 && z3Nodes.length > 0) {
+            const strandPaths = [
+                `M ${z1Nodes[0].x} ${z1Nodes[0].y} Q ${width * 0.88} ${aboutY + 400} ${z2Nodes[z2Nodes.length - 1].x} ${z2Nodes[z2Nodes.length - 1].y}`,
+                `M ${z2Nodes[0].x} ${z2Nodes[0].y} C ${width * 0.02} ${z2Y + 500} ${width * 0.08} ${servicesY + 100} ${z3Nodes[0].x} ${z3Nodes[0].y}`
+            ];
+
+            strandPaths.forEach((dStr, idx) => {
+                const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathEl.setAttribute('d', dStr);
+                pathEl.setAttribute('class', 'scroll-strand-line');
+                strandsLayer.appendChild(pathEl);
+
+                const len = pathEl.getTotalLength();
+                pathEl.style.strokeDasharray = len;
+                pathEl.style.strokeDashoffset = len;
+
+                gsap.to(pathEl, {
+                    strokeDashoffset: 0,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: idx === 0 ? aboutSec : servicesSec,
+                        start: 'top 70%',
+                        end: 'bottom 30%',
+                        scrub: 0.5
+                    }
+                });
+            });
+        }
+
+        /* ------------------------------------------------------------------
+           GSAP Floating Node Motion & Dynamic Line Updates
+           ------------------------------------------------------------------ */
+        nodes.forEach((n, idx) => {
+            if (n.isMaster) return;
+
+            const moveX = (idx % 2 === 0 ? 1 : -1) * (8 + (idx % 7));
+            const moveY = (idx % 3 === 0 ? -1 : 1) * (10 + (idx % 5));
+            const dur = 6 + (idx % 6);
+
+            gsap.to(n, {
+                offX: moveX,
+                offY: moveY,
+                duration: dur,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut',
+                onUpdate: () => {
+                    n.x = n.origX + n.offX;
+                    n.y = n.origY + n.offY;
+                    if (n.element) {
+                        n.element.setAttribute('cx', n.x);
+                        n.element.setAttribute('cy', n.y);
+                    }
+                }
+            });
+
+            if (n.isImportant) {
+                gsap.to(n.element, {
+                    scale: 1.35,
+                    opacity: 0.9,
+                    duration: 2.4 + (idx % 3),
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut'
+                });
+            }
+        });
+
+        // Frame loop updating lines & polygons as nodes drift
+        function updateLines() {
+            lines.forEach(l => {
+                l.element.setAttribute('x1', l.n1.x);
+                l.element.setAttribute('y1', l.n1.y);
+                l.element.setAttribute('x2', l.n2.x);
+                l.element.setAttribute('y2', l.n2.y);
+            });
+
+            polygons.forEach(p => {
+                p.element.setAttribute('points', `${p.n1.x},${p.n1.y} ${p.n2.x},${p.n2.y} ${p.n3.x},${p.n3.y}`);
+            });
+
+            requestAnimationFrame(updateLines);
+        }
+        updateLines();
+
+        /* ------------------------------------------------------------------
+           Subtle Mouse Parallax (Desktop Only)
+           ------------------------------------------------------------------ */
+        if (!isMobile) {
+            window.addEventListener('mousemove', (e) => {
+                const normX = (e.clientX / width - 0.5) * 16;
+                const normY = (e.clientY / window.innerHeight - 0.5) * 16;
+
+                gsap.to(frontLayer, { x: normX, y: normY, duration: 1.2, ease: 'power1.out' });
+                gsap.to(backLayer, { x: normX * 0.4, y: normY * 0.4, duration: 1.6, ease: 'power1.out' });
+            });
+        }
+    }
+
+    generateMesh();
+
+    window.addEventListener('resize', () => {
+        generateMesh();
+        ScrollTrigger.refresh();
+    });
+}
 
 /* --------------------------------------------------------------------------
    Signature Three.js 3D Red Wireframe Mesh Object (Hero Section)
