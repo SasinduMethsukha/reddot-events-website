@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
-   Connecting-The-Dots Scroll Line Animation (GSAP ScrollTrigger Driven)
+   Connecting-The-Dots Center Spine Scroll Animation (GSAP ScrollTrigger)
    -------------------------------------------------------------------------- */
 function initConnectingScrollLine() {
     const container = document.getElementById('connectingLineContainer');
@@ -41,6 +41,13 @@ function initConnectingScrollLine() {
 
     function buildPath() {
         const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            container.style.display = 'none';
+            return [];
+        } else {
+            container.style.display = 'block';
+        }
+
         const bodyHeight = document.body.scrollHeight;
         svg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${bodyHeight}`);
         svg.setAttribute('width', window.innerWidth);
@@ -49,71 +56,68 @@ function initConnectingScrollLine() {
         const aboutSec = document.getElementById('about');
         const whatWeDoSec = document.getElementById('what-we-do');
         const servicesSec = document.getElementById('services');
+        const faqSec = document.querySelector('.faq-section');
         const contactSec = document.getElementById('contact');
 
         if (!aboutSec || !whatWeDoSec || !servicesSec || !contactSec) return [];
 
-        const getY = (el) => el.offsetTop + 40;
-        const getCenterY = (el) => el.offsetTop + el.offsetHeight / 2;
+        const midX = window.innerWidth / 2;
+        const connectorLength = Math.min(window.innerWidth * 0.16, 150);
 
-        let points = [];
-        let nodes = [];
+        const y1 = aboutSec.offsetTop + 60;
+        const y2 = aboutSec.offsetTop + aboutSec.offsetHeight / 2;
+        const y3 = whatWeDoSec.offsetTop + 80;
+        const y4 = whatWeDoSec.offsetTop + whatWeDoSec.offsetHeight / 2;
+        const y5 = servicesSec.offsetTop + 70;
+        const y6 = faqSec ? faqSec.offsetTop + 60 : servicesSec.offsetTop + servicesSec.offsetHeight + 60;
+        const y7 = contactSec.offsetTop + 80;
+        const endY = contactSec.offsetTop + contactSec.offsetHeight - 120;
 
-        if (isMobile) {
-            // Simple clean vertical line on mobile along left margin (x = 24px)
-            const marginX = 24;
-            const startY = getY(aboutSec);
-            const y1 = getCenterY(aboutSec);
-            const y2 = getY(whatWeDoSec);
-            const y3 = getY(servicesSec);
-            const y4 = getY(contactSec);
-            const endY = contactSec.offsetTop + contactSec.offsetHeight - 80;
-
-            points = [
-                { x: marginX, y: startY },
-                { x: marginX, y: y1 },
-                { x: marginX, y: y2 },
-                { x: marginX, y: y3 },
-                { x: marginX, y: y4 },
-                { x: marginX, y: endY }
-            ];
-        } else {
-            // Elegant editorial path on desktop
-            const leftX = Math.max((window.innerWidth - 1200) / 2 + 40, 60);
-            const rightX = Math.min(window.innerWidth - ((window.innerWidth - 1200) / 2 + 40), window.innerWidth - 60);
-            const midX = window.innerWidth / 2;
-
-            const startY = getY(aboutSec);
-            const aboutCardY = aboutSec.offsetTop + 260;
-            const whatWeDoY = whatWeDoSec.offsetTop + 80;
-            const servicesY = servicesSec.offsetTop + 100;
-            const contactY = contactSec.offsetTop + 120;
-            const endY = contactSec.offsetTop + contactSec.offsetHeight - 140;
-
-            points = [
-                { x: leftX, y: startY },
-                { x: leftX, y: aboutCardY },
-                { x: midX, y: aboutCardY + 40 },
-                { x: rightX, y: whatWeDoY },
-                { x: rightX, y: servicesY },
-                { x: leftX, y: servicesY + 300 },
-                { x: leftX, y: contactY },
-                { x: midX, y: endY }
-            ];
-        }
-
-        // Construct SVG path string
-        let d = `M ${points[0].x} ${points[0].y}`;
-        for (let i = 1; i < points.length; i++) {
-            d += ` L ${points[i].x} ${points[i].y}`;
-        }
+        // Exact Center Spine Path with short horizontal side connectors
+        let d = `M ${midX} ${y1}`;
+        
+        // Center Spine down to y1, connector left
+        d += ` L ${midX - connectorLength} ${y1} L ${midX} ${y1}`;
+        
+        // Down to y2, connector right
+        d += ` L ${midX} ${y2} L ${midX + connectorLength} ${y2} L ${midX} ${y2}`;
+        
+        // Down through what-we-do y3, y4
+        d += ` L ${midX} ${y3} L ${midX} ${y4}`;
+        
+        // Down to services y5, connector left
+        d += ` L ${midX} ${y5} L ${midX - connectorLength} ${y5} L ${midX} ${y5}`;
+        
+        // Down to FAQ y6
+        d += ` L ${midX} ${y6}`;
+        
+        // Down to Contact y7, connector right
+        d += ` L ${midX} ${y7} L ${midX + connectorLength} ${y7} L ${midX} ${y7}`;
+        
+        // End at endY
+        d += ` L ${midX} ${endY}`;
 
         basePath.setAttribute('d', d);
         activePath.setAttribute('d', d);
 
-        // Build Fixed Node Dots
+        // Connection Node Points along the Center Spine & Connectors
+        const nodePoints = [
+            { x: midX, y: y1 },
+            { x: midX - connectorLength, y: y1 },
+            { x: midX, y: y2 },
+            { x: midX + connectorLength, y: y2 },
+            { x: midX, y: y3 },
+            { x: midX, y: y4 },
+            { x: midX, y: y5 },
+            { x: midX - connectorLength, y: y5 },
+            { x: midX, y: y6 },
+            { x: midX, y: y7 },
+            { x: midX + connectorLength, y: y7 },
+            { x: midX, y: endY }
+        ];
+
         nodeGroup.innerHTML = '';
-        nodes = points.map((p, idx) => {
+        const nodes = nodePoints.map((p) => {
             const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             
             const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -157,7 +161,7 @@ function initConnectingScrollLine() {
     nodes.forEach(node => {
         let minDiff = Infinity;
         let bestLen = 0;
-        const steps = 100;
+        const steps = 120;
         for (let i = 0; i <= steps; i++) {
             const len = (i / steps) * pathLength;
             const pt = activePath.getPointAtLength(len);
@@ -182,7 +186,7 @@ function initConnectingScrollLine() {
             start: 'top 85%',
             endTrigger: contactSec,
             end: 'bottom 80%',
-            scrub: 0.4,
+            scrub: 0.5,
             onUpdate: (self) => {
                 const currentLength = pathLength * self.progress;
                 
@@ -198,7 +202,7 @@ function initConnectingScrollLine() {
                 nodes.forEach(node => {
                     if (currentLength >= node.distance - 15 && !node.activated) {
                         node.activated = true;
-                        gsap.to(node.dotElement, { scale: 1.2, duration: 0.25, ease: 'back.out(2)' });
+                        gsap.to(node.dotElement, { scale: 1.25, duration: 0.25, ease: 'back.out(2)' });
                         gsap.to(node.dotElement, { scale: 1, duration: 0.2, delay: 0.25 });
                         gsap.fromTo(node.ringElement,
                             { scale: 0.5, opacity: 0.6 },
