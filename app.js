@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
-   Connecting-The-Dots Center Spine Scroll Animation (GSAP ScrollTrigger)
+   Connecting-The-Dots Straight Center Scroll Animation (Background Layer)
    -------------------------------------------------------------------------- */
 function initConnectingScrollLine() {
     const container = document.getElementById('connectingLineContainer');
@@ -55,57 +55,24 @@ function initConnectingScrollLine() {
         if (!aboutSec || !whatWeDoSec || !servicesSec || !contactSec) return [];
 
         const midX = window.innerWidth / 2;
-        const connectorLength = Math.min(window.innerWidth * 0.18, 160);
-
-        const y1 = aboutSec.offsetTop + 60;
-        const y2 = aboutSec.offsetTop + aboutSec.offsetHeight / 2;
-        const y3 = whatWeDoSec.offsetTop + 80;
-        const y4 = whatWeDoSec.offsetTop + whatWeDoSec.offsetHeight / 2;
-        const y5 = servicesSec.offsetTop + 70;
-        const y6 = faqSec ? faqSec.offsetTop + 60 : servicesSec.offsetTop + servicesSec.offsetHeight + 60;
-        const y7 = contactSec.offsetTop + 80;
+        const startY = aboutSec.offsetTop + 40;
         const endY = contactSec.offsetTop + contactSec.offsetHeight - 120;
 
-        // Exact Center Spine Path with short horizontal side connectors
-        let d = `M ${midX} ${y1}`;
-        
-        // Center Spine down to y1, connector left
-        d += ` L ${midX - connectorLength} ${y1} L ${midX} ${y1}`;
-        
-        // Down to y2, connector right
-        d += ` L ${midX} ${y2} L ${midX + connectorLength} ${y2} L ${midX} ${y2}`;
-        
-        // Down through what-we-do y3, y4
-        d += ` L ${midX} ${y3} L ${midX} ${y4}`;
-        
-        // Down to services y5, connector left
-        d += ` L ${midX} ${y5} L ${midX - connectorLength} ${y5} L ${midX} ${y5}`;
-        
-        // Down to FAQ y6
-        d += ` L ${midX} ${y6}`;
-        
-        // Down to Contact y7, connector right
-        d += ` L ${midX} ${y7} L ${midX + connectorLength} ${y7} L ${midX} ${y7}`;
-        
-        // End at endY
-        d += ` L ${midX} ${endY}`;
+        // SINGLE STRAIGHT VERTICAL LINE (Strictly down x = midX, zero sideways movements)
+        const d = `M ${midX} ${startY} L ${midX} ${endY}`;
 
         basePath.setAttribute('d', d);
         activePath.setAttribute('d', d);
 
-        // Connection Node Points along the Center Spine & Connectors
+        // Connection Node Points strictly along the center line x = midX
         const nodePoints = [
-            { x: midX, y: y1 },
-            { x: midX - connectorLength, y: y1 },
-            { x: midX, y: y2 },
-            { x: midX + connectorLength, y: y2 },
-            { x: midX, y: y3 },
-            { x: midX, y: y4 },
-            { x: midX, y: y5 },
-            { x: midX - connectorLength, y: y5 },
-            { x: midX, y: y6 },
-            { x: midX, y: y7 },
-            { x: midX + connectorLength, y: y7 },
+            { x: midX, y: aboutSec.offsetTop + 60 },
+            { x: midX, y: aboutSec.offsetTop + aboutSec.offsetHeight / 2 },
+            { x: midX, y: whatWeDoSec.offsetTop + 80 },
+            { x: midX, y: whatWeDoSec.offsetTop + whatWeDoSec.offsetHeight / 2 },
+            { x: midX, y: servicesSec.offsetTop + 70 },
+            { x: midX, y: faqSec ? faqSec.offsetTop + 60 : servicesSec.offsetTop + servicesSec.offsetHeight + 60 },
+            { x: midX, y: contactSec.offsetTop + 80 },
             { x: midX, y: endY }
         ];
 
@@ -154,7 +121,7 @@ function initConnectingScrollLine() {
     nodes.forEach(node => {
         let minDiff = Infinity;
         let bestLen = 0;
-        const steps = 120;
+        const steps = 100;
         for (let i = 0; i <= steps; i++) {
             const len = (i / steps) * pathLength;
             const pt = activePath.getPointAtLength(len);
@@ -176,7 +143,7 @@ function initConnectingScrollLine() {
         ease: 'none',
         scrollTrigger: {
             trigger: aboutSec,
-            start: 'top 95%',
+            start: 'top 90%',
             endTrigger: contactSec,
             end: 'bottom 85%',
             scrub: 0.4,
