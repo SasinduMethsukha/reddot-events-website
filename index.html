@@ -172,6 +172,27 @@
 
     <!-- WHAT WE DO Visual Showcase Section (Seamless Dark High-Production Theme) -->
     <section id="what-we-do" class="what-we-do-dark-section">
+        <!-- White -> dark seam, inside the section's own top area -->
+        <div class="dark-seam dark-seam--in" aria-hidden="true">
+            <div class="dark-seam-blend"></div>
+            <div class="dark-seam-glow"></div>
+            <div class="dark-seam-rim">
+                <svg viewBox="0 0 1440 46" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="seamRimIn" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="0">
+                            <stop offset="0" stop-color="#E60026" stop-opacity="0"/>
+                            <stop offset="0.3" stop-color="#FF3B52" stop-opacity="0.5"/>
+                            <stop offset="0.5" stop-color="#FF7A8A" stop-opacity="0.95"/>
+                            <stop offset="0.7" stop-color="#FF3B52" stop-opacity="0.5"/>
+                            <stop offset="1" stop-color="#E60026" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M0 42 Q360 12 720 12" stroke="url(#seamRimIn)"/>
+                    <path d="M720 12 Q1080 12 1440 42" stroke="url(#seamRimIn)"/>
+                </svg>
+            </div>
+        </div>
+
         <div class="container section-container-inner">
             <div class="section-label dark-label reveal-card">PRODUCTION & CAPABILITIES SHOWCASE</div>
             <h2 class="section-heading dark-heading reveal-card">WHAT WE DO</h2>
@@ -292,6 +313,11 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- Quiet dark -> white fade out to Services: no arc, no glow -->
+        <div class="dark-seam dark-seam--out" aria-hidden="true">
+            <div class="dark-seam-blend"></div>
         </div>
     </section>
 

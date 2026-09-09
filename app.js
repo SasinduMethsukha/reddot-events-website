@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeaderDarkState();
     initScrollSpy();
     initScrollReveals();
+    initDarkSeamTransition();
     updateYear();
 });
 
@@ -35,10 +36,10 @@ function initThreeRedMesh() {
     const compact = window.innerWidth <= 768;
 
     // Desktop keeps the wide, airy orb. On phones that same orb at detail 2 fills
-    // the canvas and cuts through the headline, so use a sparser, dimmer facet and
-    // drop it toward the lower Hero to anchor the composition instead.
+    // the canvas and cuts through the headline, so use a sparser, dimmer facet held
+    // just below centre — low enough to clear the headline, high enough to stay whole.
     const preset = compact
-        ? { detail: 1, opacity: 0.34, scale: 0.72, y: -1.1, z: -0.8, spinX: 0.0016, spinY: 0.0028 }
+        ? { detail: 1, opacity: 0.34, scale: 0.72, y: -0.4, z: -0.8, spinX: 0.0016, spinY: 0.0028 }
         : { detail: 3, opacity: 0.65, scale: 1, y: 0, z: 0, spinX: 0.003, spinY: 0.005 };
 
     const geometry = new THREE.IcosahedronGeometry(3.0, preset.detail);
@@ -171,6 +172,40 @@ function initScrollReveals() {
     }, observerOptions);
 
     revealElements.forEach(el => observer.observe(el));
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-Scrubbed White <-> Dark Seams (GSAP ScrollTrigger)
+   -------------------------------------------------------------------------- */
+function initDarkSeamTransition() {
+    const entry = document.querySelector('.dark-seam--in');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // The seam's resting CSS state is already the finished look, so bailing out
+    // leaves a static designed transition rather than a half-drawn one. The exit
+    // seam is a plain fade by design and has nothing to animate.
+    if (!entry || reduceMotion) return;
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    const glow = entry.querySelector('.dark-seam-glow');
+    const rim = entry.querySelector('.dark-seam-rim');
+    if (!glow || !rim) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.set(glow, { opacity: 0, scale: 0.55 });
+    gsap.set(rim, { opacity: 0, y: 16 });
+
+    gsap.timeline({
+        scrollTrigger: {
+            // The band's bottom edge is the actual white -> dark boundary.
+            trigger: entry,
+            start: 'bottom 92%',
+            end: 'bottom 40%',
+            scrub: 0.6
+        }
+    })
+    .to(glow, { opacity: 0.9, scale: 1, duration: 1, ease: 'power2.out' }, 0)
+    .to(rim, { opacity: 1, y: 0, duration: 1, ease: 'power2.inOut' }, 0);
 }
 
 /* --------------------------------------------------------------------------

@@ -585,7 +585,10 @@ h1, h2, h3, h4 {
     justify-content: center;
     padding-top: 160px;
     padding-bottom: 100px;
-    background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(230, 0, 38, 0.06) 0%, rgba(230, 0, 38, 0.02) 40%, #FFFFFF 100%);
+    background:
+        radial-gradient(ellipse 64% 46% at 50% 30%, rgba(230, 0, 38, 0.10) 0%, rgba(230, 0, 38, 0.035) 46%, rgba(230, 0, 38, 0) 74%),
+        radial-gradient(ellipse 96% 44% at 50% 106%, rgba(230, 0, 38, 0.13) 0%, rgba(230, 0, 38, 0.045) 48%, rgba(230, 0, 38, 0) 78%),
+        linear-gradient(180deg, #FFF2F4 0%, #FFFFFF 48%, #FCEFF2 100%);
     overflow: hidden;
     z-index: 2;
 }
@@ -759,34 +762,90 @@ h1, h2, h3, h4 {
 .what-we-do-dark-section {
     background-color: #0A0B0E;
     color: #FFFFFF;
-    padding: 0 0 40px 0;
+    padding: 0;
     position: relative;
     z-index: 2;
     overflow: visible;
+    --seam-h: 150px;
+    --rim-h: 46px;
 }
 
-.what-we-do-dark-section::before {
-    content: '';
-    position: absolute;
-    top: -80px;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: linear-gradient(to bottom, #FFFFFF 0%, #0A0B0E 100%);
-    pointer-events: none;
-    z-index: 3;
+/* The white <-> dark transitions are in-flow blocks inside this section's own
+   box, so they can never wash over the About cards or the Services heading.
+   Both ends start and finish on solid colour, so they butt up against the
+   neighbouring sections with no seam of their own. */
+.dark-seam {
+    position: relative;
+    height: var(--seam-h);
 }
 
-.what-we-do-dark-section::after {
-    content: '';
+/* Smoothstep ramp: holds white, crosses the mid-tone quickly and settles into
+   black, instead of lingering in grey fog the way a linear blend does. */
+.dark-seam-blend {
     position: absolute;
-    bottom: -80px;
+    inset: 0;
+    background: linear-gradient(180deg,
+        var(--bg-main) 0%,
+        #F0F0F0 15%,
+        #CACBCC 30%,
+        #97989A 45%,
+        #616263 60%,
+        #313132 75%,
+        #111112 90%,
+        #0A0B0E 100%);
+}
+
+/* The exit is deliberately quieter: shorter, and no arc or glow. */
+.dark-seam--out {
+    height: calc(var(--seam-h) * 0.72);
+}
+
+.dark-seam--out .dark-seam-blend {
+    background: linear-gradient(180deg,
+        #0A0B0E 0%,
+        #111112 10%,
+        #313132 25%,
+        #616263 40%,
+        #97989A 55%,
+        #CACBCC 70%,
+        #F0F0F0 85%,
+        var(--bg-main) 100%);
+}
+
+/* Red bloom resting on the boundary — the "lights coming up in the hall" beat. */
+.dark-seam-glow {
+    position: absolute;
     left: 0;
     right: 0;
-    height: 80px;
-    background: linear-gradient(to bottom, #0A0B0E 0%, #FFFFFF 100%);
-    pointer-events: none;
-    z-index: 3;
+    bottom: 0;
+    height: 62%;
+    background: radial-gradient(ellipse 46% 72% at 50% 82%,
+        rgba(230, 0, 38, 0.5) 0%,
+        rgba(230, 0, 38, 0.16) 44%,
+        rgba(230, 0, 38, 0) 72%);
+    filter: blur(16px);
+    opacity: 0.9;
+}
+
+.dark-seam-rim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--rim-h);
+    filter: drop-shadow(0 0 8px rgba(230, 0, 38, 0.55));
+}
+
+.dark-seam-rim svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.dark-seam-rim path {
+    fill: none;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
 }
 
 .section-container-inner {
@@ -1124,6 +1183,11 @@ h1, h2, h3, h4 {
     .section-container {
         padding: 85px 0;
     }
+    /* Band scale, not clearance: the seams live inside the dark section now. */
+    .what-we-do-dark-section {
+        --seam-h: 130px;
+        --rim-h: 40px;
+    }
     .photo-img-box {
         height: 200px;
     }
@@ -1217,6 +1281,21 @@ h1, h2, h3, h4 {
     .photo-card-frame::after {
         background: linear-gradient(180deg, transparent 52%, rgba(10, 11, 14, 0.32) 100%);
     }
+    /* Narrow viewports squash the shared 1440-wide viewBox, so the arc gets a
+       shorter box as well as a narrower one to keep it a gentle curve. */
+    .what-we-do-dark-section {
+        --seam-h: 104px;
+        --rim-h: 28px;
+    }
+    .dark-seam-glow {
+        filter: blur(12px);
+    }
+    .dark-seam-rim {
+        filter: drop-shadow(0 0 6px rgba(230, 0, 38, 0.5));
+    }
+    .dark-seam-rim path {
+        stroke-width: 1;
+    }
     .phone-highlight-card {
         flex-direction: column;
         text-align: center;
@@ -1268,9 +1347,6 @@ h1, h2, h3, h4 {
     .section-container {
         padding: 68px 0;
     }
-    /* The dark-section gradient blends extend 80px into neighbours */
-    .about-section { padding-bottom: 84px; }
-    .services-section { padding-top: 84px; }
     .capabilities-grid {
         grid-template-columns: 1fr;
     }
