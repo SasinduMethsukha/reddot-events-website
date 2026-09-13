@@ -950,6 +950,46 @@ h1, h2, h3, h4 {
     filter: contrast(1.28) brightness(1.08) saturate(1.45) sepia(0.05);
 }
 
+/* Staggered spring pop-in: photos rise, scale and de-blur as they enter view */
+.photo-grid-4 .photo-card-frame.reveal-card {
+    opacity: 0;
+    transform: translateY(34px) scale(0.84);
+    filter: blur(12px);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1.24, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1.24, 0.36, 1),
+        filter 0.7s cubic-bezier(0.22, 1.24, 0.36, 1);
+}
+
+.photo-grid-4 .photo-card-frame.reveal-card.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.photo-grid-4 .photo-card-frame.reveal-card:nth-child(2) { transition-delay: 0.09s; }
+.photo-grid-4 .photo-card-frame.reveal-card:nth-child(3) { transition-delay: 0.18s; }
+.photo-grid-4 .photo-card-frame.reveal-card:nth-child(4) { transition-delay: 0.27s; }
+
+@media (max-width: 768px) {
+    .photo-grid-4 .photo-card-frame.reveal-card {
+        transform: translateY(24px) scale(0.9);
+        filter: blur(8px);
+    }
+    .photo-grid-4 .photo-card-frame.reveal-card:nth-child(2) { transition-delay: 0.07s; }
+    .photo-grid-4 .photo-card-frame.reveal-card:nth-child(3) { transition-delay: 0.14s; }
+    .photo-grid-4 .photo-card-frame.reveal-card:nth-child(4) { transition-delay: 0.21s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photo-grid-4 .photo-card-frame.reveal-card {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+    }
+}
+
 /* Capabilities Grid */
 .capabilities-grid {
     display: grid;
