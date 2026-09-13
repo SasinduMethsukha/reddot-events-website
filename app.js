@@ -3,7 +3,12 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    initThreeRedMesh();
+    // WebGL can be unavailable; a throw here would skip initScrollReveals and blank the page
+    try {
+        initThreeRedMesh();
+    } catch (err) {
+        console.warn('Red mesh disabled:', err);
+    }
     initFAQAccordion();
     initContactForm();
     initMobileNav();
