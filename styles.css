@@ -592,7 +592,7 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 160px;
+    padding-top: 120px;
     padding-bottom: 100px;
     background:
         radial-gradient(ellipse 64% 46% at 50% 30%, rgba(230, 0, 38, 0.10) 0%, rgba(230, 0, 38, 0.035) 46%, rgba(230, 0, 38, 0) 74%),
@@ -631,11 +631,15 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-    font-size: clamp(2.3rem, 5.5vw, 4.8rem);
-    letter-spacing: -1px;
+    font-size: clamp(2.6rem, 6.6vw, 6rem);
+    letter-spacing: -0.02em;
     margin-bottom: 32px;
     color: var(--text-primary);
 }
+
+/* Shown only at <=768px: the headline is too wide for two lines there and the
+   browser's own break points land unbalanced. */
+.br-mobile { display: none; }
 
 .hero-gradient-text {
     background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary-red) 100%);
@@ -648,7 +652,7 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: center;
     gap: 16px;
-    margin-bottom: 72px;
+    margin-bottom: 52px;
 }
 
 /* Floating Metrics (3-Card Layout) */
@@ -665,23 +669,51 @@ h1, h2, h3, h4 {
     max-width: 840px;
 }
 
+/* Glass over the hero's red bloom: a low-alpha fill with blur and saturation so
+   the gradient behind shows through, plus an inset top edge for the sheen. */
 .metric-card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.44);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.68);
     border-radius: var(--radius-card);
-    padding: 28px 20px;
+    padding: 22px 20px;
     text-align: center;
-    box-shadow: var(--shadow-md);
+    box-shadow:
+        0 10px 30px rgba(230, 0, 38, 0.07),
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transition: var(--transition);
     position: relative;
     z-index: 10;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.06) 46%,
+        rgba(255, 255, 255, 0) 62%);
+    pointer-events: none;
 }
 
 .metric-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--border-red);
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow:
+        0 18px 40px rgba(230, 0, 38, 0.14),
+        0 4px 12px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Above the ::before sheen, which is positioned and would otherwise paint over
+   static text. */
+.metric-value, .metric-label {
+    position: relative;
+    z-index: 1;
 }
 
 .metric-value {
@@ -1203,6 +1235,11 @@ h1, h2, h3, h4 {
     .container {
         max-width: 720px;
     }
+    /* The container caps at 720px here and the hero box shrink-wraps the
+       headline, so 6.6vw would wrap it mid-phrase above ~894px. */
+    .hero-title {
+        font-size: clamp(2.6rem, 6.6vw, 3.7rem);
+    }
     .photo-grid-4 {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
@@ -1259,19 +1296,21 @@ h1, h2, h3, h4 {
         padding-bottom: 150px;
         overflow: hidden;
     }
-    /* The headline is width-bound: at 9vw the longest line sits ~8px inside the
-       container edge on a 390px phone, so it buys back some of that padding. */
+    /* Four deliberate lines rather than the browser's own break points. Width is
+       not the binding constraint — at 11.5vw the longest line ("From idea to")
+       clears a 320px content box by over 100px — vertical space is. */
     .hero-content-box {
         overflow: visible;
         width: 100%;
         padding-left: 12px;
         padding-right: 12px;
     }
+    .br-mobile { display: inline; }
     .hero-title {
-        font-size: clamp(1.85rem, 9vw, 3rem);
-        letter-spacing: -1.2px;
-        margin-bottom: 34px;
-        line-height: 1.18;
+        font-size: clamp(2.2rem, 11.5vw, 3.6rem);
+        letter-spacing: -0.025em;
+        margin-bottom: 30px;
+        line-height: 1.14;
     }
     .hero-cta-row {
         flex-direction: column;
@@ -1279,10 +1318,16 @@ h1, h2, h3, h4 {
         gap: 13px;
         margin-bottom: 0;
     }
+    /* ~50px tall — down from 57.6px, but still clear of the 44px Apple and 48px
+       Android minimum touch target. */
     .hero-cta-row .button {
         width: 100%;
-        padding: 15px 24px;
-        font-size: 1rem;
+        padding: 12px 22px;
+        font-size: 0.9375rem;
+    }
+    .button-lg {
+        padding: 12px 22px;
+        font-size: 0.9375rem;
     }
     .metrics-grid {
         display: none;
@@ -1477,10 +1522,6 @@ h1, h2, h3, h4 {
     .footer-logo {
         height: 52px;
         max-height: 56px;
-    }
-    .button-lg {
-        padding: 14px 24px;
-        font-size: 0.95rem;
     }
     .highlight-phone-number {
         font-size: 1rem;

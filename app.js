@@ -160,10 +160,11 @@ function initSmoothScroll() {
     if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // No touchMultiplier: syncTouch defaults to false, so touch scrolling stays
+    // native and only wheel input is interpolated here.
     const lenis = new Lenis({
-        lerp: 0.09,
-        wheelMultiplier: 1,
-        touchMultiplier: 1.4
+        lerp: 0.18,
+        wheelMultiplier: 1
     });
 
     if (typeof ScrollTrigger !== 'undefined') {
@@ -187,7 +188,7 @@ function initSmoothScroll() {
             e.preventDefault();
             // No offset here: Lenis already honours the scroll-margin-top that
             // section[id] sets for header clearance, and passing both lands low.
-            lenis.scrollTo(target, { duration: 1.4 });
+            lenis.scrollTo(target, { duration: 0.9 });
         });
     });
 }
