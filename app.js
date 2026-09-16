@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
         console.warn('Red mesh disabled:', err);
     }
+    initSmoothScroll();
     initFAQAccordion();
     initContactForm();
     initMobileNav();
@@ -16,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollSpy();
     initScrollReveals();
     initDarkSeamTransition();
+    initContactReveal();
+    initPhotoSliders();
     updateYear();
 });
 
@@ -151,6 +154,45 @@ function initThreeRedMesh() {
 }
 
 /* --------------------------------------------------------------------------
+   Lenis Smooth Scroll (shared rAF loop with GSAP / ScrollTrigger)
+   -------------------------------------------------------------------------- */
+function initSmoothScroll() {
+    if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const lenis = new Lenis({
+        lerp: 0.09,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.4
+    });
+
+    if (typeof ScrollTrigger !== 'undefined') {
+        lenis.on('scroll', ScrollTrigger.update);
+    }
+
+    // Lenis advances on GSAP's ticker rather than its own, so scroll-driven
+    // timelines and the interpolation read the same frame.
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // Anchor clicks would jump straight to the target, skipping the easing.
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const id = link.getAttribute('href');
+            if (!id || id === '#') return;
+
+            const target = document.querySelector(id);
+            if (!target) return;
+
+            e.preventDefault();
+            // No offset here: Lenis already honours the scroll-margin-top that
+            // section[id] sets for header clearance, and passing both lands low.
+            lenis.scrollTo(target, { duration: 1.4 });
+        });
+    });
+}
+
+/* --------------------------------------------------------------------------
    Popup-Style Spring IntersectionObserver Scroll Reveal Animations
    -------------------------------------------------------------------------- */
 function initScrollReveals() {
@@ -211,6 +253,38 @@ function initDarkSeamTransition() {
     })
     .to(glow, { opacity: 0.9, scale: 1, duration: 1, ease: 'power2.out' }, 0)
     .to(rim, { opacity: 1, y: 0, duration: 1, ease: 'power2.inOut' }, 0);
+}
+
+/* --------------------------------------------------------------------------
+   Get In Touch Entrance (GSAP ScrollTrigger)
+   -------------------------------------------------------------------------- */
+function initContactReveal() {
+    const card = document.querySelector('.contact-card');
+    if (!card) return;
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const children = card.querySelectorAll('.contact-info > *, .contact-form > *');
+
+    // from() rather than a hidden resting state: if this never fires the section
+    // is still readable instead of stuck at opacity 0. It renders its start values
+    // immediately, so the transition guard goes on here and not in onStart.
+    card.classList.add('is-animating');
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: card,
+            start: 'top 82%',
+            once: true
+        },
+        defaults: { ease: 'power3.out' },
+        onComplete: () => card.classList.remove('is-animating')
+    });
+
+    tl.from(card, { y: 46, opacity: 0, duration: 0.9 })
+      .from(children, { y: 22, opacity: 0, duration: 0.7, stagger: 0.06 }, '-=0.55');
 }
 
 /* --------------------------------------------------------------------------
@@ -372,6 +446,123 @@ ${details}
         }
 
         form.reset();
+    });
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Photo Sliders — one frame at a time, autoplay until first touch
+   -------------------------------------------------------------------------- */
+function initPhotoSliders() {
+    const grids = document.querySelectorAll('.photo-grid-4');
+    if (grids.length === 0) return;
+
+    const sliderViewport = window.matchMedia('(max-width: 768px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const AUTOPLAY_MS = 3500;
+
+    grids.forEach(grid => {
+        const slides = Array.from(grid.children);
+        if (slides.length < 2) return;
+
+        const dots = document.createElement('div');
+        dots.className = 'photo-dots';
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = i === 0 ? 'photo-dot active' : 'photo-dot';
+            dot.setAttribute('aria-label', `Show photo ${i + 1} of ${slides.length}`);
+            dot.addEventListener('click', () => { stop(); goTo(i); });
+            dots.appendChild(dot);
+        });
+
+        grid.insertAdjacentElement('afterend', dots);
+
+        const dotEls = Array.from(dots.children);
+        let index = 0;
+        let timer = null;
+        let inView = false;
+        // First contact hands control over for good — no resuming afterwards.
+        let stopped = reduceMotion;
+
+        function goTo(i) {
+            index = (i + slides.length) % slides.length;
+            grid.scrollTo({
+                left: slides[index].offsetLeft,
+                behavior: reduceMotion ? 'auto' : 'smooth'
+            });
+            paintDots();
+        }
+
+        function paintDots() {
+            dotEls.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        function start() {
+            if (stopped || timer) return;
+            timer = setInterval(() => {
+                // The grid is a plain 4-up layout above the breakpoint, where
+                // scrolling it would be a no-op at best and a jump at worst.
+                if (stopped || !inView || !sliderViewport.matches) return;
+                goTo(index + 1);
+            }, AUTOPLAY_MS);
+        }
+
+        function stop() {
+            stopped = true;
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        // Only contact with the real slider counts: a click or trackpad wheel
+        // over the desktop 4-up grid would otherwise latch it off for good.
+        const onVisitorInput = () => {
+            if (sliderViewport.matches) stop();
+        };
+
+        ['pointerdown', 'wheel'].forEach(evt => {
+            grid.addEventListener(evt, onVisitorInput, { passive: true });
+        });
+
+        // Hand swipes drive the dots too, so track whichever slide ends up centred.
+        let rafPending = false;
+        grid.addEventListener('scroll', () => {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(() => {
+                rafPending = false;
+                const centre = grid.scrollLeft + grid.clientWidth / 2;
+                let nearest = 0;
+                let bestDistance = Infinity;
+
+                slides.forEach((slide, i) => {
+                    const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - centre);
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        nearest = i;
+                    }
+                });
+
+                if (nearest !== index) {
+                    index = nearest;
+                    paintDots();
+                }
+            });
+        }, { passive: true });
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    inView = entry.isIntersecting;
+                });
+            }, { threshold: 0.4 }).observe(grid);
+        } else {
+            inView = true;
+        }
+
+        start();
     });
 }
 

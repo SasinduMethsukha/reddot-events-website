@@ -44,7 +44,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -293,12 +292,6 @@ h1, h2, h3, h4 {
     box-shadow: var(--shadow-red);
 }
 
-.social-icon-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 .sub-label-heading {
     font-size: 0.85rem;
     font-weight: 600;
@@ -314,6 +307,12 @@ h1, h2, h3, h4 {
     margin-bottom: 12px;
 }
 
+.footer-social-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+    margin-bottom: 10px;
+}
+
 .mobile-social-row {
     display: flex;
     align-items: center;
@@ -321,44 +320,44 @@ h1, h2, h3, h4 {
     justify-content: center;
 }
 
-/* Elevated Floating WhatsApp Brand Button */
+/* Bare WhatsApp Mark — no disc, no halo. The dark drop-shadow is what keeps the
+   green glyph legible over both the white sections and the dark showcase. */
 .floating-wa-btn {
     position: fixed;
-    bottom: 85px;
-    right: 24px;
-    width: 60px;
-    height: 60px;
-    background: #25D366;
-    color: #FFFFFF;
-    border-radius: 50%;
+    bottom: 88px;
+    right: 26px;
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+    color: var(--whatsapp-green);
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
     z-index: 9999;
     transition: var(--transition);
-    animation: waPulse 2.4s infinite ease-in-out;
 }
 
 .floating-wa-btn:hover {
-    background: #20bd5a;
-    transform: scale(1.1) translateY(-3px);
-    box-shadow: 0 16px 36px rgba(37, 211, 102, 0.65);
+    color: var(--whatsapp-hover);
+    transform: scale(1.12) translateY(-3px);
+    filter: drop-shadow(0 8px 18px rgba(37, 211, 102, 0.45));
 }
 
 .floating-wa-btn svg {
-    width: 32px;
-    height: 32px;
+    width: 46px;
+    height: 46px;
     fill: currentColor;
+    display: block;
+    animation: waBreathe 2.8s infinite ease-in-out;
 }
 
-@keyframes waPulse {
-    0%, 100% {
-        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
-    }
+.floating-wa-btn:hover svg {
+    animation-play-state: paused;
+}
+
+@keyframes waBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.07); }
 }
 
 /* Antigravity Buttons */
@@ -521,11 +520,21 @@ h1, h2, h3, h4 {
     gap: 12px;
 }
 
+/* Square flex box so the icon's centre line matches the logo's; a block button
+   left the inline svg resting on the text baseline, ~3.5px too high. */
 .menu-toggle-btn {
     display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
     color: var(--text-primary);
-    font-size: 1.5rem;
-    padding: 4px 8px;
+}
+
+.menu-toggle-btn svg {
+    display: block;
+    width: 24px;
+    height: 24px;
 }
 
 /* Mobile Drawer Menu */
@@ -619,35 +628,6 @@ h1, h2, h3, h4 {
     z-index: 10;
     text-align: center;
     overflow: visible;
-}
-
-.pill-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 20px;
-    border-radius: var(--radius-pill);
-    background: var(--primary-red-light);
-    border: 1px solid var(--border-red);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary-red);
-    margin-bottom: 28px;
-    box-shadow: 0 4px 12px rgba(230, 0, 38, 0.08);
-}
-
-.pulse-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--primary-red);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary-red);
-    animation: motionPulse 1.8s infinite ease-in-out;
-}
-
-@keyframes motionPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.6); opacity: 0.5; }
 }
 
 .hero-title {
@@ -914,6 +894,13 @@ h1, h2, h3, h4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    position: relative;
+}
+
+/* Dot indicators exist in the DOM at every width but only mean anything once
+   the grid becomes a one-at-a-time slider on mobile. */
+.photo-dots {
+    display: none;
 }
 
 .photo-card-frame {
@@ -987,6 +974,9 @@ h1, h2, h3, h4 {
         transform: none;
         filter: none;
         transition: none;
+    }
+    .floating-wa-btn svg {
+        animation: none;
     }
 }
 
@@ -1096,19 +1086,24 @@ h1, h2, h3, h4 {
     color: var(--primary-red);
 }
 
-.contact-form {
-    background: var(--bg-surface);
-    padding: 36px;
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border-subtle);
-    position: relative;
-    z-index: 10;
+/* The card, its phone panel and the submit button all carry `transition: all`,
+   which would re-interpolate the transform/opacity GSAP is driving. */
+.contact-card.is-animating,
+.contact-card.is-animating * {
+    transition: none !important;
 }
 
-.form-sub-note {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 4px;
+/* Cardless inquiry form: the fields sit straight on the contact card, so they
+   carry their own surface tint and a hairline splits the two columns. */
+.contact-grid {
+    gap: 52px;
+}
+
+.contact-form {
+    position: relative;
+    z-index: 10;
+    border-left: 1px solid var(--border-subtle);
+    padding-left: 48px;
 }
 
 .form-group {
@@ -1127,7 +1122,7 @@ h1, h2, h3, h4 {
     width: 100%;
     padding: 14px 18px;
     border-radius: var(--radius-sm);
-    background: #FFFFFF;
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     color: var(--text-primary);
     font-family: inherit;
@@ -1137,8 +1132,9 @@ h1, h2, h3, h4 {
 
 .form-group input:focus, .form-group textarea:focus {
     outline: none;
+    background: #FFFFFF;
     border-color: var(--primary-red);
-    box-shadow: 0 0 12px rgba(230, 0, 38, 0.15);
+    box-shadow: 0 0 0 3px rgba(230, 0, 38, 0.1);
 }
 
 /* Footer */
@@ -1220,6 +1216,16 @@ h1, h2, h3, h4 {
     .grid-2-col {
         grid-template-columns: 1fr;
     }
+    /* Columns stack here, so the hairline moves from the form's left edge to its top. */
+    .contact-grid {
+        gap: 32px;
+    }
+    .contact-form {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border-subtle);
+        padding-top: 32px;
+    }
     .section-container {
         padding: 85px 0;
     }
@@ -1238,7 +1244,7 @@ h1, h2, h3, h4 {
         display: none !important;
     }
     .menu-toggle-btn {
-        display: block !important;
+        display: inline-flex;
     }
     .header-nav {
         top: 12px;
@@ -1253,15 +1259,17 @@ h1, h2, h3, h4 {
         padding-bottom: 150px;
         overflow: hidden;
     }
+    /* The headline is width-bound: at 9vw the longest line sits ~8px inside the
+       container edge on a 390px phone, so it buys back some of that padding. */
     .hero-content-box {
         overflow: visible;
         width: 100%;
-    }
-    .pill-badge {
-        margin-bottom: 26px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
     .hero-title {
-        font-size: clamp(1.6rem, 8.2vw, 2.9rem);
+        font-size: clamp(1.85rem, 9vw, 3rem);
+        letter-spacing: -1.2px;
         margin-bottom: 34px;
         line-height: 1.18;
     }
@@ -1309,9 +1317,52 @@ h1, h2, h3, h4 {
     .category-desc {
         display: none;
     }
+    /* One photo at a time: the 4-up grid becomes a snap-scrolling track. */
     .photo-grid-4 {
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
         gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .photo-grid-4::-webkit-scrollbar {
+        display: none;
+    }
+    .photo-grid-4 > .photo-card-frame {
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+    }
+    .photo-dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 14px;
+    }
+    .photo-dot {
+        position: relative;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.26);
+        transition: var(--transition);
+    }
+    /* A 7px dot is not a thumb target, so pad the hit area without touching the
+       layout — vertical room is free, horizontal room would overlap neighbours. */
+    .photo-dot::before {
+        content: '';
+        position: absolute;
+        top: -11px;
+        bottom: -11px;
+        left: -4px;
+        right: -4px;
+    }
+    .photo-dot.active {
+        width: 22px;
+        border-radius: var(--radius-pill);
+        background: var(--primary-red);
     }
     .photo-img-box {
         height: auto;
@@ -1369,14 +1420,14 @@ h1, h2, h3, h4 {
     }
 
     .floating-wa-btn {
-        bottom: 75px;
+        bottom: 78px;
         right: 18px;
-        width: 54px;
-        height: 54px;
+        width: 40px;
+        height: 40px;
     }
     .floating-wa-btn svg {
-        width: 28px;
-        height: 28px;
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -1400,8 +1451,10 @@ h1, h2, h3, h4 {
     .faq-card.active .faq-content {
         padding: 0 20px 20px 20px;
     }
-    .contact-form {
-        padding: 24px 18px;
+    /* Compound selector: it has to outrank the .container padding set above. */
+    .container.hero-content-box {
+        padding-left: 8px;
+        padding-right: 8px;
     }
     /* Below 16px iOS zooms the viewport on focus, which blows out the layout. */
     .form-group input, .form-group textarea {
