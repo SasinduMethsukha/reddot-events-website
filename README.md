@@ -39,7 +39,7 @@ A complete, high-performance, modern web application built for **Reddot Events**
 
 7. **FAQ Accordion & Lead Generation Contact Hub**:
    - Accordion for common event planning questions in Sri Lanka.
-   - Complete inquiry form with instant toast notification.
+   - Complete inquiry form that opens an email-app chooser (Gmail, Outlook.com or the device default mail app) with the inquiry pre-filled.
    - Official company email: `reddotcreative.events@gmail.com`
    - WhatsApp quick chat integration, hotline numbers (`+94 77 XXX XXXX`), and Sri Lanka island-wide coverage details.
 
