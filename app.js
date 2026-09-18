@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initFAQAccordion();
     initContactForm();
+    initEmailChooser();
     initMobileNav();
     initHeaderDarkState();
     initScrollSpy();
@@ -156,6 +157,8 @@ function initThreeRedMesh() {
 /* --------------------------------------------------------------------------
    Lenis Smooth Scroll (shared rAF loop with GSAP / ScrollTrigger)
    -------------------------------------------------------------------------- */
+let lenisInstance = null;
+
 function initSmoothScroll() {
     if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -166,6 +169,7 @@ function initSmoothScroll() {
         lerp: 0.18,
         wheelMultiplier: 1
     });
+    lenisInstance = lenis;
 
     if (typeof ScrollTrigger !== 'undefined') {
         lenis.on('scroll', ScrollTrigger.update);
@@ -401,8 +405,6 @@ function initFAQAccordion() {
    -------------------------------------------------------------------------- */
 function initContactForm() {
     const form = document.getElementById('contactForm');
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toastMsg');
 
     if (!form) return;
 
@@ -427,26 +429,115 @@ Event Details & Requirements:
 ${details}
 `;
 
-        const mailtoUrl = `mailto:reddotcreative.events@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        openEmailChooser({ subject, body }, form.querySelector('button[type="submit"]'));
+    });
+}
 
-        window.location.href = mailtoUrl;
+/* --------------------------------------------------------------------------
+   Email App Chooser — Gmail / Outlook.com web compose or the device default
+   -------------------------------------------------------------------------- */
+const EMAIL_RECIPIENT = 'reddotcreative.events@gmail.com';
+let chooserCloseTimer = null;
+let chooserLastTrigger = null;
 
-        if (form.action && form.action.includes('formspree.io')) {
-            const formData = new FormData(form);
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            }).catch(err => console.log('Formspree dispatch executed'));
+function emailComposeHref(app, subject, body) {
+    if (app === 'gmail') {
+        const url = new URL('https://mail.google.com/mail/');
+        url.searchParams.set('view', 'cm');
+        url.searchParams.set('fs', '1');
+        url.searchParams.set('to', EMAIL_RECIPIENT);
+        if (subject) url.searchParams.set('su', subject);
+        if (body) url.searchParams.set('body', body);
+        return url.toString();
+    }
+
+    if (app === 'outlook') {
+        const url = new URL('https://outlook.live.com/mail/0/deeplink/compose');
+        url.searchParams.set('to', EMAIL_RECIPIENT);
+        if (subject) url.searchParams.set('subject', subject);
+        if (body) url.searchParams.set('body', body);
+        return url.toString();
+    }
+
+    const params = new URLSearchParams();
+    if (subject) params.set('subject', subject);
+    if (body) params.set('body', body);
+    const query = params.toString();
+    return query ? `mailto:${EMAIL_RECIPIENT}?${query}` : `mailto:${EMAIL_RECIPIENT}`;
+}
+
+function openEmailChooser(payload, trigger) {
+    const chooser = document.getElementById('emailChooser');
+    if (!chooser) return;
+
+    const { subject = '', body = '' } = payload || {};
+
+    chooser.querySelectorAll('.email-option').forEach(option => {
+        option.href = emailComposeHref(option.dataset.emailApp, subject, body);
+    });
+    document.getElementById('emailChooserSub').textContent =
+        `Your message will be addressed to ${EMAIL_RECIPIENT}.`;
+
+    chooserLastTrigger = trigger || null;
+    clearTimeout(chooserCloseTimer);
+    chooser.hidden = false;
+    // The spring transition needs one frame at the resting state first.
+    void chooser.offsetWidth;
+    chooser.classList.add('open');
+    document.body.classList.add('chooser-open');
+    lenisInstance?.stop();
+    chooser.querySelector('.email-option')?.focus({ preventScroll: true });
+}
+
+function closeEmailChooser() {
+    const chooser = document.getElementById('emailChooser');
+    if (!chooser || chooser.hidden) return;
+
+    chooser.classList.remove('open');
+    document.body.classList.remove('chooser-open');
+    lenisInstance?.start();
+    chooserCloseTimer = setTimeout(() => { chooser.hidden = true; }, 300);
+    chooserLastTrigger?.focus?.({ preventScroll: true });
+}
+
+function initEmailChooser() {
+    const chooser = document.getElementById('emailChooser');
+    if (!chooser) return;
+
+    chooser.querySelectorAll('[data-chooser-close]').forEach(el => {
+        el.addEventListener('click', closeEmailChooser);
+    });
+
+    chooser.querySelectorAll('.email-option').forEach(option => {
+        option.addEventListener('click', closeEmailChooser);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !chooser.hidden) closeEmailChooser();
+    });
+
+    // Keep Tab inside the dialog while it is open.
+    chooser.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        const focusables = Array.from(chooser.querySelectorAll('a[href], button'));
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
         }
+    });
 
-        if (toastMsg) toastMsg.textContent = `Thank you, ${name}! Your inquiry is opening in your email app for reddotcreative.events@gmail.com.`;
-        if (toast) {
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 5000);
-        }
-
-        form.reset();
+    // The mailto hrefs stay in the markup as the no-JS fallback.
+    document.querySelectorAll('.email-link, .footer-email').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openEmailChooser({}, link);
+        });
     });
 }
 
